@@ -1,0 +1,41 @@
+services:
+  atlas:
+    image: keinstien/atlas:latest
+    container_name: atlas-prod-1
+    #network_mode: host
+    networks:
+      - proxy
+    ports:
+      - 8888:${TRAEFIK_UI_PORT-8888}
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    environment:
+      - ATLAS_UI_PORT=${ATLAS_UI_PORT-8888}
+      - ATLAS_API_PORT=${ATLAS_API_PORT-8889}
+      - FASTSCAN_INTERVAL=${FASTSCAN_INTERVAL-3600}
+      - DOCKERSCAN_INTERVAL=${DOCKERSCAN_INTERVAL-3600}
+      - DEEPSCAN_INTERVAL=${DEEPSCAN_INTERVAL-7200}
+      - SCAN_SUBNETS=${SCAN_SUBNETS}
+      - ATLAS_ADMIN_PASSWORD=${ATLAS_ADMIN_PASSWORD}
+      - ATLAS_ADMIN_USER=${ATLAS_ADMIN_USER}
+      - TZ=America/Los_Angeles
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      - "traefik.http.routers.it-tools-secure.middlewares=auth-forwardauth@file"   #authentik login required
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+networks:
+  proxy:
+    external: true
