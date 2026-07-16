@@ -1,0 +1,1630 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+    
+- Run Ansible Jobs:
+#
+    - Install Unix Updates:
+        icon: https://cdn.imgbin.com/21/11/2/imgbin-installation-computer-software-package-manager-software-development-linux-1xwAL5vGMjTNX7tKu7dh5DG6M.jpg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=175&project_id=4"
+        description: Installs apt updates to all linux hosts
+#
+    - Patch All Hosts:
+        icon: https://www.canada.ca/content/dam/tbs-sct/images/digital-government/20200703-02-eng.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=181&project_id=4"
+        description: Installs updates to all hosts and reboot if needed
+#
+    - Prune Docker Containers:
+        icon: docker.svg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=185&project_id=4"
+        description: Prune Docker containers
+#
+    - Update NetTools:
+        icon: https://www.drwindows.de/news/wp-content/uploads/2009/07/net-tools_pgb.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=179&project_id=4"
+        description: Update NetTools on Linux Servers
+#
+    - Disable Technitium Blocking:
+        icon: si-adblock-#F40D12
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=201&project_id=4"
+        description: Technitium Blocking to be disabled for 15 minutes
+#
+    - Call Discord:
+        icon: https://static.vecteezy.com/system/resources/previews/006/892/625/original/discord-logo-icon-editorial-free-vector.jpg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=166&project_id=4"
+        description: Notify Discord
+#
+    - Fix Telegraf:
+        icon: https://schroederdennis.de/wp-content/uploads/2020/09/image.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=206&project_id=4"
+        description: Update ACL for Docker
+#
+    - Start Docker Containers:
+        icon: docker.svg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=195&project_id=4"
+        description: Start all stopped Docker containers
+#
+    - Fix Unifi USW Switches:
+        icon: unifi.svg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=169&project_id=4"
+        description: This will power recycle 4,5,6 ports for USW switches
+#
+    - Call Cloudflare Tunnel Discord:
+        icon: https://static.vecteezy.com/system/resources/previews/006/892/625/original/discord-logo-icon-editorial-free-vector.jpg
+        href: "https://n8n.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=166&project_id=4"
+        description: Notify Discord via CloudFlare Tunnel
+#
+    # - Inject Trackers to QBittorrent with SystemD:
+    #     icon: https://cdn-1.webcatalog.io/catalog/fast/fast-icon.png
+    #     href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=172&project_id=4"
+    #     description: Inject Trackers to active downloads
+#
+    # - Inject Trackers to Local QBittorrent:
+    #     icon: https://cdn-1.webcatalog.io/catalog/fast/fast-icon.png
+    #     href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=171&project_id=4"
+    #     description: Inject Trackers to active downloads
+#
+    - Deploy Source Control:
+        icon: https://img.magnific.com/premium-vector/vector-design-code-deployment-icon-style_1134108-142651.jpg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=194&project_id=4"
+        description: Deploy code from source control to any server
+#
+    - Remove StoppedUP QBittorrent Torrents:
+        icon: https://www.truegossiper.com/wp-content/uploads/2019/10/2-13.jpg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=187&project_id=4"
+        description: Remove Torrents stoppedUP
+#
+    - Remove QBittorrent Torrents by Time:
+        icon: https://www.truegossiper.com/wp-content/uploads/2019/10/2-13.jpg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=186&project_id=4"
+        description: Remove any torrent that is older then 2 days in queue
+#
+    - Stop MKServer Docker Containers:
+        icon: https://logos-world.net/wp-content/uploads/2021/08/Ghostbusters-Logo.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=197&project_id=4"
+        description: Stop MKServer Docker Containers
+#
+    - Update CheckMK Monitoring for All Hosts:
+        icon: https://checkmk.com/application/files/9215/9834/3872/checkmk_icon_neg_v1.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=161&project_id=4"
+        description: Update CheckMK Monitoring for All Hosts
+#
+    - Update Grafana Alloy for All Hosts:
+        icon: https://grafana.com/media/docs/alloy/alloy_icon.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=157&project_id=4"
+        description: Update Grafana Alloy for All Hosts
+#
+    - Update NTP Synchronization for All Hosts:
+        icon: https://thumbs.dreamstime.com/b/synchronizing-time-across-networks-ntp-concept-concept-network-time-protocol-ntp-time-synchronization-network-clocks-synchronizing-314206717.jpg
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=180&project_id=4"
+        description: Update NTP Synchronization for All Hosts
+#
+    # - Stop UtilServer Docker Containers:
+    #     icon: https://logos-world.net/wp-content/uploads/2021/08/Ghostbusters-Logo.png
+    #     href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=21&project_id=4"
+    #     description: Stop UtilServer Docker Containers
+#
+    - Stop Cyborg Docker Containers:
+        icon: https://logos-world.net/wp-content/uploads/2021/08/Ghostbusters-Logo.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=196&project_id=4"
+        description: Stop Cyborg Docker Containers
+#
+    - DNS Add CNAME Records:
+        icon: https://technitium.com/img/logo.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=199&project_id=4"
+        description: Technitium DNS Add CNAME Records
+#
+    - DNS Add A Records:
+        icon: https://technitium.com/img/logo.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=200&project_id=4"
+        description: Technitium DNS Add A Records                
+#
+- Torrenting:
+#
+    # - QBittorrent Server:
+    #     icon: qbittorrent.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+    #     #href: "https://qbittorrent.local.kaneworld.org"
+    #     description: QBittorrent
+    #     siteMonitor: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker
+    #     container: qbittorrent-prod-1
+    #     widget:
+    #         type: qbittorrent
+    #         url: "{{HOMEPAGE_VAR_QBITTORRENT_URL_WIDGET}}"
+    #         username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
+    #         password: "{{HOMEPAGE_VAR_QBITTORRENT_PASS}}"
+#
+    - QUI Server:
+        icon: qui.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_QUI_URL}}"
+        description: QUI for QBittorrent
+        siteMonitor: "{{HOMEPAGE_VAR_QUI_URL}}"
+        ping: "{{HOMEPAGE_VAR_QUI_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: qui-prod-1
+#
+    # - Sonarr Server:
+    #     icon: sonarr.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_SONARR_URL}}"
+    #     description: Sonarr
+    #     siteMonitor: "{{HOMEPAGE_VAR_SONARR_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_SONARR_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker
+    #     container: sonarr-prod-1
+    #     widget:
+    #         type: sonarr
+    #         #fields: ["wanted", "queued", "series"]
+    #         fields: ["wanted", "queued", "series"]
+    #         enableQueue: false    #list gets long.....
+    #         url: "{{HOMEPAGE_VAR_SONARR_URL_WIDGET}}"
+    #         key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
+#
+    # - Radarr Server:
+    #     icon: radarr.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_RADARR_URL}}"
+    #     description: Radarr
+    #     siteMonitor: "{{HOMEPAGE_VAR_RADARR_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_RADARR_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker
+    #     container: radarr-prod-1
+    #     widget:
+    #         type: radarr
+    #         enableQueue: false    #List gets long 
+    #         url: "{{HOMEPAGE_VAR_RADARR_URL_WIDGET}}"
+    #         key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+#
+    # - Prowlarr Server:
+    #     icon: prowlarr.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
+    #     description: Prowlarr
+    #     siteMonitor: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker
+    #     container: prowlarr-prod-1
+    #     widget:
+    #         type: prowlarr
+    #         url: "{{HOMEPAGE_VAR_PROWLARR_URL_WIDGET}}"
+    #         key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
+#
+    # - Huntarr Server:
+    #     icon: huntarr.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_HUNTARR_URL}}"
+    #     description: Huntarr
+    #     siteMonitor: "{{HOMEPAGE_VAR_HUNTARR_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_HUNTARR_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker
+    #     container: huntarr-prod-1
+#
+    # - Krusader Server:
+    #     icon: krusader.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_KRUSADER_URL}}"
+    #     description: Krusader
+    #     siteMonitor: "{{HOMEPAGE_VAR_KRUSADER_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_KRUSADER_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker
+    #     container: krusader-prod-1
+#
+    # - FileFlows:
+    #     icon: fileflows.png
+    #     href: "{{HOMEPAGE_VAR_FILEFLOW_URL}}"
+    #     description: FileFlows
+    #     siteMonitor: "{{HOMEPAGE_VAR_FILEFLOW_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_FILEFLOW_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker
+    #     container: fileflows-prod-1
+    #     widget:
+    #         type: fileflows
+    #         url: "{{HOMEPAGE_VAR_FILEFLOW_URL_WIDGET}}"
+#
+    - FileFlows-Unraid:
+        icon: fileflows.png
+        href: "{{HOMEPAGE_VAR_FILEFLOW_UNRAID_URL}}"
+        description: FileFlows Unraid
+        siteMonitor: "{{HOMEPAGE_VAR_FILEFLOW_UNRAID_URL}}"
+        ping: "{{HOMEPAGE_VAR_FILEFLOW_UNRAID_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: FileFlows
+        widget:
+            type: fileflows
+            url: "{{HOMEPAGE_VAR_FILEFLOW_UNRAID_URL_WIDGET}}"
+#
+    # - JellySeerr:
+    #     icon: jellyseerr.svg # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
+    #     description: JellySeerr
+    #     siteMonitor: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: utilserver-docker 
+    #     container: jellyseerr-prod-1
+    #     widget:
+    #         type: jellyseerr
+    #         url: "{{HOMEPAGE_VAR_JELLYSEERR_URL_WIDGET}}"
+    #         key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
+    #         #Allowed fields: ["pending", "approved", "available"]
+#
+    - Tiny Media:
+        icon: https://media.sys.truenas.net/apps/tiny-media-manager/icons/icon.png
+        href: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
+        description: Fix Media Files
+        siteMonitor: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
+        ping: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - FileBot:
+        icon: https://www.filebot.net/images/filebot.logo.svg
+        href: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
+        description: Fix Media Files
+        siteMonitor: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
+        ping: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    # - Unraid Huntar:
+    #     icon: huntarr.png
+    #     href: "{{HOMEPAGE_VAR_UNRAID_HUNTARR_URL}}"
+    #     description: Hunting and fixing
+    #     siteMonitor: "{{HOMEPAGE_VAR_UNRAID_HUNTARR_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_UNRAID_HUNTARR_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     showStats: true
+    #     server: unraid-docker
+    #     container: huntarr-prod-2
+#
+    - Unraid JellySeerr:
+        icon: jellyseerr.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_JELLYSEERR_URL}}"
+        description: Finding Content
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_JELLYSEERR_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_JELLYSEERR_URL}}"
+        statusStyle: "basic"
+        showStats: true
+        hideErrors: true
+        server: unraid-docker 
+        container: seerr-prod-2
+        widget:
+            type: jellyseerr
+            url: "{{HOMEPAGE_VAR_UNRAID_JELLYSEERR_URL_WIDGET}}"
+            key: "{{HOMEPAGE_VAR_UNRAID_JELLYSEERR_API_KEY}}"
+            #Allowed fields: ["pending", "approved", "available"]
+#
+    - Unraid CleanupArr:
+        icon: cleanuparr.png
+        href: "{{HOMEPAGE_VAR_UNRAID_CLEANARR_URL}}"
+        description: Finding Content
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_CLEANARR_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_CLEANARR_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: cleanuparr-prod-1
+        widget:
+            type: customapi
+            url: "{{HOMEPAGE_VAR_UNRAID_CLEANARR_API_URL}}"
+            headers:
+                X-Api-Key: "{{HOMEPAGE_VAR_UNRAID_CLEANARR_API_KEY}}"
+            mappings:
+                - field: events.totalCount
+                  label: Events (24h)
+                  format: number
+                - field: strikes.totalCount
+                  label: Strikes (24h)
+                  format: number
+                - field: strikes.itemsRemoved
+                  label: Removed
+                  format: number
+#
+    - Unraid Prowlarr:
+        icon: prowlarr.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_PROWLARR_URL}}"
+        description: Finding Content Indexers
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_PROWLARR_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_PROWLARR_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: unraid-docker
+        container: prowlarr-prod-2
+        widget:
+            type: prowlarr
+            url: "{{HOMEPAGE_VAR_UNRAID_PROWLARR_URL_WIDGET}}"
+            key: "{{HOMEPAGE_VAR_UNRAID_PROWLARR_API_KEY}}"
+#
+    - Unraid Radarr:
+        icon: radarr.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_RADARR_URL}}"
+        description: Finding Content Movies
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_RADARR_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_RADARR_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: unraid-docker
+        container: radarr-prod-2
+        widget:
+            type: radarr
+            enableQueue: false    #List gets long 
+            url: "{{HOMEPAGE_VAR_UNRAID_RADARR_URL_WIDGET}}"
+            key: "{{HOMEPAGE_VAR_UNRAID_RADARR_API_KEY}}"
+#
+    - Unraid Sonarr:
+        icon: sonarr.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_UNRAID_SONARR_URL}}"
+        description: Sonarr on Unraid to find TV Content
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_SONARR_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_SONARR_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: sonarr-prod-2
+        widget:
+            type: sonarr
+            #fields: ["wanted", "queued", "series"]
+            fields: ["wanted", "queued", "series"]
+            enableQueue: false    #list gets long.....
+            url: "{{HOMEPAGE_VAR_UNRAID_SONARR_URL_WIDGET}}"
+            key: "{{HOMEPAGE_VAR_UNRAID_SONARR_API_KEY}}"
+#
+    - Unraid Lidarr:
+        icon: lidarr.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_UNRAID_LIDARR_URL}}"
+        description: Lidarr on Unraid to find Music Content
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_LIDARR_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_LIDARR_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: lidarr-prod-2
+        widget:
+            type: lidarr
+            url: "{{HOMEPAGE_VAR_UNRAID_LIDARR_URL_WIDGET}}"
+            key: "{{HOMEPAGE_VAR_UNRAID_LIDARR_API_KEY}}"
+
+    - Unraid Houndarr:
+        icon: https://raw.githubusercontent.com/av1155/houndarr/main/src/houndarr/static/img/houndarr-logo-dark.png
+        href: "{{HOMEPAGE_VAR_HOUNDARR_URL}}"
+        description: Houndarr on Unraid to find Media Content
+        siteMonitor: "{{HOMEPAGE_VAR_HOUNDARR_URL}}"
+        ping: "{{HOMEPAGE_VAR_HOUNDARR_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: houndarr-prod-1
+        widget:
+          type: customapi
+          url: "{{HOMEPAGE_VAR_HOUNDARR_API_URL}}"
+          method: GET
+          refreshInterval: 30000
+          headers:
+            X-Api-Key: "{{HOMEPAGE_VAR_HOUNDARR_API_KEY}}"
+          mappings:
+            - { field: totals.eligible, label: Eligible, format: number }
+            - { field: totals.gated, label: Gated, format: number }
+            - { field: totals.unreleased, label: Unreleased, format: number }
+            - { field: totals.searches_7d, label: Searches, format: number }
+#
+    - Unraid Qbittorrent:
+        icon: qbittorrent.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_QBIT_URL}}"
+        description: Finding Content Downloader
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_QBIT_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_QBIT_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: unraid-docker
+        container: qbittorrent-prod-2
+        widget:
+            type: qbittorrent
+            url: "{{HOMEPAGE_VAR_UNRAID_QBITTORRENT_URL_WIDGET}}"
+            username: "{{HOMEPAGE_VAR_UNRAID_QBITTORRENT_USER}}"
+            password: "{{HOMEPAGE_VAR_UNRAID_QBITTORRENT_PASS}}"
+#
+    - Unraid Krusader:
+        icon: krusader.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
+        description: Content Mover
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: krusader-prod-2
+#
+    - Navidrome:
+        icon: navidrome.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
+        description: Navidrome on Unraid to find Music Content
+        siteMonitor: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
+        ping: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: raptor-docker
+        container: navidrome-prod-1
+        widget:
+            type: navidrome
+            url: "{{HOMEPAGE_VAR_NAVIDROME_URL_WIDGET}}"
+            user: "{{HOMEPAGE_VAR_NAVIDROME_USER}}"
+            token: "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}"
+            salt: "{{HOMEPAGE_VAR_NAVIDROME_SALT}}"
+
+- Home Automation: 
+#
+    - Home Assistant:
+        #icon: https://static-00.iconduck.com/assets.00/home-assistant-icon-1024x1024-rwiqv1ue.png # icons found here https://static-00.iconduck.com/assets.00/home-assistant-icon-1024x1024-rwiqv1ue.png
+        icon: https://tizutech.com/wp-content/uploads/2022/05/file_type_homeassistant_icon_130543-400x400.png
+        href: "{{HOMEPAGE_VAR_HOMEASSIST_URL}}"
+        description: HomeAssist
+        siteMonitor: "{{HOMEPAGE_VAR_HOMEASSIST_URL}}"
+        ping: "{{HOMEPAGE_VAR_HOMEASSIST_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        # showStats: true
+        # container: home-assistant
+        widget:
+            type: homeassistant
+            url: "{{HOMEPAGE_VAR_HOMEASSIST_URL_WIDGET}}"
+            key: "{{HOMEPAGE_VAR_HOMEASSIST_API_KEY}}"
+            # custom:
+            #     - state: sensor.total_power
+            #     - state: sensor.total_energy_today
+            #         label: energy today
+            #     - template: "{{ states.switch|selectattr('state','equalto','on')|list|length }}"
+            #         label: switches on
+            #     - state: weather.forecast_home
+            #         label: wind speed
+            #         value: "{attributes.wind_speed} {attributes.wind_speed_unit}"
+#
+    - Unraid JellyFin:
+        icon: jellyfin.svg # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_JELLYFIN2_URL}}"
+        description: Unraid JellyFin
+        siteMonitor: "{{HOMEPAGE_VAR_JELLYFIN2_URL}}"
+        ping: "{{HOMEPAGE_VAR_JELLYFIN2_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: jellyfin
+            url: "{{HOMEPAGE_VAR_JELLYFIN2_URL}}"
+            key: "{{HOMEPAGE_VAR_JELLYFIN2_API_KEY}}"
+            enableBlocks: "{{HOMEPAGE_VAR_JELLYFIN2_ENABLE_BLOCKS}}" # true # optional, defaults to false
+            enableNowPlaying: "{{HOMEPAGE_VAR_JELLYFIN2_ENABLE_NOWPLAYING}}" # true # optional, defaults to true
+#
+    - N8N Automation:
+        icon: n8n.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_N8N_URL}}"
+        description: N8N Automation
+        siteMonitor: "{{HOMEPAGE_VAR_N8N_URL}}"
+        ping: "{{HOMEPAGE_VAR_N8N_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - NextCloud:
+        icon: nextcloud.png
+        href: "{{HOMEPAGE_VAR_NEXTCLOUD_URL}}"
+        description: NextCloud
+        siteMonitor: "{{HOMEPAGE_VAR_NEXTCLOUD_API_URL}}"
+        ping: "{{HOMEPAGE_VAR_NEXTCLOUD_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: nextcloud-prod-1
+        showStats: true
+        widget:
+            type: nextcloud
+            url: "{{HOMEPAGE_VAR_NEXTCLOUD_URL}}"
+            key: "{{HOMEPAGE_VAR_NEXTCLOUD_TOKEN}}"
+        #     #url: https://192.168.1.234:7843
+        #     #username: "{{HOMEPAGE_VAR_NEXTCLOUD_USER}}"
+        #     #password: "{{HOMEPAGE_VAR_NEXTCLOUD_PASSWORD}}"
+#
+    - Semaphore:
+        icon: https://semaphoreui.com/uploads/blog/ansible-automation-with-semaphore-x.webp?v=3
+        href: "{{HOMEPAGE_VAR_SEMAPHORE_URL}}"
+        description: Semaphore for Ansible
+        siteMonitor: "{{HOMEPAGE_VAR_SEMAPHORE_URL}}"
+        ping: "{{HOMEPAGE_VAR_SEMAPHORE_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker 
+        container: semaphore-prod-1
+#
+    - Technitium-Primary:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/technitium.png
+        href: "{{HOMEPAGE_VAR_TECHNITIUMPRIM_URL}}"
+        description: DNS Primary
+        siteMonitor: "{{HOMEPAGE_VAR_TECHNITIUMPRIM_URL}}"
+        ping: "{{HOMEPAGE_VAR_TECHNITIUMPRIM_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: technitium
+            url: "{{HOMEPAGE_VAR_TECHNITIUMPRIM_URL}}"
+            key: "{{HOMEPAGE_VAR_TECHNITIUMPRIM_TOKEN}}"
+            range: LastDay # optional, defaults to LastHour
+#
+    - Technitium-Secondary:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/technitium.png
+        href: "{{HOMEPAGE_VAR_TECHNITIUMSEC_URL}}"
+        description: DNS Secondary
+        siteMonitor: "{{HOMEPAGE_VAR_TECHNITIUMSEC_URL}}"
+        ping: "{{HOMEPAGE_VAR_TECHNITIUMSEC_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: technitium
+            url: "{{HOMEPAGE_VAR_TECHNITIUMSEC_URL}}"
+            key: "{{HOMEPAGE_VAR_TECHNITIUMSEC_TOKEN}}"
+            range: LastDay # optional, defaults to LastHour
+#
+    - Technitium-Tertiary:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/technitium.png
+        href: "{{HOMEPAGE_VAR_TECHNITIUMTER_URL}}"
+        description: DNS Tertiary
+        siteMonitor: "{{HOMEPAGE_VAR_TECHNITIUMTER_URL}}"
+        ping: "{{HOMEPAGE_VAR_TECHNITIUMTER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: technitium
+            url: "{{HOMEPAGE_VAR_TECHNITIUMTER_URL}}"
+            key: "{{HOMEPAGE_VAR_TECHNITIUMTER_TOKEN}}"
+            range: LastDay # optional, defaults to LastHour
+#
+    - LinkWarden-Prod-1:
+        icon: linkwarden.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
+        description: LinkWarden Cyborg
+        siteMonitor: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
+        ping: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: linkwarden-prod-1
+        widget:
+            type: linkwarden
+            url: "{{HOMEPAGE_VAR_LINKWARDEN_API}}"
+            key: "{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}"
+#
+    - StirlingPDF-Prod-1:
+        icon: https://getumbrel.github.io/umbrel-apps-gallery/stirling-pdf/icon.svg
+        href: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
+        description: StirlingPDF Cyborg
+        siteMonitor: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
+        ping: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: stirlingpdf-prod-1
+#
+    - Atlas-Prod-1:
+        icon: https://cdn.thenewstack.io/media/2025/09/eb03ae55-atlas.jpg
+        href: "{{HOMEPAGE_VAR_ATLAS_URL}}"
+        description: Atlas Network Automation
+        siteMonitor: "{{HOMEPAGE_VAR_ATLAS_URL}}"
+        ping: "{{HOMEPAGE_VAR_ATLAS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: atlas-prod-1
+#
+    - Dockhand-Prod-1:
+        icon: https://mariushosting.com/wp-content/uploads/2025/12/How-to-Install-Dockhand-on-Your-Synology-NAS-768x384.png
+        href: "{{HOMEPAGE_VAR_DOCKHAND_URL}}"
+        description: DockHand Docker Management
+        siteMonitor: "{{HOMEPAGE_VAR_DOCKHAND_URL}}"
+        ping: "{{HOMEPAGE_VAR_DOCKHAND_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: dockhand-prod-1
+        widget:
+            type: dockhand
+            url: "{{HOMEPAGE_VAR_DOCKHAND_API_URL}}"
+            #environment: local # optional: name or id; aggregates all when omitted
+            username: "{{HOMEPAGE_VAR_DOCKHAND_USER}}"
+            password: "{{HOMEPAGE_VAR_DOCKHAND_PASS}}"
+            fields: [ "running", "stopped", "total", "pending_updates" ]
+#
+    - Immich-Prod-1:
+        icon: immich.png
+        href: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+        description: IMMICH Photos and Video
+        siteMonitor: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+        ping: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: raptor-docker
+        container: immich_server
+        widget:
+            type: immich
+            url: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+            key: "{{HOMEPAGE_VAR_IMMICH_TOKEN}}"
+            version: "{{HOMEPAGE_VAR_IMMICH_VERSION}}"
+#
+    - Pangolin-Prod-1:
+        icon: pangolin.png
+        href: "{{HOMEPAGE_VAR_PANGOLIN_URL}}"
+        description: Pangolin
+        siteMonitor: "{{HOMEPAGE_VAR_PANGOLIN_URL}}"
+        #ping: "{{HOMEPAGE_VAR_PANGOLIN_URL}}"   # oracle cloud blocks pings....
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: pangolin
+            url: "{{HOMEPAGE_VAR_PANGOLIN_API_URL}}"
+            key: "{{HOMEPAGE_VAR_PANGOLIN_KEY}}"
+            org: "{{HOMEPAGE_VAR_PANGOLIN_ORG}}"
+#
+    - VaultWarden:
+        icon: vaultwarden.png
+        href: "{{HOMEPAGE_VAR_VAULTWARDEN_URL}}"
+        description: VaultWarden
+        ping: "{{HOMEPAGE_VAR_VAULTWARDEN_URL}}"
+        statusStyle: "basic"
+        siteMonitor: "{{HOMEPAGE_VAR_VAULTWARDEN_URL}}"
+        hideErrors: true
+        server: mkserver-docker
+        container: vaultwarden-prod-1
+        showStats: true
+#
+    - Auth:
+        icon: authentik.svg
+        href: "{{HOMEPAGE_VAR_AUTH_URL}}"
+        description: Authentik Upgraded
+        siteMonitor: "{{HOMEPAGE_VAR_AUTH_URL}}"
+        ping: "{{HOMEPAGE_VAR_AUTH_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: authentik
+            url: "{{HOMEPAGE_VAR_AUTH_WIDGET_URL}}"
+            key: "{{HOMEPAGE_VAR_AUTH_TOKEN}}"
+            version: "{{HOMEPAGE_VAR_AUTH_VERSION}}"
+#
+- Networking and Monitoring:
+#
+    - Traefik Managed:
+        - Unifi OS:
+            icon: unifi.svg # icons found here https://github.com/walkxcode/dashboard-icons
+            href: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+            description: Network
+            siteMonitor: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+            ping: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            # server: mkserver-docker
+            # container: unifi-prod-1
+            widget:
+                type: unifi
+                url: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+                username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
+                password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
+                site: "{{HOMEPAGE_VAR_UNIFI_SITE}}"
+                #Allowed fields: ["uptime", "wan", "lan_users", "wlan_users"]
+#
+        - CheckMK:
+            icon: https://checkmk.com/application/files/9215/9834/3872/checkmk_icon_neg_v1.png
+            href: "{{HOMEPAGE_VAR_CHECKMK_URL}}"
+            description: Monitoring KaneCo
+            siteMonitor: "{{HOMEPAGE_VAR_CHECKMK_URL_API}}"
+            ping: "{{HOMEPAGE_VAR_CHECKMK_URL}}"
+            statusStyle: "basic"
+            showStats: true
+            hideErrors: true
+            server: cyborg-docker
+            container: checkmk-prod-1
+            widget:
+                type: checkmk
+                url: "{{HOMEPAGE_VAR_CHECKMK_URL_API}}"
+                site: "{{HOMEPAGE_VAR_CHECKMK_SITE}}"
+                username: "{{HOMEPAGE_VAR_CHECKMK_USER}}"
+                password: "{{HOMEPAGE_VAR_CHECKMK_PASSWORD}}"
+#
+        - Uptime Kuma:
+            icon: uptime-kuma.svg
+            href: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
+            description: Monitoring KaneWorld
+            siteMonitor: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
+            ping: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            server: mkserver-docker
+            container: kuma-prod-1
+            showStats: true
+            widget:
+                type: uptimekuma
+                url: "{{HOMEPAGE_VAR_UPTIME_KUMA_API}}"
+                slug: kane
+#
+        - Scanopy:
+            icon: scanopy.png
+            href: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
+            description: Scanopy
+            siteMonitor: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
+            ping: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            server: cyborg-docker
+            container: scanopy-prod-1-server-1
+#
+        - Gotify Notifications:
+            icon: gotify.png # icons found here https://github.com/walkxcode/dashboard-icons
+            href: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+            description: Gotify Escalation
+            siteMonitor: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+            ping: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            widget:
+                type: gotify
+                url: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+                key: "{{HOMEPAGE_VAR_GOTIFY_TOKEN}}"
+#
+        - Grafana:
+            icon: grafana.svg
+            href: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+            description: internal
+            siteMonitor: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+            ping: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+            statusStyle: "basic"
+            hideErrors: false
+            server: mkserver-docker
+            container: grafana-prod-1
+            showStats: true
+            widget:
+                type: grafana
+                #alerts: "${{HOMEPAGE_VAR_GRAFANA_GRAF}}"
+                version: "{{HOMEPAGE_VAR_GRAFANA_VERSION}}"
+                #fields: ["dashboards", "datasources", "totalalerts", "alertstriggered"]
+                url: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+                username: "{{HOMEPAGE_VAR_GRAFANA_USERNAME}}"
+                password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
+                #alerts: "${{HOMEPAGE_VAR_GRAFANA_ALERTS}}" 
+                #url: "{{HOMEPAGE_VAR_GRAFANA_API_URL}}"
+#
+#
+        - InFluxDB:
+            icon: influxdb.png # icons found here https://github.com/walkxcode/dashboard-icons
+            href: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+            description: InFluxDB
+            siteMonitor: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+            ping: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            server: mkserver-docker
+            container: influxdb-prod-1
+            showStats: true
+#
+        - Prometheus:
+            icon: prometheus.png # icons found here https://github.com/walkxcode/dashboard-icons
+            href: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
+            description: Prometheus 
+            siteMonitor: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
+            ping: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            server: mkserver-docker
+            container: prometheus-prod-1
+            widget:
+                type: prometheus
+                url: "{{HOMEPAGE_VAR_PROMETHEUS_URL_WIDGET}}"
+#
+        - Arris:
+            icon: arris.png # icons found here https://github.com/walkxcode/dashboard-icons
+            href: "{{HOMEPAGE_VAR_ARRIS_URL}}"
+            description: Arris Cable Modem
+            #siteMonitor: "{{HOMEPAGE_VAR_ARRIS_URL}}"
+            #ping: "{{HOMEPAGE_VAR_ARRIS_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            showStats: false
+#
+        - EdgeRouter:
+            icon: unifi-controller.png # icons found here https://github.com/walkxcode/dashboard-icons
+            href: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
+            description: Router
+            siteMonitor: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
+            ping: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+#
+        - UPS:
+            icon: https://images.seeklogo.com/logo-png/3/1/cyberpower-logo-png_seeklogo-37681.png
+            href: "{{HOMEPAGE_VAR_UPS_URL}}"
+            description: CyberPower UPS
+            siteMonitor: "{{HOMEPAGE_VAR_UPS_URL}}"
+            ping: "{{HOMEPAGE_VAR_UPS_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+#
+        - AlertManager:
+            icon: https://velog.velcdn.com/images/hyunshoon/post/ece05978-be00-466b-a8b5-db542cacc251/image.png
+            href: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
+            description: Alert Manager
+            siteMonitor: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
+            ping: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+#
+        - Apprise Manager:
+            icon: https://repository-images.githubusercontent.com/217802180/da559137-afe4-4900-8050-78d48930c44b
+            href: "{{HOMEPAGE_VAR_APPRISE_URL}}"
+            description: Alert Notification System
+            siteMonitor: "{{HOMEPAGE_VAR_APPRISE_URL}}"
+            ping: "{{HOMEPAGE_VAR_APPRISE_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+#
+        - Dozzle:
+            icon: dozzle.png
+            href: "{{HOMEPAGE_VAR_DOZ1_URL}}"
+            description: Dozzle for MKServer
+            siteMonitor: "{{HOMEPAGE_VAR_DOZ1_URL}}"
+            ping: "{{HOMEPAGE_VAR_DOZ1_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            server: mkserver-docker
+            container: dozzle-prod-1
+#
+    - Ookala SpeedTest:
+        icon: virtualradarserver.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_SPEEDTEST_URL}}"
+        description: SpeedTest
+        siteMonitor: "{{HOMEPAGE_VAR_SPEEDTEST_URL}}"
+        ping: "{{HOMEPAGE_VAR_SPEEDTEST_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: speedtest-prod-1
+        showStats: true
+        widget:
+            type: speedtest
+            url: "{{HOMEPAGE_VAR_SPEEDTEST_URL}}"
+#
+- Proxmox and Virtualization:
+#
+    - UnRaid Server:
+        icon: unraid.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_UNRAID_URL}}/login"
+        description: UnRaid
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_API_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        widget:
+            type: unraid
+            url: "{{HOMEPAGE_VAR_UNRAID_API_URL}}"
+            key: "{{HOMEPAGE_VAR_UNRAID_TOKEN}}"
+            fields: ["status", "arrayFree", "arrayUsedSpace", "notifications"]
+            #fields: ["cpu","memoryPercent","memoryAvailable","memoryUsed","notifications","arrayFree","arrayUsedSpace","arrayUsedPercent","status","pool1UsedSpace","pool1FreeSpace","pool1UsedPercent","pool2UsedSpace","pool2FreeSpace","pool2UsedPercent","pool3UsedSpace","pool3FreeSpace","pool3UsedPercent","pool4UsedSpace","pool4FreeSpace","pool4UsedPercent"]
+            # pool1: pool1name # required only if using pool1 fields
+            # pool2: pool2name # required only if using pool2 fields
+            # pool3: pool3name # required only if using pool3 fields
+            # pool4: pool4name # required only if using pool4 fields
+#
+    - Mini:
+        icon: proxmox.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_MINI_URL}}"
+        description: Mini Standalone Proxmox
+        siteMonitor: "{{HOMEPAGE_VAR_MINI_URL}}"
+        ping: "{{HOMEPAGE_VAR_MINI_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        widget:
+            type: proxmox 
+            url: "{{HOMEPAGE_VAR_MINI_API_URL}}"
+            username: "{{HOMEPAGE_VAR_MINI_USER}}"
+            password: "{{HOMEPAGE_VAR_MINI_API_KEY}}"
+            node: "{{HOMEPAGE_VAR_MINI_NODE}}"
+#
+    - Athena:
+        icon: proxmox.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_ATHENA_URL}}"
+        description: Athena Node
+        siteMonitor: "{{HOMEPAGE_VAR_ATHENA_URL}}"
+        ping: "{{HOMEPAGE_VAR_ATHENA_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        widget:
+            type: proxmox 
+            url: "{{HOMEPAGE_VAR_ATHENA_API_URL}}"
+            username: "{{HOMEPAGE_VAR_ATHENA_USER}}"
+            password: "{{HOMEPAGE_VAR_ATHENA_API_KEY}}"
+            node: "{{HOMEPAGE_VAR_ATHENA_NODE}}"
+#
+    - Apex:
+        icon: proxmox.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_APEX_URL}}"
+        description: Apex Node
+        siteMonitor: "{{HOMEPAGE_VAR_APEX_URL}}"
+        ping: "{{HOMEPAGE_VAR_APEX_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        widget:
+            type: proxmox 
+            url: "{{HOMEPAGE_VAR_APEX_API_URL}}"
+            username: "{{HOMEPAGE_VAR_APEX_USER}}"
+            password: "{{HOMEPAGE_VAR_APEX_API_KEY}}"
+            node: "{{HOMEPAGE_VAR_APEX_NODE}}"
+#
+    - Cocomox:
+        icon: proxmox.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_COCOMOX_URL}}"
+        description: CocoMox Mini
+        siteMonitor: "{{HOMEPAGE_VAR_COCOMOX_URL}}"
+        ping: "{{HOMEPAGE_VAR_COCOMOX_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        widget:
+            type: proxmox 
+            url: "{{HOMEPAGE_VAR_COCOMOX_API_URL}}"
+            username: "{{HOMEPAGE_VAR_COCOMOX_USER}}"
+            password: "{{HOMEPAGE_VAR_COCOMOX_API_KEY}}"
+            node: "{{HOMEPAGE_VAR_COCOMOX_NODE}}"
+#
+    - PBS:
+        icon: proxmox.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_PBS_URL}}"
+        description: Proxmox Backup Server
+        siteMonitor: "{{HOMEPAGE_VAR_PBS_URL}}"
+        ping: "{{HOMEPAGE_VAR_PBS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        widget:
+            type: proxmoxbackupserver
+            url: "{{HOMEPAGE_VAR_PBS_API_URL}}"
+            username: "{{HOMEPAGE_VAR_PBS_USER}}"
+            password: "{{HOMEPAGE_VAR_PBS_API_KEY}}"
+#
+    - PBS-Mini:
+        icon: proxmox.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_PBS-MINI_URL}}"
+        description: Proxmox Backup Server on Mini
+        siteMonitor: "{{HOMEPAGE_VAR_PBS-MINI_URL}}"
+        ping: "{{HOMEPAGE_VAR_PBS-MINI_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        widget:
+            type: proxmoxbackupserver
+            url: "{{HOMEPAGE_VAR_PBS-MINI_API_URL}}"
+            username: "{{HOMEPAGE_VAR_PBS-MINI_USER}}"
+            password: "{{HOMEPAGE_VAR_PBS-MINI_API_KEY}}"
+#
+    - Portainer Prod 1:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+        description: MKServer Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: portainer-prod-1
+        showStats: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+            env: 2
+            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_API_KEY}}"
+#
+    # - Portainer Prod 2:
+    #     icon: portainer.svg
+    #     href: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
+    #     description: UtilServer Portainer
+    #     siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     server: utilserver-docker 
+    #     container: portainer-prod-2
+    #     showStats: true
+    #     widget:
+    #         type: portainer
+    #         url: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}" 
+    #         env: 3
+    #         key: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_API_KEY}}"
+#
+    - Portainer Prod 3:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
+        description: Cyborg Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
+        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker 
+        container: portainer-prod-3
+        showStats: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}" 
+            env: 3
+            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_API_KEY}}"
+#
+    - NAS Portainer:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        description: NAS Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
+            env: 1
+            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
+#
+    - NAS Community Portainer:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        description: NAS Community Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
+            env: 3
+            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
+#
+    - Unraid Portainer:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
+        description: Docker Manager UI
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}" 
+            env: 3
+            key: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_API_KEY}}"
+#
+    - MurDogNAS:
+        icon: qnap.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_MURDOGNAS_URL}}"
+        description: QNAP
+        siteMonitor: "{{HOMEPAGE_VAR_MURDOGNAS_URL}}"
+        ping: "{{HOMEPAGE_VAR_MURDOGNAS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: qnap
+            url: "{{HOMEPAGE_VAR_MURDOGNAS_URL}}"
+            username: "{{HOMEPAGE_VAR_MURDOGNAS_USER}}"
+            password: "{{HOMEPAGE_VAR_MURDOGNAS_PASSWORD}}"
+            #fields: ["cpuUsage", "memUsage", "systemTempC", "poolUsage", "volumeUsage"]
+#
+    - QVR:
+        icon: qnap.png # icons found here https://github.com/walkxcode/dashboard-icons
+        #href: "{{HOMEPAGE_VAR_QVR_URL}}/qvrpro"  #not needed now since traefik will do a redirect
+        href: "{{HOMEPAGE_VAR_QVR_URL}}"
+        description: QVR
+        siteMonitor: "{{HOMEPAGE_VAR_QVR_URL}}"
+        ping: "{{HOMEPAGE_VAR_QVR_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+- Utilities:
+#
+    - SLZB-06:
+        icon: https://i.ytimg.com/vi/Cy9o193Lk5s/maxresdefault.jpg
+        href: "{{HOMEPAGE_VAR_SLZB06_URL}}"
+        description: Zigbee SLZB-06 Controller
+        #siteMonitor: "{{HOMEPAGE_VAR_SLZB06_API_URL}}"
+        ping: "{{HOMEPAGE_VAR_SLZB06_PING_ADDR}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - TraeFik-Prod-1:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
+        description: TraeFik MKServer
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: traefik-prod-1
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK1_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_PASSWORD}}" # optional
+#
+    # - TraeFik-Prod-2:
+    #     icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
+    #     description: TraeFik Prod 2 UtilServer
+    #     siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     server: utilserver-docker
+    #     container: traefik-prod-2 
+    #     widget:
+    #         type: traefik
+    #         url: "{{HOMEPAGE_VAR_TRAEFIK2_URL_API}}"
+    #         username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_USER}}" # optional
+    #         password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-3:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+        description: TraeFik Prod 3 Cyborg
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: traefik-prod-3
+        widget:
+            type: traefik
+            #url: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+            url: "{{HOMEPAGE_VAR_TRAEFIK3_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-4:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
+        description: TraeFik Prod 4 on Raptor
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: raptor-docker
+        container: traefik-prod-4
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK4_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-5:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
+        description: TraeFik Prod 5 on Unraid
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: unraid-docker
+        container: traefik-prod-5
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK5_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-6:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
+        description: TraeFik Prod 6 on Auth
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: auth-docker
+        container: traefik-prod-6
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK6_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-7:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
+        description: TraeFik Prod 7 on MurDogNAS
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: murdognas-docker
+        container: traefik-prod-7
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK7_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-8:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
+        description: TraeFik Prod 8 on Docker-Ceph
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: docker-ceph-docker
+        container: traefik-prod-8
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK8_URL_API}}"
+            #url: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_PASSWORD}}" # optional
+#
+    - TraeFik-Dev-1:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
+        description: TraeFik Dev 1 on Docker-Dev
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: docker-docker-dev
+        container: traefik-dev-1
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_PASSWORD}}" # optional
+#
+    - Paperless:
+        icon: paperless.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_PAPERLESS_URL}}"
+        description: Paperless on Raptor
+        siteMonitor: "{{HOMEPAGE_VAR_PAPERLESS_URL}}"
+        ping: "{{HOMEPAGE_VAR_PAPERLESS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: raptor-docker
+        container: paperless-ngx-prod-1
+        widget:
+            type: paperlessngx
+            url: "{{HOMEPAGE_VAR_PAPERLESS_URL}}"
+            key: "{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}" # optional
+#
+    - Paperless AI:
+        icon: paperless.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_PAPERLESS-AI_URL}}"
+        description: Paperless AI on Raptor
+        siteMonitor: "{{HOMEPAGE_VAR_PAPERLESS-AI_URL}}"
+        ping: "{{HOMEPAGE_VAR_PAPERLESS-AI_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: raptor-docker
+        container: paperless-ai-prod-1
+#
+    - Paperless GBT:
+        icon: paperless.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_PAPERLESS-GBT_URL}}"
+        description: Paperless GBT on Raptor
+        siteMonitor: "{{HOMEPAGE_VAR_PAPERLESS-GBT_URL}}"
+        ping: "{{HOMEPAGE_VAR_PAPERLESS-GBT_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: raptor-docker
+        container: paperless-gpt-prod-1
+#
+    - Open WebUI:
+        icon: paperless.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_OPENUI_URL}}"
+        description: Paperless on Raptor
+        siteMonitor: "{{HOMEPAGE_VAR_OPENUI_URL}}"
+        ping: "{{HOMEPAGE_VAR_OPENUI_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: raptor-docker
+        container: open-webui-prod-1
+#
+    - IT Tools:
+        icon: it-tools.png
+        href: "{{HOMEPAGE_VAR_IT_TOOLS_URL}}"
+        description: IT Tools
+        siteMonitor: "{{HOMEPAGE_VAR_IT_TOOLS_URL}}"
+        ping: "{{HOMEPAGE_VAR_IT_TOOLS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Wallos:
+        icon: wallos.png
+        href: "{{HOMEPAGE_VAR_WALLOS_URL}}"
+        description: Wallos Budget Tracking
+        siteMonitor: "{{HOMEPAGE_VAR_WALLOS_URL}}"
+        ping: "{{HOMEPAGE_VAR_WALLOS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: wallos
+            url: "{{HOMEPAGE_VAR_WALLOS_URL}}"
+            key: "{{HOMEPAGE_VAR_WALLOS_API_KEY}}"
+
+- Reboots:
+
+    #initiallyCollapsed: true
+    - Reboot Mini Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=193&project_id=4"
+        description: Reboot Server Mini
+#
+    - Reboot Coco Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=191&project_id=4"
+        description: Reboot Server Coco
+#
+    - Reboot Athena Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=190&project_id=4"
+        description: Reboot Server Athena
+#
+    - Reboot Apex Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=189&project_id=4"
+        description: Reboot Server Apex
+#
+    - Reboot ALL Proxmox Servers:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=188&project_id=4"
+        description: Reboot ALL PROXMOX Servers
+
+    - CrowdSec and Security:
+        - Docker-Dev:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_DEV_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_DEV_PASS}}"
+        - MKServer:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD1_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD1_PASS}}"
+        - Cyborg:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD3_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD3_PASS}}"
+        - Raptor:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD4_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD4_PASS}}"
+        - Unraid:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD5_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD5_PASS}}"
+        - Auth:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD6_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD6_PASS}}"
+        - NAS:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD7_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD7_PASS}}"
+        - Docker-Ceph:
+            icon: https://www.crowdsec.net/favicon.ico
+            widget:
+                type: crowdsec
+                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD8_URL}}"
+                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD8_PASS}}"   
+
+- HTTP Only Services:
+    #initiallyCollapsed: true
+#
+    - Loki Metrics:
+        icon: loki.png
+        href: "{{HOMEPAGE_VAR_LOKI_URL}}"
+        description: Loki Metrics
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - MKServer Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI1_URL}}"
+        description: Grafana forwarder MKServer
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI1_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - DNS-Primary Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI2_URL}}"
+        description: Grafana forwarder DNS Primary
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI2_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI2_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - DNS-Secondary Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI3_URL}}"
+        description: Grafana forwarder DNS Secondary
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI3_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI3_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Unifi Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI4_URL}}"
+        description: Grafana forwarder Unifi
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI4_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI4_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - PBS Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI7_URL}}"
+        description: Grafana forwarder PBS
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI7_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI7_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - PBS-Mini Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI8_URL}}"
+        description: Grafana forwarder PBS-Mini
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI8_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI8_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Cyborg Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI10_URL}}"
+        description: Grafana forwarder Cyborg
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI10_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI10_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - StarGate Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI11_URL}}"
+        description: Grafana forwarder StarGate
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI11_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI11_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Raptor Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI12_URL}}"
+        description: Grafana forwarder Raptor
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI12_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI12_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Athena Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI14_URL}}"
+        description: Grafana forwarder Athena
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI14_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI14_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Coco Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI15_URL}}"
+        description: Grafana forwarder Coco
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI15_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI15_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Mini Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI16_URL}}"
+        description: Grafana forwarder Mini
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI16_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI16_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Apex Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI17_URL}}"
+        description: Grafana forwarder Apex
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI17_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI17_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Unraid Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI18_URL}}"
+        description: Grafana forwarder Unraid
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI18_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI18_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Auth Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI19_URL}}"
+        description: Grafana forwarder Auth
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI19_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI19_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - Docker-Dev Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI20_URL}}"
+        description: Grafana forwarder Docker-Dev
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI20_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI20_URL}}"
+        statusStyle: "basic"
+        hideErrors: true

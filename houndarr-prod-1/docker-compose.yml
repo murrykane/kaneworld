@@ -1,0 +1,47 @@
+services:
+  houndarr:
+    image: ghcr.io/av1155/houndarr:latest
+    container_name: ${TRAEFIK_ROUTER_NAME}
+    networks:
+      - proxy
+    ports:
+      - 8877:${TRAEFIK_UI_PORT-8888}
+    environment:
+      - PUID=${UID-1000}
+      - PGID=${GID-1000}
+      - TZ=America/Los_Angeles
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/av1155/houndarr/refs/heads/main/src/houndarr/static/img/houndarr-logo-dark.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8877]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Houndarr Media Management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.middlewares=auth-forwardauth@file"   #authentik login required
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+      # added for redirect after authentik redirect issues
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-outpost.entrypoints=https"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-outpost.rule=Host(`${TRAEFIK_DOMAIN}`) && PathPrefix(`/outpost.goauthentik.io`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-outpost.tls=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-outpost.priority=500"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-outpost.service=unraid-outpost-service@docker"
+networks:
+  proxy:
+    external: true

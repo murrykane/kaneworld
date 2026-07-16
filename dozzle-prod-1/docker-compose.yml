@@ -1,0 +1,42 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    restart: unless-stopped
+    container_name: dozzle-prod-1
+    env_file: 
+      - .env
+    environment:
+      #DOZZLE_REMOTE_HOST: tcp://kaneserver.kane.mk:2376,tcp://cyborg.kane.mk:2376,tcp://raptor.kane.mk:2376,tcp://mkserver.kane.mk:2376,tcp://murdognas.kane.mk:2376,tcp://auth.kane.mk:2376,tcp://docker-ceph.kane.mk:2376
+      DOZZLE_REMOTE_HOST: ${DOCKER_SERVERS}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dozzle/data:/data
+      - /opt/repos/homelab/certs:/certs
+    ports:
+      - "8082:8080"
+    networks:
+      - proxy
+      - paperless
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_DOZ}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_DOZ}.rule=Host(`${TRAEFIK_DOMAIN_DOZ}`)"
+      - "traefik.http.middlewares.${TRAEFIK_DOZ}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_DOZ}.middlewares=${TRAEFIK_DOZ}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-secure.rule=Host(`${TRAEFIK_DOMAIN_DOZ}`)"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-secure.service=${TRAEFIK_DOZ}"
+      - "traefik.http.services.${TRAEFIK_DOZ}.loadbalancer.server.port=${TRAEFIK_UI_PORT_DOZ}"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-secure.middlewares=auth-forwardauth@file"   #Added for authentik login
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+        # added for redirect after authentik redirect issues
+      - "traefik.http.routers.${TRAEFIK_DOZ}-outpost.entrypoints=https"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-outpost.rule=Host(`${TRAEFIK_DOMAIN_DOZ}`) && PathPrefix(`/outpost.goauthentik.io`)"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-outpost.tls=true"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-outpost.priority=500"
+      - "traefik.http.routers.${TRAEFIK_DOZ}-outpost.service=mkserver-outpost-service@docker"
+networks:
+  paperless:
+  proxy:
+    external: true

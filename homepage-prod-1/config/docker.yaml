@@ -1,0 +1,67 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/docker/
+
+unraid-docker:
+    host: kaneserver.kane.mk
+    port: 2376
+    tls:
+        keyFile: certs/kaneserver.kane.mk/key.pem
+        caFile: certs/kaneserver.kane.mk/ca.pem
+        certFile: certs/kaneserver.kane.mk/cert.pem
+
+mkserver-docker: 
+    host: mkserver.kane.mk 
+    port: 2376
+    tls: 
+        keyFile: certs/mkserver.kane.mk/key.pem
+        caFile: certs/mkserver.kane.mk/ca.pem 
+        certFile: certs/mkserver.kane.mk/cert.pem
+
+raptor-docker: 
+    host: raptor.kane.mk 
+    port: 2376
+    tls: 
+        keyFile: certs/raptor.kane.mk/key.pem
+        caFile: certs/raptor.kane.mk/ca.pem 
+        certFile: certs/raptor.kane.mk/cert.pem
+
+cyborg-docker:
+    host: cyborg.kane.mk
+    port: 2376
+    tls:
+        keyFile: certs/cyborg.kane.mk/key.pem
+        caFile: certs/cyborg.kane.mk/ca.pem
+        certFile: certs/cyborg.kane.mk/cert.pem
+
+nas-docker:
+    host: murdognas.kane.mk
+    port: 2376
+    tls:
+        keyFile: certs/murdognas.kane.mk/key.pem
+        caFile: certs/murdognas.kane.mk/ca.pem
+        certFile: certs/murdognas.kane.mk/cert.pem
+
+auth-docker:
+    host: auth.kane.mk
+    port: 2376
+    tls:
+        keyFile: certs/auth.kane.mk/key.pem
+        caFile: certs/auth.kane.mk/ca.pem
+        certFile: certs/auth.kane.mk/cert.pem
+
+docker-ceph-docker:
+    host: docker-ceph.kane.mk
+    port: 2376
+    tls:
+        keyFile: certs/docker-ceph.kane.mk/key.pem
+        caFile: certs/docker-ceph.kane.mk/ca.pem
+        certFile: certs/docker-ceph.kane.mk/cert.pem
+
+docker-docker-dev:
+    host: docker-dev.kane.mk
+    port: 2376
+    tls:
+        keyFile: certs/docker-dev.kane.mk/key.pem
+        caFile: certs/docker-dev.kane.mk/ca.pem
+        certFile: certs/docker-dev.kane.mk/cert.pem

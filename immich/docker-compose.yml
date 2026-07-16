@@ -1,0 +1,141 @@
+#version: "3.8"
+
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    # extends:
+    #   file: hwaccel.yml
+    #   service: ${TRANSCODING_BACKEND:-cpu}
+    # environment:
+    #   - MACHINE_LEARNING_ACCELERATION=openvino
+    #   - OPENVINO_DEVICE=GPU
+    # group_add:
+    #   - "44"
+    #   - "992"
+    command: [ "start.sh", "immich" ]
+    networks:
+      - proxy
+      - immich
+    volumes:
+      - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    ports:
+      - 2283:2283
+    depends_on:
+      - redis
+    restart: always
+    healthcheck:
+      test: "curl -f http://localhost:2283"
+      interval: 15s
+      timeout: 45s
+      retries: 10
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+      # API router
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-api.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-api.rule=Host(`${TRAEFIK_DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-api.tls=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-api.service=${TRAEFIK_ROUTER_NAME}-api-service"
+      # API service pointing to the API port
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}-api-service.loadbalancer.server.port=${TRAEFIK_API_PORT}"
+
+  # immich-microservices:
+  #   container_name: immich_microservices
+  #   image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+  #   extends:
+  #     file: hwaccel.yml
+  #     service: hwaccel
+  #   command: [ "start.sh", "microservices" ]
+      # networks:
+      # - proxy
+      # - immich
+  #   volumes:
+  #     - /home/ubuntu/docker/immich/upload:/usr/src/app/upload
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - redis
+  #     - database
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "bash", "-c", "exec 5<>/dev/tcp/127.0.0.1/3002"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  immich-machine-learning:
+    container_name: immich_machine_learning
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
+    extends:
+      file: hwaccel.yml
+      service: openvino
+    volumes:
+      - ./model-cache:/cache
+    env_file:
+      - .env
+    environment:
+      - MACHINE_LEARNING_ACCELERATION=openvino
+      - OPENVINO_DEVICE=GPU
+    group_add:
+      - "44"
+      - "992"
+    restart: always
+    networks:
+      - immich
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 5<>/dev/tcp/127.0.0.1/3003"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    container_name: immich_redis
+    image: docker.io/valkey/valkey:8-bookworm
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - immich
+  immich-cli:
+    container_name: immich_cli
+    depends_on:
+      - immich-server
+    stdin_open: true
+    tty: true
+    volumes:
+      - /mnt/${NAS_IMPORT_DIRECTORY}:/import:ro
+    environment:
+      - IMMICH_INSTANCE_URL=${IMMICH_NAME}
+      - IMMICH_API_KEY=${IMMICH_API_KEY}
+      - IMMICH_JSON_OUTPUT=${IMMICH_JSON_OUTPUT}
+    image: ghcr.io/immich-app/immich-cli:latest
+    #command: upload --recursive --dry-run /import/ImageBrowser
+    #command: upload --recursive /import/ImageBrowser
+    command: upload --recursive "${IMMICH_INPUT_DIR}" 
+    #command: upload --recursive --dry-run /import/Pictures
+    #command: upload /import --recursive 
+    networks:
+      - immich
+    restart: no
+
+networks:
+  immich:
+  proxy:
+    external: true
+
+## there is a known issue with Traefik: see here https://github.com/immich-app/immich/discussions/437#discussioncomment-3609797

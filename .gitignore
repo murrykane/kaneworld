@@ -16,3 +16,5 @@ id_ed25519*
 secrets.yml
 vault_pass*
 crowdsec-prod-3/.env
+immich/.env
+homepage-prod-1/.env
