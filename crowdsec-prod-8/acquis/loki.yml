@@ -1,0 +1,22 @@
+# source: loki
+# log_level: info
+# url: http://cyborg.kane.mk:3100
+# limit: 400
+# query: |
+#   {service_name=~"traefik-prod-4"}
+# labels:
+#   type: traefik-prod-4
+
+#####  TRAEFIK ONLY WAY ######
+source: docker
+container_name:
+  - traefik-prod-8
+labels:
+  type: traefik
+
+### ALL DOCKER LOGS WAY #####
+# filenames:
+#   - /var/lib/docker/containers/*/*-json.log
+# labels:
+#   type: docker
+  

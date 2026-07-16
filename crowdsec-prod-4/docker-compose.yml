@@ -1,0 +1,49 @@
+# version: '3.8'
+# crontab entry
+# 0 * * * * docker exec crowdsec-prod-2 cscli hub update && docker exec crowdsec-prod-2 cscli hub upgrade
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec-prod-4
+    environment:
+      GID: "${GID-1000}"
+      COLLECTIONS: "crowdsecurity/linux crowdsecurity/traefik"
+    volumes:
+      - ./acquis/loki.yml:/etc/crowdsec/acquis.yaml
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+      - ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8081:8080 # expose Local API
+      - 6060:6060 # expose prometheus metrics
+    networks:
+      - proxy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "cscli", "version"]
+    security_opt:
+      - no-new-privileges:true
+  bouncer-traefik4:
+    image: docker.io/fbonalair/traefik-crowdsec-bouncer:latest
+    container_name: bouncer-traefik-prod-4
+    environment:
+      BOUNCER_FAILURE_MODE: "${BOUNCER_FAILURE_MODE-open}"
+      CROWDSEC_BOUNCER_API_KEY: "${CROWDSEC_BOUNCER4_API_KEY}"
+      CROWDSEC_AGENT_HOST: "${CROWDSEC_AGENT_HOST-crowdsec-prod-4:8080}"
+      TRAEFIK_URL: "${TRAEFIK4_URL}"
+      TRAEFIK_USER: "${TRAEFIK4_USER}"
+      TRAEFIK_PASSWORD: "${TRAEFIK4_PASSWORD}"
+      TRAEFIK_SKIP_TLS_VERIFY: true
+    networks:
+      - proxy # same network as traefik + crowdsec
+    depends_on:
+      - crowdsec
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+volumes:
+  crowdsec-db:
+  crowdsec-config:

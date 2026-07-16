@@ -1,0 +1,28 @@
+services:
+  autoheal:
+    deploy:
+      replicas: 1
+    image: willfarrell/autoheal
+    container_name: autoheal-prod-1
+    restart: unless-stopped
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=autoheal
+      # - DOCKER_SOCK=tcp://raptor.kane.mk:2376
+      # - DOCKER_TLS_VERIFY=1
+      # - DOCKER_CERT_PATH=/certs
+      # - DOCKER_HOST=tcp://docker:2375
+      # - DOCKER_SOCK=tcps://docker:2376
+      # - DOCKER_TLS_VERIFY=1
+      # - AUTOHEAL_INTERVAL=5
+      # - AUTOHEAL_START_PERIOD=5
+      # - AUTOHEAL_DEFAULT_STOP_TIMEOUT=10
+      # - AUTOHEAL_ONLY_MONITOR_RUNNING=false
+      # - DOCKER_SOCK=/var/run/docker.sock
+      # - CURL_TIMEOUT=30
+      # - WEBHOOK_URL=""
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+      # - /home/murry/certs/ca.pem:/certs/ca.pem:ro
+      # - /home/murry/certs/server-cert.pem:/certs/cert.pem:ro
+      # - /home/murry/certs/server-key.pem:/certs/key.pem:ro

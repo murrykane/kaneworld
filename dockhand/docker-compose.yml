@@ -1,0 +1,31 @@
+services:
+  dockhand:
+    image: fnsys/dockhand:latest
+    container_name: dockhand-prod-1
+    ports:
+      - 3002:${TRAEFIK_UI_PORT}
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      TZ: America/Los_Angeles
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dockhand_data:/app/data
+      - /opt/repos:/opt/repos     # repo code copied from github
+    networks:
+      - proxy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+networks:
+  proxy:
+    external: true

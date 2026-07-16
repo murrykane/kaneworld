@@ -15,3 +15,4 @@ id_ed25519*
 *.key
 secrets.yml
 vault_pass*
+/mnt/user/data/sourcecontrol/kaneworld/crowdsec-prod-3/.env
