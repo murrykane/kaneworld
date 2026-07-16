@@ -4,3 +4,14 @@ retired
 **/cf-token
 **/.toml
 **/.env
+.env
+.env.*
+*cf_secret*
+*_secret*
+*.pem
+*_rsa
+*_rsa.pub
+id_ed25519*
+*.key
+secrets.yml
+vault_pass*

@@ -1,0 +1,22 @@
+title = "kaneworld gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-dotenv-file"
+description = "Any .env style file"
+regex = '''(?i)^.*\.env(\..*)?$'''
+path = '''(^|/)\.env(\..*)?$'''
+
+[[rules]]
+id = "cf-secret-file"
+description = "Cloudflare secret / token file"
+regex = '''(?i)cf[_-]?secret'''
+path = '''(?i)cf[_-]?secret'''
+
+[allowlist]
+description = "Paths gitleaks should never scan"
+paths = [
+  '''\.git/''',
+]
