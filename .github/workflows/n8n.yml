@@ -1,0 +1,24 @@
+name: Trigger n8n on push
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # adds a "Run workflow" button in the Actions tab
+  
+jobs:
+  trigger-n8n:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Trigger n8n workflow
+        run: |
+           curl -fsS -X POST http://cyborg.tail6d0a3.ts.net:5678/webhook/GitHub-CodeDeploy \
+            -H "Content-Type: application/json" \
+            -H "GitHub: ${{ secrets.N8N_WEBHOOK_SECRET }}" \
+            -d "{\"repo\": \"${{ github.repository }}\", \"sha\": \"${{ github.sha }}\"}"
