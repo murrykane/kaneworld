@@ -96,3 +96,11 @@ traefik-prod-7/.env
 traefik-prod-8/.env
 vaultwarden-prod-1/.env
 vaultwarden-prod-1/OAuth 2.0 Client Credentials.0 Client Credentials.0 Client Credentials
+*.bak
+*.save
+*_backup
+*.orig
+acme.json
+wg*.conf
+torrenting/qbittorrent/config/wireguard/wg0.conf_backup
+traefik-prod-1/data/acme.json.save

@@ -42,6 +42,18 @@ description = "secret/token/password/key-style value in any YAML file, base64-en
 regex = '''(?i)(?:secret|token|password|passwd|pwd|api[_-]?key|client[_-]?secret|access[_-]?key|private[_-]?key|auth[_-]?token)\s*:\s*["']?[A-Za-z0-9+/]{20,}={0,2}["']?'''
 path = '''\.ya?ml$'''
 
+[[rules]]
+id = "wireguard-config-or-backup"
+description = "WireGuard config/backup - contains PrivateKey by nature, flagged on presence not content pattern"
+path = '''(^|/)wg\d*\.conf([._-]?(backup|bak|save|old|orig))?$'''
+regex = '''(?s).+'''
+
+[[rules]]
+id = "traefik-acme-storage"
+description = "Traefik ACME storage (acme.json) - contains account + cert private keys, flagged on presence not content pattern"
+path = '''(^|/)acme\.json([._-]?(backup|bak|save|old|orig))?$'''
+regex = '''(?s).+'''
+
 [allowlist]
 description = "Paths gitleaks should never scan"
 paths = [
