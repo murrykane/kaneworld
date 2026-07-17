@@ -1,0 +1,84 @@
+name: scanopy-prod-1
+
+services:
+  daemon:
+    image: ghcr.io/scanopy/scanopy/daemon:latest
+    container_name: scanopy-daemon
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
+    environment:
+      SCANOPY_LOG_LEVEL: ${SCANOPY_LOG_LEVEL:-info}
+      SCANOPY_SERVER_URL: http://127.0.0.1:60072
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:60073/api/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    volumes:
+      - daemon-config:/root/.config/daemon
+      # Comment out the line below to disable docker discovery
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  server:
+    image: ghcr.io/scanopy/scanopy/server:latest
+    dns:
+      - 192.168.1.215
+      - 192.168.1.219
+      - 192.168.1.4
+    ports:
+      - "60072:60072"
+    environment:
+      SCANOPY_LOG_LEVEL: ${SCANOPY_LOG_LEVEL:-info}
+      SCANOPY_DATABASE_URL: ${POSTGRES_TYPE}://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      SCANOPY_WEB_EXTERNAL_PATH: /app/static
+      SCANOPY_PUBLIC_URL: ${SCANOPY_PUBLIC_URL:-http://localhost:60072}
+      SCANOPY_INTEGRATED_DAEMON_URL: http://host.docker.internal:60073
+      SCANOPY_USE_SECURE_SESSION_COOKIES: ${SCANOPY_USE_SECURE_SESSION_COOKIES:-false}
+      # SCANOPY_OIDC_PROVIDERS: >-
+      #   [{
+      #     name="Authentik",
+      #     slug="scanopy",
+      #     logo="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/authentik.svg",
+      #     issuer_url="https://auth.local.kaneworld.org/application/o/scanopy/",
+      #     client_id="",
+      #     client_secret=""
+      #   }]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_APP}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_APP}.rule=Host(`${TRAEFIK_DOMAIN_APP}`)"
+      - "traefik.http.middlewares.${TRAEFIK_APP}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_APP}.middlewares=${TRAEFIK_APP}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_APP}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_APP}-secure.rule=Host(`${TRAEFIK_DOMAIN_APP}`)"
+      - "traefik.http.routers.${TRAEFIK_APP}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_APP}-secure.service=${TRAEFIK_APP}"
+      - "traefik.http.services.${TRAEFIK_APP}.loadbalancer.server.port=${TRAEFIK_UI_PORT_APP}"
+      #- "traefik.http.routers.${TRAEFIK_APP}-secure.middlewares=auth-forwardauth@file"   #Added for authentik login
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+    volumes:
+      - ./data:/data
+      - ./oidc.toml:/oidc.toml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      daemon:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - scanopy
+      - proxy
+
+volumes:
+  daemon-config:
+
+networks:
+  scanopy:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16
+          gateway: 172.31.0.1
+  proxy:
+    external: true

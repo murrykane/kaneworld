@@ -1,0 +1,689 @@
+http:
+ #region routers 
+  routers:
+
+    authentik-cadvisor-unraid-router:
+      rule: "Host(`cadvisor-unraid.local.kaneworld.org`)"
+      middlewares:
+        - authentik
+      priority: 10
+      service: cAdvisor-Unraid
+
+    authentik-cadvisor-unraid-auth:
+      rule: "Host(`cadvisor-unraid.local.kaneworld.org`) && PathPrefix(`/outpost.goauthentik.io/`)"
+      priority: 15
+      service: authentik
+
+    hahome:
+      entryPoints:
+        - "https"
+      rule: "Host(`hahome.local.kaneworld.org`)"
+      middlewares:
+        #- default-headers
+        - hahome-headers
+        - https-redirectscheme
+      tls: {}
+      service: hahome
+
+    qbittorrent:
+      entryPoints:
+        - "https"
+      rule: "Host(`qbittorrent.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: qbittorrent
+
+    sonarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`sonarr.local.kaneworld.org`)"
+      middlewares:
+        - arr-auth
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: sonarr
+
+    prowlarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`prowlarr.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - arr-auth
+      tls: {}
+      service: prowlarr
+
+    radarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`radarr.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - arr-auth
+      tls: {}
+      service: radarr
+
+    bazarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`bazarr.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - arr-auth
+      tls: {}
+      service: bazarr
+
+    krusader:
+      entryPoints:
+        - "https"
+      rule: "Host(`krusader.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - arr-auth
+      tls: {}
+      service: krusader
+
+    pbs:
+      entryPoints:
+        - "https"
+      rule: "Host(`pbs.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: pbs
+
+    authentik:
+      entryPoints:
+        - "https"
+      rule: "Host(`authentik.local.kaneworld.org`)"
+      middlewares:
+        #- default-headers
+        - authentik-headers
+        - https-redirectscheme
+        #- authentik
+      priority: 10
+      tls: {}
+      service: authentik
+
+    utilserver-docker:
+      entryPoints:
+        - "https"
+      rule: "Host(`utilserver.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - arr-auth
+      tls: {}
+      service: utilserver-docker
+
+    fileflow:
+      entryPoints:
+        - "https"
+      rule: "Host(`fileflow.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: fileflow
+
+    ups:
+      entryPoints:
+        - "https"
+      rule: "Host(`ups.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: ups
+
+    proxmox:
+      entryPoints:
+        - "https"
+      rule: "Host(`proxmox.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: proxmox
+
+    cocomox:
+      entryPoints:
+        - "https"
+      rule: "Host(`coco.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: cocomox
+
+    pihole2:
+      entryPoints:
+        - "https"
+      rule: "Host(`pihole2.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - pihole2-redirect
+      tls: {}
+      service: pihole2
+
+    pihole3:
+      entryPoints:
+        - "https"
+      rule: "Host(`pihole3.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - pihole3-redirect
+      tls: {}
+      service: pihole3
+      
+    pihole4:
+      entryPoints:
+        - "https"
+      rule: "Host(`pihole4.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - pihole4-redirect
+      tls: {}
+      service: pihole4
+
+    edgerouter:
+      entryPoints:
+        - "https"
+      rule: "Host(`router.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: edgerouter
+
+    unraid:
+      entryPoints:
+        - "https"
+      rule: "Host(`unraid.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: unraid
+
+    influxdb:
+      entryPoints:
+        - "https"
+      rule: "Host(`influxdb.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: influxdb
+
+    prometheus:
+      entryPoints:
+        - "https"
+      rule: "Host(`prometheus.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: prometheus
+
+    arris:
+      entryPoints:
+        - "https"
+      rule: "Host(`arris.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: arris
+
+    murdognas:
+      entryPoints:
+        - "https"
+      rule: "Host(`nas.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: murdognas
+
+    murdognas-portainer:
+      entryPoints:
+        - "https"
+      rule: "Host(`nas-portainer.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: murdognas-portainer
+
+    coco-portainer:
+      entryPoints:
+        - "https"
+      rule: "Host(`coco-portainer.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: coco-portainer
+
+    qvr:
+      entryPoints:
+        - "https"
+      rule: "Host(`qvr.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - qvr-redirect
+      tls: {}
+      service: qvr
+
+    minijellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`minijellyfin.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: minijellyfin
+
+    jellyseerr:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyseerr.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: jellyseerr
+
+    ansible:
+      entryPoints:
+        - "https"
+      rule: "Host(`ansible.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: ansible
+
+    cadvisor:
+      entryPoints:
+        - "https"
+      rule: "Host(`cadvisor.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: cadvisor
+
+    # nextcloud:
+    #   entryPoints:
+    #     - "https"
+    #   rule: "Host(`nextcloud.local.kaneworld.org`)"
+    #   middlewares:
+    #     - nextcloud-redirect
+    #     - nextcloud-headers
+    #   tls: {}
+    #   service: nextcloud
+
+#endregion
+#region services
+  services:
+
+    cAdvisor-Unraid:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:8080"
+    
+    authentik-router-auth:
+      loadBalancer:
+        servers:
+          - url: "http://authentik.kane.mk:9000/outpost.goauthentik.io"
+
+    hahome:
+      loadBalancer:
+        servers:
+          - url: "http://hahome.kane.mk:8123"
+        passHostHeader: true
+
+    qbittorrent:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:8090"
+        passHostHeader: true
+
+    sonarr:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:8989"
+        passHostHeader: true
+
+    radarr:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:7878"
+        passHostHeader: true
+
+    bazarr:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:6767"
+        passHostHeader: true
+
+    pbs:
+      loadBalancer:
+        servers:
+          - url: "https://pbs.kane.mk:8007"
+        passHostHeader: true
+
+    authentik:
+      loadBalancer:
+        servers:
+          #- url: "https://authentik.kane.mk:9443"
+          - url: "http://authentik.kane.mk:9000"
+        passHostHeader: true
+
+    authentik-auth:
+      loadBalancer:
+        servers:
+          #- url: "https://authentik.kane.mk:9443"
+          - url: "http://authentik.kane.mk:9000/outpost.goauthentik.io"
+          #- url: "https://authentik.local.kaneworld.org/outpost.goauthentik.io"
+        #passHostHeader: true
+
+    krusader:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:6080"
+        passHostHeader: true
+
+    utilserver-docker:
+      loadBalancer:
+        servers:
+          - url: "https://utilserver.kane.mk:2376"
+        passHostHeader: true
+
+    fileflow:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:19200"
+        passHostHeader: true
+
+    ups:
+      loadBalancer:
+        servers:
+          - url: "https://murdogpc.kane.mk:53568"
+        passHostHeader: true
+
+    prowlarr:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:9696"
+        passHostHeader: true
+
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: "https://proxmini.kane.mk:8006"
+        passHostHeader: true
+
+    cocomox:
+      loadBalancer:
+        servers:
+          - url: "https://coco.kane.mk:8006"
+        passHostHeader: true
+
+    pihole2:
+      loadBalancer:
+        servers:
+          - url: "http://pihole2.kane.mk:80"
+        passHostHeader: true
+
+    pihole3:
+      loadBalancer:
+        servers:
+          #- url: "http://pihole3.kane.mk:80"
+          - url: "http://pihole3:80"
+        passHostHeader: true
+
+    pihole4:
+      loadBalancer:
+        servers:
+          - url: "http://pihole4.kane.mk:80"
+        passHostHeader: true
+
+    edgerouter:
+      loadBalancer:
+        servers:
+          - url: "https://router.kane.mk:443"
+        passHostHeader: true
+
+    unraid:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:80"
+        passHostHeader: true
+
+    influxdb:
+      loadBalancer:
+        servers:
+          - url: "http://mkserver.kane.mk:8086"
+        passHostHeader: true
+
+    prometheus:
+      loadBalancer:
+        servers:
+          - url: "http://mkserver.kane.mk:9090"
+        passHostHeader: true
+
+    arris:
+      loadBalancer:
+        servers:
+          - url: "https://arris.kane.mk"
+        passHostHeader: true
+
+    murdognas:
+      loadBalancer:
+        servers:
+          - url: "https://murdognas.kane.mk:8443"
+        passHostHeader: true
+
+    murdognas-portainer:
+      loadBalancer:
+        servers:
+          - url: "http://murdognas.kane.mk:9123"
+        passHostHeader: true
+
+    coco-portainer:
+      loadBalancer:
+        servers:
+          - url: "https://utilserver.kane.mk:9443"
+        passHostHeader: true
+
+    qvr:
+      loadBalancer:
+        servers:
+          - url: "https://murdognas.kane.mk:8443"
+        passHostHeader: true
+
+    minijellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://minijellyfin.kane.mk:8096"
+        passHostHeader: true
+
+    jellyseerr:
+      loadBalancer:
+        servers:
+          - url: "http://utilserver.kane.mk:5055"
+        passHostHeader: true
+
+    ansible:
+      loadBalancer:
+        servers:
+          - url: "http://mkserver.kane.mk:8026"
+        passHostHeader: true
+
+    cadvisor:
+      loadBalancer:
+        servers:
+          - url: "http://mkserver.kane.mk:8083"
+        passHostHeader: true
+
+    # nextcloud:
+    #   loadBalancer:
+    #     servers:
+    #       - url: "http://mkserver.kane.mk:8123"
+    #     passHostHeader: true
+
+#endregion
+  middlewares:
+
+    pihole2-redirect:
+      redirectRegex:
+        regex: "^https?://pihole2.local.kaneworld.org/$"
+        replacement: "https://pihole2.local.kaneworld.org/admin/"
+
+    pihole3-redirect:
+      redirectRegex:
+        regex: "^https?://pihole3.local.kaneworld.org/$"
+        replacement: "https://pihole3.local.kaneworld.org/admin/"
+
+    pihole4-redirect:
+      redirectRegex:
+        regex: "^https?://pihole4.local.kaneworld.org/$"
+        replacement: "https://pihole4.local.kaneworld.org/admin/"
+
+    qvr-redirect:
+      redirectRegex:
+        regex: "^https?://qvr.local.kaneworld.org/$"
+        replacement: "https://qvr.local.kaneworld.org/qvrpro/"
+
+    # nextcloud-redirect:
+    #   redirectRegex:
+    #     regex: "^https://(.*)/.well-known/(?:card|cal)dav"
+    #     replacement: "https://${1}/remote.php/dav"
+
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+    default-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    hahome-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+          X-Forwarded-For: ""
+
+    authentik-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+          Authorization: Authorization
+
+    # https://github.com/goauthentik/authentik/issues/2366
+    authentik:
+      forwardAuth:
+        #address: https://authentik.local.kaneworld.org/outpost.goauthentik.io/auth/traefik
+        address: http://authentik.kane.mk:9000/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-entitlements
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+          - X-authentik-jwt
+          - X-authentik-meta-jwks
+          - X-authentik-meta-outpost
+          - X-authentik-meta-provider
+          - X-authentik-meta-app
+          - X-authentik-meta-version
+
+    # nextcloud-headers:
+    #   headers:
+    #     accessControlMaxAge: 100
+    #     sslRedirect: true
+    #     stsSeconds: 63072000
+    #     stsIncludeSubdomains: true
+    #     stsPreload: true
+    #     forceSTSHeader: true
+    #     ### We will modify this value for Nextcloud to remove the X-Frame-Options error:
+    #     customFrameOptionsValue: SAMEORIGIN #CSP takes care of this but may be needed for organizr.
+    #     contentTypeNosniff: true
+    #     browserXssFilter: true
+    #     #       sslForceHost: true # add sslHost to all of the services
+    #     #       sslHost: "example.com"
+    #     referrerPolicy: "no-referrer"
+    #     ### While CSP is a good security setting, Nextcloud's Apache server takes care of this for us!
+    #     #       contentSecurityPolicy: "frame-ancestors '*.example.com:*';object-src 'none';script-src 'none';"
+    #     featurePolicy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
+    #     customRequestHeaders:
+    #       X-Forwarded-Proto: "https"
+    #       X-Forwarded-Host: "kaneworld.org"
+    #     customResponseHeaders:
+    #     ### Change this to none to remove the Robots error:
+    #       X-Robots-Tag: "none"
+    #       X-XSS-Protection: "1; mode=block"
+    #       X-Download-Options: "noopen"
+    #       X-Permitted-Cross-Domain-Policies: "none"          
+    #       # server: ""
+    #       # X-Forwarded-Proto: https
+    #       # X-Forwarded-For: ""
+
+    arr-auth:
+      basicAuth:
+        users: 
+          #- murrykane:$2y$05$trLBroLGwwcOYlwWGVKAbO1hapv4T2lohokUUm7sWRgQ8EuU8lts2
+          - MurryKane:$2y$05$F5mvJX83Oy1kcfcw7QXkh.KsZxHBkvqfVxsasUjT/CsDqsBRbQfQi
+          #- "murrykane:$$apr1$$JPVGUIAR$$StwhpMevdRSoTS9/OiyFE1"
+          #- MurryKane:$$2y$$05$$SXcy5cOp3Jbk80MN/UuKI.fEOyWn31g/MVVCBCn9grJt/YqE9Qyay
+        #usersFile: "/etc/traefik/auth/auth.txt"
+
+    default-whitelist:
+      ipAllowList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/24"
+        - "172.19.0.0/16"
+        - "172.17.0.0/16"
+        - "172.25.0.0/16"
+        - "172.23.0.0/16"
+        - "172.24.0.0/16"
+        - "172.22.0.0/16"
+        - "172.20.0.0/16"
+
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers

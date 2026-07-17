@@ -1,0 +1,72 @@
+#version: '3'
+# make sure ${HOME}/containers/traefik-prod-1/acme.json   is root owned and 600 permissions
+# 
+secrets:
+  cf-token:
+    file: ./cf-token
+services:
+  traefik-prod-1:
+    image: traefik:latest
+    container_name: traefik-prod-1
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true # helps to increase security
+    secrets:
+      - cf-token # the secret at the top of this file
+    env_file:
+      - .env # store other secrets e.g., dashboard password
+    networks:
+       proxy:
+    ports:
+      - 80:80
+      - 443:443
+      - 8899:8899
+      # - 8082:8080 # since going through letsencrypt don't think this is needed....
+      # - 444:444 #external https
+      # - 81:81 # external http
+    environment:
+      - TRAEFIK_DASHBOARD_CREDENTIALS=${TRAEFIK_DASHBOARD_CREDENTIALS}
+      - CF_DNS_API_TOKEN_FILE=/run/secrets/cf-token # see https://doc.traefik.io/traefik/https/acme/#providers
+      - TRAEFIK_NODE_NAME=${TRAEFIK_NODE_NAME}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/murry/containers/traefik-prod-1/data/traefik.yml:/traefik.yml:ro
+      - /home/murry/containers/traefik-prod-1/data/acme.json:/acme.json
+      - /home/murry/containers/traefik-prod-1/data/config.yml:/config.yml:ro
+      #- /home/murry/containers/traefik-prod-1/logs:/var/log/traefik
+      - /home/murry/containers/traefik-prod-1/config:/etc/traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-prod-1.entrypoints=http"
+      - "traefik.http.routers.traefik-prod-1.rule=Host(`traefik-prod-1.local.kaneworld.org`)"
+      - "traefik.http.middlewares.traefik-prod-1-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.middlewares.traefik-prod-1-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.traefik-prod-1.middlewares=traefik-prod-1-https-redirect"
+      - "traefik.http.routers.traefik-prod-1-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-prod-1-secure.rule=Host(`traefik-prod-1.local.kaneworld.org`)"
+      - "traefik.http.routers.traefik-prod-1-secure.middlewares=traefik-prod-1-auth"
+      - "traefik.http.routers.traefik-prod-1-secure.tls=true"
+      #for authentik auth
+      - "traefik.http.routers.traefik-prod-1-secure.middlewares=auth-forwardauth@file"
+      - "traefik.http.routers.traefik-prod-1-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik-prod-1-secure.tls.domains[0].main=local.kaneworld.org"
+      - "traefik.http.routers.traefik-prod-1-secure.tls.domains[0].sans=*.local.kaneworld.org"
+      - "traefik.http.routers.traefik-prod-1-secure.service=api@internal"
+      # Unauthenticated API-only route for Homepage widget
+      - "traefik.http.routers.traefik-api.rule=Host(`traefik1-widget.local.kaneworld.org`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.traefik-api.entrypoints=https"
+      - "traefik.http.routers.traefik-api.service=api@internal"
+      - "traefik.http.routers.traefik-api.tls.certresolver=cloudflare"
+      # for metrics
+      - "traefik.http.routers.traefik-metrics.rule=Host(`traefik1-metrics.local.kaneworld.org`) && Path(`/metrics`)"
+      #- "traefik.http.routers.traefik-metrics.entrypoints=metrics"  #over tls with certificate...... so switched to 443/https
+      - "traefik.http.routers.traefik-metrics.entrypoints=https"
+      - "traefik.http.routers.traefik-metrics.tls=true"
+      - "traefik.http.routers.traefik-metrics.service=prometheus@internal"
+networks:
+  proxy:
+    external: true
+
+

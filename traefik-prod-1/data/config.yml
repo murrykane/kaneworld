@@ -1,0 +1,629 @@
+http:
+ #region routers 
+  routers:
+
+    unifi:
+      entryPoints:
+        - "https"
+      rule: "Host(`unifi.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: unifi
+
+    filebot:
+      entryPoints:
+        - "https"
+      rule: "Host(`filebot.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: filebot
+
+    dozzle:
+      entryPoints:
+        - "https"
+      rule: "Host(`dozzle-prod-5.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: dozzle
+
+    fileflows:
+      entryPoints:
+        - "https"
+      rule: "Host(`fileflows.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: fileflows
+
+    apprise:
+      entryPoints:
+        - "https"
+      rule: "Host(`apprise.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: apprise
+
+    tinymedia:
+      entryPoints:
+        - "https"
+      rule: "Host(`tinymedia.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: tinymedia
+
+    hahome:
+      entryPoints:
+        - "https"
+      rule: "Host(`hahome.local.kaneworld.org`)"
+      middlewares:
+        #- default-headers
+        - hahome-headers
+        - https-redirectscheme
+      tls: {}
+      service: hahome
+
+    pbs:
+      entryPoints:
+        - "https"
+      rule: "Host(`pbs.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: pbs
+
+    pbs-mini:
+      entryPoints:
+        - "https"
+      rule: "Host(`pbs-mini.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: pbs-mini
+
+    auth:
+      entryPoints:
+        - "https"
+      rule: "Host(`auth.kane.mk`) ||Host(`auth.local.kaneworld.org`) || Host(`outpost.goauthentik.io`)"
+      middlewares:
+        #- default-headers
+        - strip-outpost-prefix 
+        - auth-headers
+        - https-redirectscheme
+      priority: 10
+      tls: {}
+      service: auth
+
+    auth-oidc:
+      entryPoints:
+        - "https"
+      rule: "Host(`auth.local.kaneworld.org`) && PathRegexp(`/application/o/`) && PathRegexp(`/.well-known/openid-configuration`)"
+      priority: 20
+      tls: {}
+      service: auth
+      # No auth middleware here
+
+    utilserver-docker:
+      entryPoints:
+        - "https"
+      rule: "Host(`utilserver.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - arr-auth
+      tls: {}
+      service: utilserver-docker
+
+    ups:
+      entryPoints:
+        - "https"
+      rule: "Host(`ups.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: ups
+
+    slzb-06:
+      entryPoints:
+        - "https"
+      rule: "Host(`slzb-06.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - arr-auth
+      tls: {}
+      service: slzb-06
+
+    mini:
+      entryPoints:
+        - "https"
+      rule: "Host(`mini.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: mini
+
+    cocomox:
+      entryPoints:
+        - "https"
+      rule: "Host(`coco.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: cocomox
+
+    athena:
+      entryPoints:
+        - "https"
+      rule: "Host(`athena.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: athena
+
+    apex:
+      entryPoints:
+        - "https"
+      rule: "Host(`apex.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: apex
+
+    dns-primary:
+      entryPoints:
+        - "https"
+      rule: "Host(`dns-primary.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: dns-primary
+
+    dns-secondary:
+      entryPoints:
+        - "https"
+      rule: "Host(`dns-secondary.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: dns-secondary 
+
+    dns-tertiary:
+      entryPoints:
+        - "https"
+      rule: "Host(`dns-tertiary.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: dns-tertiary 
+
+    edgerouter:
+      entryPoints:
+        - "https"
+      rule: "Host(`router.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: edgerouter
+
+    unraid:
+      entryPoints:
+        - "https"
+      rule: "Host(`unraid.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: unraid
+
+    influxdb:
+      entryPoints:
+        - "https"
+      rule: "Host(`influxdb.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: influxdb
+
+    arris:
+      entryPoints:
+        - "https"
+      rule: "Host(`arris.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: arris
+
+    murdognas:
+      entryPoints:
+        - "https"
+      rule: "Host(`nas.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: murdognas
+
+    murdognas-portainer:
+      entryPoints:
+        - "https"
+      rule: "Host(`nas-portainer.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: murdognas-portainer
+
+    auth-portainer:
+      entryPoints:
+        - "https"
+      rule: "Host(`portainer-prod-6.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: auth-portainer
+
+    qvr:
+      entryPoints:
+        - "https"
+      rule: "Host(`qvr.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - qvr-redirect
+      tls: {}
+      service: qvr
+
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: jellyfin
+
+    qui:
+      entryPoints:
+        - "https"
+      rule: "Host(`qui.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: qui
+
+#endregion
+#region services
+  services:
+
+    hahome:
+      loadBalancer:
+        servers:
+          - url: "http://hahome.kane.mk:8123"
+        passHostHeader: true
+
+    fileflows:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:8585"
+        passHostHeader: true
+
+    filebot:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:7813"
+        passHostHeader: true
+
+    dozzle:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:8083"
+        passHostHeader: true
+
+    apprise:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:8000"
+        passHostHeader: true
+
+    tinymedia:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:4066"
+        passHostHeader: true
+
+    unifi:
+      loadBalancer:
+        servers:
+          - url: "https://unifi.kane.mk:11443"
+        passHostHeader: true
+
+
+    pbs:
+      loadBalancer:
+        servers:
+          - url: "https://pbs.kane.mk:8007"
+        passHostHeader: true
+
+    pbs-mini:
+      loadBalancer:
+        servers:
+          - url: "https://pbs-mini.kane.mk:8007"
+        passHostHeader: true
+
+    auth:
+      loadBalancer:
+        servers:
+          - url: "http://auth.kane.mk:9000"
+        passHostHeader: true
+
+    auth-auth:
+      loadBalancer: 
+        servers:
+          - url: "https://auth.local.kaneworld.org/outpost.goauthentik.io" 
+
+    utilserver-docker:
+      loadBalancer:
+        servers:
+          - url: "https://utilserver.kane.mk:2376"
+        passHostHeader: true
+
+    ups:
+      loadBalancer:
+        servers:
+          #- url: "https://murdogpc.kane.mk:53568"
+          - url: "https://murrypc.kane.mk:53568"
+        passHostHeader: true
+
+    slzb-06:
+      loadBalancer:
+        servers:
+          - url: "http://slzb-06.kane.mk:80"
+        passHostHeader: true
+
+    mini:
+      loadBalancer:
+        servers:
+          - url: "https://mini.kane.mk:8006"
+        passHostHeader: true
+
+    cocomox:
+      loadBalancer:
+        servers:
+          - url: "https://coco.kane.mk:8006"
+        passHostHeader: true
+
+    athena:
+      loadBalancer:
+        servers:
+          - url: "https://athena.kane.mk:8006"
+        passHostHeader: true
+
+    apex:
+      loadBalancer:
+        servers:
+          - url: "https://apex.kane.mk:8006"
+        passHostHeader: true
+
+    dns-primary:
+      loadBalancer:
+        servers:
+          - url: "https://dns-primary.kane.mk:53443"
+        passHostHeader: true
+
+    dns-secondary:
+      loadBalancer:
+        servers:
+          - url: "https://dns-secondary.kane.mk:53443"
+        passHostHeader: true
+  
+    dns-tertiary:
+      loadBalancer:
+        servers:
+          - url: "https://dns-tertiary.kane.mk:53443"
+        passHostHeader: true
+
+    edgerouter:
+      loadBalancer:
+        servers:
+          - url: "https://router.kane.mk:443"
+        passHostHeader: true
+
+    unraid:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:86"
+        passHostHeader: true
+
+    influxdb:
+      loadBalancer:
+        servers:
+          - url: "http://mkserver.kane.mk:8086"
+        passHostHeader: true
+
+    arris:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.100.1:443"
+        passHostHeader: true
+
+    murdognas:
+      loadBalancer:
+        servers:
+          - url: "https://murdognas.kane.mk:8443"
+        passHostHeader: true
+
+    murdognas-portainer:
+      loadBalancer:
+        servers:
+          - url: "http://murdognas.kane.mk:9123"
+        passHostHeader: true
+
+    auth-portainer:
+      loadBalancer:
+        servers:
+          - url: "http://auth.kane.mk:9001"
+        passHostHeader: true
+
+    qvr:
+      loadBalancer:
+        servers:
+          - url: "https://murdognas.kane.mk:8443"
+        passHostHeader: true
+
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:8096"
+        passHostHeader: true
+
+    qui:
+      loadBalancer:
+        servers:
+          - url: "http://kaneserver.kane.mk:7476"
+        passHostHeader: true
+
+#endregion
+  middlewares:
+
+    crowdsec-bouncer:
+      forwardAuth:
+        address: http://bouncer-traefik-prod-1:8080/api/v1/forwardAuth
+        trustForwardHeader: true
+        maxResponseBodySize: 1048576
+        
+    strip-outpost-prefix:
+      stripPrefix:
+        prefixes:
+          - "/outpost.goauthentik.io"
+
+    qvr-redirect:
+      redirectRegex:
+        regex: "^https?://qvr.local.kaneworld.org/$"
+        replacement: "https://qvr.local.kaneworld.org/qvrpro/"
+
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+
+    default-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    hahome-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+          X-Forwarded-For: ""
+
+    auth-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+          #Authorization: Authorization   #this was over-writting the header with a hard-coded value 'Authorization' it should have been "" to keep existing value
+
+    auth-forwardauth:
+      forwardAuth:
+        address: http://mkserver-outpost:9000/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        maxResponseBodySize: 1048576
+        addAuthCookiesToResponse:
+          - Set-Cookie
+        authRequestHeaders:
+          - Accept
+          - Cookie
+          - Authorization
+          - X-Forwarded-For
+          - X-Forwarded-Host
+          - X-Forwarded-Proto
+          - X-Forwarded-Uri
+          - X-Real-Ip
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-entitlements
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+          - X-authentik-jwt
+          - X-authentik-meta-jwks
+          - X-authentik-meta-outpost
+          - X-authentik-meta-provider
+          - X-authentik-meta-app
+          - X-authentik-meta-version
+        tls:
+          insecureSkipVerify: true
+
+    arr-auth:
+      basicAuth:
+        users: 
+          #- murrykane:$2y$05$trLBroLGwwcOYlwWGVKAbO1hapv4T2lohokUUm7sWRgQ8EuU8lts2
+          - MurryKane:$2y$05$F5mvJX83Oy1kcfcw7QXkh.KsZxHBkvqfVxsasUjT/CsDqsBRbQfQi
+          #- "murrykane:$$apr1$$JPVGUIAR$$StwhpMevdRSoTS9/OiyFE1"
+          #- MurryKane:$$2y$$05$$SXcy5cOp3Jbk80MN/UuKI.fEOyWn31g/MVVCBCn9grJt/YqE9Qyay
+        #usersFile: "/etc/traefik/auth/auth.txt"
+
+    default-whitelist:
+      ipAllowList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/24"
+        - "172.19.0.0/16"
+        - "172.17.0.0/16"
+        - "172.25.0.0/16"
+        - "172.23.0.0/16"
+        - "172.24.0.0/16"
+        - "172.22.0.0/16"
+        - "172.20.0.0/16"
+
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers

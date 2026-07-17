@@ -1,0 +1,11 @@
+### ALL DOCKER LOGS WAY #####
+# filenames:
+#   - /var/lib/docker/containers/*/*-json.log
+# labels:
+#   type: docker
+#The Loki configuration for collecting Docker logs
+source: docker
+container_name:
+  - traefik-dev-1
+labels:
+  type: traefik

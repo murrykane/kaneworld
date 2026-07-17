@@ -1,0 +1,210 @@
+# make the private network pia first! 
+# docker network create pia
+services:
+
+  qbittorrent:
+    image: binhex/arch-qbittorrentvpn:latest
+    container_name: qbittorrent
+    privileged: true
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: 1
+    volumes:
+      - /home/murry/containers/pia-media/qbittorrent/config:/config
+      - cifs_torrents:/downloads
+    networks:
+      - pia
+    ports:
+      - '6881:6881'
+      - '8090:8090'
+      - '8118:8118'
+      - '9118:9118'
+      - '58946:58946'
+      - '58946:58946/udp'
+      # - '9696:9696'  # prowlarr
+      # - '8989:8989'  # sonarr
+      # - '7878:7878'  # radarr
+      # - '6767:6767'  # bazarr
+      # - '5055:5055'  # jellyseerr
+      # - '6080:6080'  # krusader
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      # - WEBUI_PORT=8080
+      - TZ=America/Los_Angeles
+      - VPN_ENABLED=yes
+      - VPN_USER=${VPN_USER}
+      - VPN_PASS=${VPN_PASS}
+      - VPN_PROV=pia
+      #- VPN_PROV=custom
+      #- VPN_CLIENT=openvpn
+      - VPN_CLIENT=wireguard 
+      - VPN_OPTIONS=
+      - ENABLE_STARTUP_SCRIPTS=no
+      - ENABLE_PRIVOXY=yes
+      #- ENABLE_PRIVOXY=no 
+      - STRICT_PORT_FORWARD=yes
+      - USERSPACE_WIREGUARD=no
+      - ENABLE_SOCKS=no
+      # - SOCKS_USER=admin
+      # - SOCKS_PASS=socks
+      - LAN_NETWORK=192.168.1.0/24
+      - 'NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1'
+      # - VPN_INPUT_PORTS=1234
+      # - VPN_OUTPUT_PORTS=5678
+      - VPN_INPUT_PORTS=
+      - VPN_OUTPUT_PORTS=
+      - DEBUG=false
+      - WEBUI_PORT=8090
+      - UMASK=000
+    cap_add:
+      - NET_ADMIN  # Required for VPN connections
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - /home/murry/containers/pia-media/prowlarr/config:/config
+    networks:
+      - pia
+    ports:
+      - 9696:9696
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/sonarr/config:/config
+      - cifs_media_tv:/tv
+      - cifs_torrents:/downloads
+    networks:
+      - pia
+    ports:
+      - 8989:8989
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/radarr/config:/config
+      - cifs_media_movies:/movies
+      - cifs_torrents:/downloads
+    networks:
+      - pia
+    ports:
+      - 7878:7878
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/bazarr/config:/config
+      - cifs_media_tv:/tv
+      - cifs_media_movies:/movies
+    networks:
+      - pia
+    ports:
+      - 6767:6767
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - LOG_LEVEL=debug
+      - TZ=America/Los_Angeles
+      - PORT=5055
+    volumes:
+      - /home/murry/containers/pia-media/jellyseerr/config:/app/config
+      - cifs_base:/media
+      #- cifs_media_tv:/media
+      #- cifs_media_movies:/media   #MBK look into if this is needed
+    networks:
+      - pia
+    ports:
+      - 5055:5055
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+
+  krusader:
+    image: binhex/arch-krusader
+    container_name: krusader
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+      - TEMP_FOLDER=/config/temp
+      - UMASK=002
+      - VNC_PASSWORD=${VNC_PASSWORD}
+    volumes:
+      - /home/murry/containers/pia-media/krusader/config:/config
+      - cifs_base:/files
+      #- /Media:/files
+    networks:
+      - pia
+    ports:
+      - 5900:5900  # You can change the port if needed
+      - 6080:6080
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+
+networks:
+  pia:
+    external: true   
+
+volumes:
+  cifs_media_movies:
+    driver: local
+    driver_opts:
+      type: cifs    
+      device: "${CIFS_ADDRESS}/media/movies"
+      o: "${CIFS_OPTIONS}"
+  cifs_media_tv:
+    driver: local
+    driver_opts:
+      type: cifs    
+      device: "${CIFS_ADDRESS}/media/tv"
+      o: "${CIFS_OPTIONS}"
+  cifs_torrents:
+    driver: local
+    driver_opts:
+      type: cifs    
+      device: "${CIFS_ADDRESS}/torrents"
+      o: "${CIFS_OPTIONS}"
+  cifs_base:
+    driver: local
+    driver_opts:
+      type: cifs    
+      device: "${CIFS_ADDRESS}"
+      o: "${CIFS_OPTIONS}"

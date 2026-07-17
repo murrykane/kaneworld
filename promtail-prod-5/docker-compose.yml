@@ -1,0 +1,17 @@
+services:
+  promtail-prod-5:
+    image: grafana/promtail:latest
+    container_name: promtail-prod-5
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/promtail-config.yml:/etc/promtail/config.yml
+      - /share/homes/MurryKane/containers:/containers:ro
+    ports:
+      - "1514:1514" # this is only needed if you are going to send syslogs
+      - "9080:9080"   # for UI view of the state of promtail 
+    command: -config.file=/etc/promtail/config.yml
+    restart: unless-stopped

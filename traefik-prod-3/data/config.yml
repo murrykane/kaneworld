@@ -1,0 +1,113 @@
+http:
+
+  # services:
+  #   crowdsec-error-pages:
+  #     loadBalancer:
+  #       servers:
+  #         - url: "http://crowdsec-error-pages"
+
+  middlewares:
+
+    crowdsec-bouncer:
+      forwardAuth:
+        address: http://bouncer-traefik-prod-3:8080/api/v1/forwardAuth
+        trustForwardHeader: true
+        maxResponseBodySize: 1048576
+
+    # crowdsec-errors:
+    #   errors:
+    #     status:
+    #       - "403"
+    #     service: crowdsec-error-pages
+    #     query: "/blocked.html"
+
+    # crowdsec-chain:
+    #   chain:
+    #     middlewares:
+    #       - crowdsec-bouncer
+    #       - crowdsec-errors
+
+    auth-forwardauth:
+      forwardAuth:
+        address: http://cyborg-outpost:9000/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        maxResponseBodySize: 1048576
+        addAuthCookiesToResponse:
+          - Set-Cookie
+        authRequestHeaders:
+          - Accept
+          - Cookie
+          - Authorization
+          - X-Forwarded-For
+          - X-Forwarded-Host
+          - X-Forwarded-Proto
+          - X-Forwarded-Uri
+          - X-Real-Ip
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-entitlements
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+          - X-authentik-jwt
+          - X-authentik-meta-jwks
+          - X-authentik-meta-outpost
+          - X-authentik-meta-provider
+          - X-authentik-meta-app
+          - X-authentik-meta-version
+        tls:
+          insecureSkipVerify: true
+
+    auth-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+          #Authorization: Authorization   #this was over-writting the header with a hard-coded value 'Authorization' it should have been "" to keep existing value
+
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+    default-headers:
+      headers:
+        customBrowserXSSValue: 0                            # X-XSS-Protection=1; mode=block
+        contentTypeNosniff: true                          # X-Content-Type-Options=nosniff
+        forceSTSHeader: true                              # Add the Strict-Transport-Security header even when the connection is HTTP
+        frameDeny: false                                   # X-Frame-Options=deny
+        referrerPolicy: "strict-origin-when-cross-origin"
+        stsIncludeSubdomains: true                        # Add includeSubdomains to the Strict-Transport-Security header
+        stsPreload: true                                  # Add preload flag appended to the Strict-Transport-Security header
+        stsSeconds: 3153600                              # Set the max-age of the Strict-Transport-Security header (63072000 = 2 years)
+        contentSecurityPolicy: "default-src 'self'"     
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    default-whitelist:
+      ipAllowList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/24"
+        - "172.19.0.0/16"
+        - "172.17.0.0/16"
+        - "172.25.0.0/16"
+        - "172.23.0.0/16"
+        - "172.24.0.0/16"
+        - "172.22.0.0/16"
+        - "172.20.0.0/16"
+
+    # secured:
+    #   chain:
+    #     middlewares:
+    #     - default-whitelist
+    #     - default-headers

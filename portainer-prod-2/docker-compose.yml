@@ -1,0 +1,45 @@
+
+services:
+  portainer-prod-2:
+    image: portainer/portainer-ce
+    container_name: portainer-prod-2
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 9001:9000
+      - 8000:8000
+      - 9444:9443
+    networks:
+      - proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - .data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer-prod-2.entrypoints=http"
+      - "traefik.http.routers.portainer-prod-2.rule=Host(`portainer-prod-2.local.kaneworld.org`)"
+      - "traefik.http.middlewares.portainer-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.portainer-prod-2.middlewares=portainer-prod-2-https-redirect"
+      - "traefik.http.routers.portainer-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.portainer-prod-2-secure.rule=Host(`portainer-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.portainer-prod-2-secure.tls=true"
+      - "traefik.http.routers.portainer-prod-2-secure.service=portainer-prod-2"
+      - "traefik.http.services.portainer-prod-2.loadbalancer.server.port=9000"
+      # #for authentik auth
+      # - "traefik.http.routers.portainer-prod-2-secure.middlewares=authentik-forwardauth"
+      # - "traefik.http.middlewares.authentik-forwardauth.forwardauth.address=http://authentik.kane.mk:9000/outpost.goauthentik.io/auth/traefik"
+      # - "traefik.http.middlewares.authentik-forwardauth.forwardauth.trustforwardheader=true"
+      # - "traefik.http.middlewares.authentik-forwardauth.forwardauth.authresponseheaders=X-authentik-username,X-authentik-groups"
+      # # # for authentik
+      - "traefik.http.routers.portainer-prod-2-callback.rule=Host(`portainer-prod-2.local.kaneworld.org`) && PathPrefix(`/oauth2/callback`)"
+      - "traefik.http.routers.portainer-prod-2-callback.entrypoints=https"
+      - "traefik.http.routers.portainer-prod-2-callback.tls=true"
+      - "traefik.http.services.portainer-prod-2-callback.loadbalancer.server.port=9000"
+      # #- "traefik.http.routers.portainer-prod-2-callback.tls.certresolver=myresolver"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,541 @@
+
+services:
+
+  qbittorrent-prod-2:
+    image: ghcr.io/binhex/arch-qbittorrentvpn:latest
+    container_name: qbittorrent-prod-2
+    privileged: true
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: 1
+    volumes:
+      - /mnt/user/AppData/torrenting/qbittorrent/config:/config
+      - /mnt/user/data:/data
+    networks:
+      - proxy  # LAN / Traefik access
+      - pia    # VPN traffic network
+    ports:
+      - '6881:6881'   # Torrent TCP
+      - '8080:8080'   # webUI
+      - '8118:8118'   # Privoxy HTTP
+      - '9118:9118'   # Privoxy HTTPS
+      - '58946:58946'
+      - '58946:58946/udp' # Torrent UDP
+    environment:
+      - ENABLE_HEALTHCHECK=true
+      - HEALTHCHECK_ACTION=
+      - HEALTHCHECK_HOSTNAME=google.com
+      - HEALTHCHECK_COMMAND=
+      #- HOME=/home/nobody
+      - HOST_CONTAINERNAME=qbittorrent-prod-2
+      - HOST_HOSTNAME=KaneServer
+      - HOST_OS=Unraid
+      - LANG=en_GB.UTF-8
+      #- PATH=/usr/local/bin/system/scripts/docker:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - SOCKS_USER=admin
+      - SOCKS_PASS=socks
+      - TERM=xterm
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+      # VPN settings
+      - VPN_ENABLED=yes
+      - VPN_USER=${VPN_USER}
+      - VPN_PASS=${VPN_PASS}
+      - VPN_PROV=pia
+      - VPN_CLIENT=wireguard 
+      - VPN_OPTIONS=
+      - ENABLE_STARTUP_SCRIPTS=no
+      - ENABLE_PRIVOXY=yes
+      - STRICT_PORT_FORWARD=yes  # enforce VPN for torrents
+      - USERSPACE_WIREGUARD=no
+      - DOCKER_MODS=binhex/arch-qbittorrentvpn:mod-lan
+      - ENABLE_SOCKS=no
+      #- LAN_NETWORK=192.168.1.0/24,172.19.0.0/16
+      - LAN_NETWORK=192.168.1.0/24,100.0.0.0/8    # need 100 for tailscale on my local windows machine
+      #- NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1,192.168.1.215,192.168.1.219,192.168.1.4
+      - NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1
+      - VPN_INPUT_PORTS=
+      - VPN_OUTPUT_PORTS=
+      - DEBUG=true
+      - WEBUI_PORT=8080
+      - UMASK=000
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/binhex/docker-templates/master/binhex/images/qbittorrent-icon.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8080]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Qbittorrent media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.qbittorrent-prod-2.entrypoints=http"
+      - "traefik.http.routers.qbittorrent-prod-2.rule=Host(`qbittorrent-prod-2.local.kaneworld.org`)"
+      - "traefik.http.middlewares.qbittorrent-prod-2-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.middlewares.qbittorrent-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.qbittorrent-prod-2.middlewares=qbittorrent-prod-2-https-redirect"
+      - "traefik.http.routers.qbittorrent-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.qbittorrent-prod-2-secure.rule=Host(`qbittorrent-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.qbittorrent-prod-2-secure.tls=true"
+      #for authentik auth
+      - "traefik.http.routers.qbittorrent-prod-2-secure.middlewares=auth-forwardauth@file"
+      - "traefik.http.routers.qbittorrent-prod-2-secure.service=qbittorrent-prod-2"
+      - "traefik.http.services.qbittorrent-prod-2.loadbalancer.server.port=8080"
+      - "traefik.docker.network=proxy"
+    cap_add:
+      - NET_ADMIN  # Required for VPN connections
+      - SYS_MODULE  # required for wireguard client
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/config/scripts/qbit_healthcheck.bash"]
+      interval: 20s
+      timeout: 10s
+      start_period: 30s
+
+  prowlarr-prod-2:
+    image: ghcr.io/binhex/arch-prowlarr:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: prowlarr-prod-2
+    environment:
+      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/binhex/docker-templates/master/binhex/images/prowlarr-icon.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:9696]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Prowlarr media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr-prod-2.entrypoints=http"
+      - "traefik.http.routers.prowlarr-prod-2.rule=Host(`prowlarr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.middlewares.prowlarr-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.prowlarr-prod-2-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.routers.prowlarr-prod-2.middlewares=prowlarr-prod-2-https-redirect"
+      - "traefik.http.routers.prowlarr-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.prowlarr-prod-2-secure.rule=Host(`prowlarr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.prowlarr-prod-2-secure.tls=true"
+      #for authentik auth
+      - "traefik.http.routers.prowlarr-prod-2-secure.middlewares=auth-forwardauth@file"
+      - "traefik.http.routers.prowlarr-prod-2-secure.service=prowlarr-prod-2"
+      - "traefik.http.services.prowlarr-prod-2.loadbalancer.server.port=9696"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - /mnt/user/AppData/torrenting/prowlarr/config:/config
+    networks:
+      - proxy
+    ports:
+      - 9696:9696
+    depends_on:
+      - qbittorrent-prod-2
+    restart: unless-stopped
+
+  sonarr-prod-2:
+    image: ghcr.io/binhex/arch-sonarr:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: sonarr-prod-2
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-icon.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8989]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Sonarr media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr-prod-2.entrypoints=http"
+      - "traefik.http.routers.sonarr-prod-2.rule=Host(`sonarr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.middlewares.sonarr-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sonarr-prod-2-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.routers.sonarr-prod-2.middlewares=sonarr-prod-2-https-redirect"
+      - "traefik.http.routers.sonarr-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.sonarr-prod-2-secure.rule=Host(`sonarr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.sonarr-prod-2-secure.tls=true"
+      #for authentik auth
+      - "traefik.http.routers.sonarr-prod-2-secure.middlewares=auth-forwardauth@file"
+      - "traefik.http.routers.sonarr-prod-2-secure.service=sonarr-prod-2"
+      - "traefik.http.services.sonarr-prod-2.loadbalancer.server.port=8989"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - /mnt/user/AppData/torrenting/sonarr/config:/config
+      - /mnt/user/data:/data
+    networks:
+      - proxy
+    ports:
+      - 8989:8989
+    depends_on:
+      - qbittorrent-prod-2
+    restart: unless-stopped
+
+  radarr-prod-2:
+    image: ghcr.io/binhex/arch-radarr:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: radarr-prod-2
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/binhex/docker-templates/master/binhex/images/radarr-icon.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:7878]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Radarr media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr-prod-2.entrypoints=http"
+      - "traefik.http.routers.radarr-prod-2.rule=Host(`radarr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.middlewares.radarr-prod-2-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.middlewares.radarr-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.radarr-prod-2.middlewares=radarr-prod-2-https-redirect"
+      - "traefik.http.routers.radarr-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.radarr-prod-2-secure.rule=Host(`radarr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.radarr-prod-2-secure.tls=true"
+      - "traefik.http.routers.radarr-prod-2-secure.middlewares=auth-forwardauth@file"   #authentik login required
+      - "traefik.http.routers.radarr-prod-2-secure.service=radarr-prod-2"
+      - "traefik.http.services.radarr-prod-2.loadbalancer.server.port=7878"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - /mnt/user/AppData/torrenting/radarr/config:/config
+      - /mnt/user/data:/data
+    networks:
+      - proxy
+    ports:
+      - 7878:7878
+    depends_on:
+      - qbittorrent-prod-2
+    restart: unless-stopped
+
+  lidarr-prod-2:
+    image: 	ghcr.io/binhex/arch-lidarr:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: lidarr-prod-2
+    restart: unless-stopped
+    depends_on:
+      - qbittorrent-prod-2
+      - prowlarr-prod-2
+    networks:
+      - proxy
+    volumes:
+      - /mnt/user/AppData/torrenting/lidarr/config:/config
+      - /mnt/user/data:/data
+    environment:
+      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - 8686:8686
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/lidarr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:9705]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=lidarr media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.lidarr-prod-2.entrypoints=http"
+      - "traefik.http.routers.lidarr-prod-2.rule=Host(`lidarr-prod-2.local.kaneworld.org`)"
+      #- "traefik.http.routers.lidarr-prod-2.middlewares=default-whitelist@file"
+      - "traefik.http.middlewares.lidarr-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.lidarr-prod-2.middlewares=lidarr-prod-2-https-redirect"
+      - "traefik.http.routers.lidarr-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.lidarr-prod-2-secure.rule=Host(`lidarr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.lidarr-prod-2-secure.tls=true"
+      - "traefik.http.routers.lidarr-prod-2-secure.middlewares=auth-forwardauth@file"   #authentik login required
+      - "traefik.http.routers.lidarr-prod-2-secure.service=lidarr-prod-2"
+      - "traefik.http.services.lidarr-prod-2.loadbalancer.server.port=8686"
+      - "traefik.docker.network=proxy"
+
+
+  seerr-prod-2:
+    image: ghcr.io/seerr-team/seerr:latest
+    #image: fallenbagel/jellyseerr:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: seerr-prod-2
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - LOG_LEVEL=debug
+      - TZ=America/Los_Angeles
+      - PORT=5055
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/Fallenbagel/jellyseerr/main/public/android-chrome-512x512.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:5055]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Seerr media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.seerr-prod-2.entrypoints=http"
+      - "traefik.http.routers.seerr-prod-2.rule=Host(`jellyseerr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.middlewares.seerr-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.seerr-prod-2.middlewares=seerr-prod-2-https-redirect"
+      - "traefik.http.routers.seerr-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.seerr-prod-2-secure.rule=Host(`jellyseerr-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.seerr-prod-2-secure.tls=true"
+      - "traefik.http.routers.seerr-prod-2-secure.middlewares=auth-forwardauth@file"    #authentik login required
+      - "traefik.http.routers.seerr-prod-2-secure.service=seerr-prod-2"
+      - "traefik.http.services.seerr-prod-2.loadbalancer.server.port=5055"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - /mnt/user/AppData/torrenting/jellyseerr/config:/app/config
+      - /mnt/user/data:/data
+    networks:
+      - proxy
+    ports:
+      - 5055:5055
+    depends_on:
+      - sonarr-prod-2
+      - radarr-prod-2
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD-SHELL", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5055/api/v1/status", "||", "exit", "1"]
+    #   interval: 15s
+    #   timeout: 3s
+    #   retries: 3
+    #   start_period: 20s
+
+  cleanuparr-prod-1:
+    image: ghcr.io/cleanuparr/cleanuparr:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: cleanuparr-prod-1
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - LOG_LEVEL=debug
+      - TZ=America/Los_Angeles
+      - PORT=11011
+      - BASE_PATH=
+      - UMASK=022
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cleanuparr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:11011]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Cleanuparr media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.cleanuparr-prod-1.entrypoints=http"
+      - "traefik.http.routers.cleanuparr-prod-1.rule=Host(`cleanuparr-prod-1.local.kaneworld.org`)"
+      - "traefik.http.middlewares.cleanuparr-prod-1-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.cleanuparr-prod-1.middlewares=cleanuparr-prod-1-https-redirect"
+      - "traefik.http.routers.cleanuparr-prod-1-secure.entrypoints=https"
+      # Authentik login....
+      #- "traefik.http.routers.cleanuparr-prod-1-secure.middlewares=auth-forwardauth@file"
+      - "traefik.http.routers.cleanuparr-prod-1-secure.rule=Host(`cleanuparr-prod-1.local.kaneworld.org`)"
+      - "traefik.http.routers.cleanuparr-prod-1-secure.tls=true"
+      - "traefik.http.routers.cleanuparr-prod-1-secure.service=cleanuparr-prod-1"
+      - "traefik.http.services.cleanuparr-prod-1.loadbalancer.server.port=11011"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - /mnt/user/AppData/torrenting/cleanuparr/config:/config
+      - /mnt/user/data:/data
+    networks:
+      - proxy
+    ports:
+      - 11011:11011
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11011/health"]
+      interval: 30s        # Check every 30 seconds
+      timeout: 10s         # Allow up to 10 seconds for response
+      start_period: 30s    # Wait 30 seconds before first check
+      retries: 3           # Mark unhealthy after 3 consecutive failures
+    depends_on:
+      - qbittorrent-prod-2
+      - sonarr-prod-2
+      - radarr-prod-2
+      - prowlarr-prod-2
+
+  qui-prod-1:
+    image: ghcr.io/autobrr/qui:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: qui-prod-1
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - LOG_LEVEL=debug
+      - TZ=America/Los_Angeles
+      - PORT=7476
+      - QUI__OIDC_ENABLED=${QUI__OIDC_ENABLED}
+      - QUI__OIDC_ISSUER=${QUI__OIDC_ISSUER}
+      - QUI__OIDC_CLIENT_ID=${QUI__OIDC_CLIENT_ID}
+      - QUI__OIDC_CLIENT_SECRET=${QUI__OIDC_CLIENT_SECRET}
+      - QUI__OIDC_REDIRECT_URL=${QUI__OIDC_REDIRECT_URL}
+      - QUI__OIDC_DISABLE_BUILT_IN_LOGIN=${QUI__OIDC_DISABLE_BUILT_IN_LOGIN}
+      #- QUI__CORS_ALLOWED_ORIGINS=${QUI__CORS_ALLOWED_ORIGINS}   
+    labels:
+      - "net.unraid.docker.icon=https://hotio.dev/webhook-avatars/qui.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:7476]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Qui media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      - "traefik.enable=true"
+      - "traefik.http.routers.qui-prod-1.entrypoints=http"
+      - "traefik.http.routers.qui-prod-1.rule=Host(`qui-prod-1.local.kaneworld.org`)"
+      - "traefik.http.middlewares.qui-prod-1-https-redirect.redirectscheme.scheme=https"
+      #- "traefik.http.middlewares.qui-prod-1-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.routers.qui-prod-1.middlewares=qui-prod-1-https-redirect"
+      - "traefik.http.routers.qui-prod-1-secure.entrypoints=https"
+      - "traefik.http.routers.qui-prod-1-secure.rule=Host(`qui-prod-1.local.kaneworld.org`)"
+      - "traefik.http.routers.qui-prod-1-secure.tls=true"
+      - "traefik.http.routers.qui-prod-1-secure.service=qui-prod-1"
+      - "traefik.http.services.qui-prod-1.loadbalancer.server.port=7476"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - /mnt/user/AppData/torrenting/qui/config:/config
+      - /mnt/user/data:/data
+    networks:
+      - proxy
+    ports:
+      - 7476:7476
+    depends_on:
+      - qbittorrent-prod-2
+    restart: unless-stopped
+
+  krusader-prod-2:
+    image: ghcr.io/binhex/arch-krusader:latest
+    # tty: true
+    # stdin_open: true
+    #user: ${PUID}:${PGID}
+    container_name: krusader-prod-2
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+      - TEMP_FOLDER=/config/temp
+      - UMASK=002
+      - VNC_PASSWORD=${VNC_PASSWORD}
+      #- VNC_PASSWORD=    # putting NO password and using authentic NOTE: it wouldn't work with empty password
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/binhex/docker-templates/master/binhex/images/krusader-icon.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:6080]"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Krusader media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+      #############   this worked from dockerhand..... ####################################################
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.krusader-prod-2-secure.rule=Host(`krusader-prod-2.local.kaneworld.org`)"
+      # - "traefik.http.routers.krusader-prod-2-secure.entrypoints=https"
+      # - "traefik.http.routers.krusader-prod-2-secure.tls=true"
+      # - "traefik.http.routers.krusader-prod-2-secure.middlewares=auth-forwardauth@file"
+      # - "traefik.http.routers.krusader-prod-2-secure.service=krusader-prod-2"
+      # - "traefik.http.services.krusader-prod-2.loadbalancer.server.port=6080"
+      #############   this worked from dockerhand..... ####################################################
+      - "traefik.enable=true"
+      - "traefik.http.routers.krusader-prod-2.entrypoints=http"
+      - "traefik.http.routers.krusader-prod-2.rule=Host(`krusader-prod-2.local.kaneworld.org`)"
+      - "traefik.http.middlewares.krusader-prod-2-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.middlewares.krusader-prod-2-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.krusader-prod-2.middlewares=krusader-prod-2-https-redirect"
+      - "traefik.http.routers.krusader-prod-2-secure.entrypoints=https"
+      - "traefik.http.routers.krusader-prod-2-secure.rule=Host(`krusader-prod-2.local.kaneworld.org`)"
+      - "traefik.http.routers.krusader-prod-2-secure.tls=true"
+      # Authentik login....
+      - "traefik.http.routers.krusader-prod-2-secure.middlewares=auth-forwardauth@file"
+      - "traefik.http.routers.krusader-prod-2-secure.service=krusader-prod-2"
+      - "traefik.http.services.krusader-prod-2.loadbalancer.server.port=6080"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - /mnt/user/AppData/torrenting/krusader/config:/config
+      - /mnt/user/data:/data
+    networks:
+      - proxy
+    ports:
+      - 5900:5900  # You can change the port if needed
+      - 6080:6080
+    # depends_on:
+    #   - qbittorrent-prod-2
+    #   - sonarr-prod-2
+    #   - radarr-prod-2
+    #   - prowlarr-prod-2
+    restart: unless-stopped
+
+  recyclarr-prod-2:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    # tty: true
+    # stdin_open: true
+    container_name: recyclarr-prod-2
+    #user: ${PUID}:${PGID}
+    networks:
+      - proxy
+    volumes:
+      - /mnt/user/AppData/torrenting/recyclarr/config:/config
+    environment:
+      - TZ=America/Los_Angeles
+      - PUID=${PUID}
+      - PGID=${PGID}
+    depends_on:
+      - sonarr-prod-2
+      - radarr-prod-2
+    restart: unless-stopped
+    labels:                    
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/recyclarr/recyclarr/master/ci/notify/trash-icon.png"
+      - "net.unraid.docker.shell=/bin/bash"
+      - "net.unraid.docker.logs=/var/log"               # optional, Unraid logs tab
+      - "net.unraid.docker.description=Recyclarr media management" # optional description
+      - "net.unraid.docker.startup=true"                # tells UI it's a template container
+      - "net.unraid.docker.category=Media"             # optional category grouping
+      - "net.unraid.docker.template=true"              # marks it as template-aware
+      - "net.unraid.docker.terminal=true"              # enables /logterminal access
+      - "net.unraid.docker.restart=unless-stopped"     # ensures restart policy
+
+networks:
+  pia:
+    external: true
+  proxy:
+    external: true

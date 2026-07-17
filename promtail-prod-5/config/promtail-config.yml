@@ -1,0 +1,99 @@
+---
+server:
+  http_listen_port: 9080
+  log_level: "info"
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: https://loki-prod-4.local.kaneworld.org/loki/api/v1/push
+    tenant_id: ""
+    batchsize: 1048576  # 1MB
+    timeout: 10s
+    # backoff_config:
+    #   min_backoff: 500ms
+    #   max_backoff: 10s   # Adjust the backoff times to prevent flooding
+    #   max_retries: 10    # Adjust the number of retries before giving up
+
+scrape_configs:
+
+  - job_name: varlogs-nas
+    static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: varlogs-nas
+        __path__: /var/log/**/*.log
+
+    pipeline_stages:
+      - match:
+          selector: '{job="varlogs-nas"}'
+          stages:
+            # Extract filename from path
+            - regex:
+                #expression: '/var/log/(?P<filename>[^/]+)'
+                expression: '.*/(?P<filename>[^/]+\.log)$'
+            - labels:
+                filename:
+
+            # Extract raw log level
+            - regex:
+                expression: '(?i)(?P<level>INFO|ERROR|WARN|WARNING|DEBUG|TRACE|FATAL|NOTE)'  # case-insensitive
+            - labels:
+                level:
+
+            # Normalize level to uppercase
+            - replace:
+                expression: '(?i)(info|error|warn|warning|debug|trace|fatal|note)'
+                replace: '${1^^}'   # `${1^^}` uppercases the match in Go template syntax
+                source: level
+
+
+  - job_name: docker-nas
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+
+    pipeline_stages:
+      - docker: {}    # Parse Docker JSON logs (splits multiline, extracts "log", etc.)
+
+      # Extract log level from the log line
+      - regex:
+          source: log
+          expression: '(?i)(?P<level>INFO|ERROR|WARN|WARNING|DEBUG|TRACE|FATAL)'
+      - labels:
+          level:
+      - replace:
+          expression: '(?i)(info|error|warn|warning|debug|trace|fatal)'
+          replace: '${1^^}'
+          source: level
+
+      # Optional: drop logs older than 48h
+      - match:
+          selector: '{job=~".+"}'
+          stages:
+            - drop:
+                older_than: 48h
+
+    relabel_configs:
+      # Extract container name from metadata (e.g., /nextcloud-db-1 → nextcloud-db-1)
+      - source_labels: [__meta_docker_container_name]
+        regex: "/(.+)"
+        target_label: container
+
+      # Extract container ID
+      - source_labels: [__meta_docker_container_id]
+        target_label: container_id
+
+      # Set a job name based on container (for nicer dashboards)
+      - source_labels: [container]
+        target_label: job
+
+      # Add Docker Compose service name if available
+      - source_labels: [__meta_docker_container_label_com_docker_compose_service]
+        target_label: service
+
+      # Optional: Compose project label
+      - source_labels: [__meta_docker_container_label_com_docker_compose_project]
+        target_label: compose_project

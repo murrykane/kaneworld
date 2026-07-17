@@ -1,0 +1,68 @@
+all:
+  children:
+    ubuntu:
+      hosts:
+        mkserver.kane.mk:
+        authentik.kane.mk:
+          ansible_python_interpreter: /usr/bin/python3.11
+        cyborg.kane.mk:
+        pbs.kane.mk:
+        pihole3.kane.mk:
+        pihole6.kane.mk:
+        utilserver.kane.mk:
+        minidocker.kane.mk:
+        minijellyfin.kane.mk:
+      vars:
+        #ansible_python_interpreter: auto_silent
+        ansible_python_interpreter: /usr/bin/python3
+        ansible_user: semaphore
+        ansible_become: true 
+        ansible_become_method: sudo
+    prox:
+      hosts:
+        coco.kane.mk:
+        proxmini.kane.mk:
+      vars:
+        ansible_python_interpreter: auto_silent
+        ansible_user: semaphore
+        ansible_become: true
+        ansible_become_method: sudo
+    windows:
+      hosts:
+        murdogpc.kane.mk: 
+      vars:
+        ansible_user: ansible
+        ansible_password: Skippy10!
+        ansible_connection: winrm
+        ansible_port: 5986
+        ansible_winrm_transport: basic
+        ansible_winrm_server_cert_validation: ignore
+        ansible_python_interpreter: C:\Users\MurDog\AppData\Local\Programs\Python\python312
+    unraid:
+      hosts:
+        kaneserver.kane.mk: 
+      vars:
+        ansible_user: root
+        ansible_python_interpreter: /usr/bin/python3
+    debian:
+      hosts:
+        hahome.kane.mk:
+      vars:
+        ansible_python_interpreter: auto_silent
+        ansible_user: semaphore 
+        ansible_become: true 
+        ansible_become_method: sudo
+    qnap:
+      hosts:
+        murdognas.kane.mk: 
+      vars:
+        ansible_port: 8622
+        ansible_user: MurryKane
+        ansible_become_user: admin
+        ansible_python_interpreter: /share/CACHEDEV1_DATA/.qpkg/Python3/opt/python3/bin/python3  
+    docker:
+      hosts:
+        minidocker.kane.mk: 
+        mkserver.kane.mk: 
+        utilserver.kane.mk:
+        cyborg.kane.mk:    

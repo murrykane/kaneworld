@@ -1,0 +1,108 @@
+services:
+  postgres:
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvectors0.2.0
+    container_name: postgres-prod-1
+    restart: unless-stopped
+    ports:
+      - "192.168.1.162:5432:5432"   # TODO: replace with your actual LAN IP, or remove if apps connect via Docker network only
+    env_file:
+      - .env
+      #- ../../.env.production.local
+    volumes:
+      - /opt/postgres/data:/var/lib/postgresql/data:rw          # Ceph RBD volume mounted at OS level by Proxmox
+      # - ../postgres/postgres.conf:/etc/postgresql/postgresql.conf:ro   addded as command options.....
+      - ../postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro # Per-app/per-subnet auth rules
+      - ../postgres/init-scripts:/docker-entrypoint-initdb.d:ro
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=300"
+      - "-c"
+      - "shared_buffers=4GB"
+      - "-c"
+      - "effective_cache_size=12GB"
+      - "-c"
+      - "work_mem=32MB"
+      - "-c"
+      - "maintenance_work_mem=1GB"
+      - "-c"
+      - "max_worker_processes=8"
+      - "-c"
+      - "max_parallel_workers=8"
+      - "-c"
+      - "max_parallel_workers_per_gather=4"
+      - "-c"
+      - "max_parallel_maintenance_workers=4"
+      - "-c"
+      - "wal_buffers=16MB"
+      - "-c"
+      - "checkpoint_completion_target=0.9"
+      - "-c"
+      - "wal_compression=on"
+      - "-c"
+      - "min_wal_size=512MB"
+      - "-c"
+      - "max_wal_size=2GB"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "effective_io_concurrency=200"
+      - "-c"
+      - "huge_pages=try"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements,vectors,vchord"
+      - "-c"
+      - "log_statement=none"
+      - "-c"
+      - "log_min_duration_statement=1000"
+      - "-c"
+      - "log_connections=on"
+      - "-c"
+      - "log_disconnections=on"
+      - "-c"
+      - "hba_file=/etc/postgresql/pg_hba.conf"
+    #user: "70:70"   # postgres user in Alpine   #let it handle it in docker immich image for now, may need to adjust permissions on the Ceph RBD volume
+    healthcheck:
+      test: [ "CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER:-postgres}" -d "$${POSTGRES_DB:-postgres}" -h localhost || exit 1' ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    stop_grace_period: 120s
+    networks:
+      - project_network
+    security_opt:
+      - no-new-privileges:true
+    shm_size: "4gb"
+    tmpfs:
+      - /var/run/postgresql:uid=70,gid=70,mode=0755
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 12G
+        reservations:
+          cpus: "1.0"
+          memory: 4G
+    labels:
+      - "com.docker.compose.service=postgres"
+      - "maintainer=${POSTGRES_EMAIL:-your.dev.mail@mail.com}"
+      #- "maintainer=your.dev.mail@mail.com"
+
+networks:
+  project_network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: ma_bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    labels:
+      - "com.docker.compose.network=project_name"
+
+# No named volume — data lives on the Ceph RBD bind-mount at /mnt/ceph_pg_data

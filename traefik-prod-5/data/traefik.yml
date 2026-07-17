@@ -1,0 +1,92 @@
+api:
+  dashboard: true
+  debug: true
+entryPoints:
+  http:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+      # useXForwardedFor: true
+    forwardedHeaders:
+      insecure: true
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
+
+  https:
+    address: ":443"
+    http:
+      middlewares:
+        - crowdsec-bouncer@file
+    forwardedHeaders:
+      insecure: true
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
+
+  metrics:
+    address: ":8899"
+        
+serversTransport:
+  insecureSkipVerify: true
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+  file:
+    filename: /config.yml
+    watch: true     #this is key!!!! so that when you add entries to your labels on containers it will look for the matching entries here
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: murrykane@gmail.com
+      storage: acme.json
+      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory # staging
+      caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
+      dnsChallenge:
+        provider: cloudflare
+        #disablePropagationCheck: true # uncomment this if you have issues pulling certificates through cloudflare, By setting this flag to true disables the need to wait for the propagation of the TXT record to all authoritative name servers.
+        #delayBeforeCheck: 60s # uncomment along with disablePropagationCheck if needed to ensure the TXT record is ready before verification is attempted 
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+log:
+  level: "WARN"
+  #filePath: "/var/log/traefik/traefik.log"
+# accessLog:
+#   #filePath: "/var/log/traefik/access.log"
+#   bufferingSize: 0
+# accessLog:
+#   format: json
+#   bufferingSize: 0
+#   fields:
+#     defaultMode: keep
+
+accessLog:
+  format: json
+  bufferingSize: 0
+  filters:
+    statusCodes:
+      - "400-599"
+  fields:
+    defaultMode: keep
+
+metrics:
+  prometheus:
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    entryPoint: metrics
+    manualRouting: true

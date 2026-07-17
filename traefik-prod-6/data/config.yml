@@ -1,0 +1,56 @@
+
+http:
+  middlewares:
+
+    crowdsec-bouncer:
+      forwardAuth:
+        address: http://bouncer-traefik-prod-6:8080/api/v1/forwardAuth
+        trustForwardHeader: true
+        maxResponseBodySize: 1048576
+
+    auth-forwardauth:
+      forwardAuth:
+        address: http://auth-outpost:9000/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        maxResponseBodySize: 1048576
+        addAuthCookiesToResponse:
+          - Set-Cookie
+        authRequestHeaders:
+          - Accept
+          - Cookie
+          - Authorization
+          - X-Forwarded-For
+          - X-Forwarded-Host
+          - X-Forwarded-Proto
+          - X-Forwarded-Uri
+          - X-Real-Ip
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-entitlements
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+          - X-authentik-jwt
+          - X-authentik-meta-jwks
+          - X-authentik-meta-outpost
+          - X-authentik-meta-provider
+          - X-authentik-meta-app
+          - X-authentik-meta-version
+        tls:
+          insecureSkipVerify: true
+
+    auth-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+          #Authorization: Authorization   #this was over-writting the header with a hard-coded value 'Authorization' it should have been "" to keep existing value

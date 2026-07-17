@@ -1,0 +1,92 @@
+services:
+  semaphore-prod-1:
+    restart: unless-stopped
+    container_name: semaphore-prod-1
+    ports:
+      - 3000:3000
+    #image: semaphoreui/semaphore:latest
+    image: semaphore-ui-custom                #NOTE:  Use this command in the local directory where you upload 'docker build -t semaphore-ui-custom .'
+    environment:
+      ANSIBLE_COLLECTIONS_PATHS: /home/semaphore/.ansible/collections
+      SEMAPHORE_DB_USER: ${SEMAPHORE_DB_USER}
+      SEMAPHORE_DB_OPTIONS: '${SEMAPHORE_DB_OPTIONS}'
+      SEMAPHORE_DB_PASS: ${SEMAPHORE_DB_PASS}
+      SEMAPHORE_DB_HOST: ${SEMAPHORE_DB_HOST}
+      SEMAPHORE_DB_PORT: ${SEMAPHORE_DB_PORT}
+      SEMAPHORE_DB_DIALECT: ${SEMAPHORE_DB_DIALECT}
+      SEMAPHORE_DB: ${SEMAPHORE_DB}
+      SEMAPHORE_PLAYBOOK_PATH: ${SEMAPHORE_PLAYBOOK_PATH}
+      SEMAPHORE_ADMIN_PASSWORD: ${SEMAPHORE_ADMIN_PASSWORD}
+      SEMAPHORE_ADMIN_NAME: ${SEMAPHORE_ADMIN_NAME}
+      SEMAPHORE_ADMIN_EMAIL: ${SEMAPHORE_ADMIN_EMAIL}
+      SEMAPHORE_ADMIN: ${SEMAPHORE_ADMIN}
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${SEMAPHORE_ACCESS_KEY_ENCRYPTION}
+      SEMAPHORE_LDAP_ACTIVATED: ${SEMAPHORE_LDAP_ACTIVATED}
+      SEMAPHORE_LDAP_HOST: ${SEMAPHORE_LDAP_HOST}
+      SEMAPHORE_LDAP_PORT: ${SEMAPHORE_LDAP_PORT}
+      SEMAPHORE_LDAP_NEEDTLS: ${SEMAPHORE_LDAP_NEEDTLS}
+      SEMAPHORE_LDAP_DN_BIND: ${SEMAPHORE_LDAP_DN_BIND}
+      SEMAPHORE_LDAP_PASSWORD: ${SEMAPHORE_LDAP_PASSWORD}
+      SEMAPHORE_LDAP_DN_SEARCH: ${SEMAPHORE_LDAP_DN_SEARCH}
+      SEMAPHORE_LDAP_SEARCH_FILTER: "(\u0026(uid=%s)(memberOf=cn=ipausers,cn=groups,cn=accounts,dc=local,dc=example,dc=com))"
+      SEMAPHORE_WEB_ROOT: /
+      TZ: America/Los_Angeles
+    networks:
+       proxy:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.semaphore-prod-1.entrypoints=http"
+      - "traefik.http.routers.semaphore-prod-1.rule=Host(`semaphore-prod-1.local.kaneworld.org`)"
+      - "traefik.http.middlewares.semaphore-prod-1-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.semaphore-prod-1.middlewares=semaphore-prod-1-https-redirect"
+      - "traefik.http.routers.semaphore-prod-1-secure.entrypoints=https"
+      - "traefik.http.routers.semaphore-prod-1-secure.rule=Host(`semaphore-prod-1.local.kaneworld.org`)"
+      - "traefik.http.routers.semaphore-prod-1-secure.tls=true"
+      - "traefik.http.routers.semaphore-prod-1-secure.service=semaphore-prod-1"
+      - "traefik.http.services.semaphore-prod-1.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+      # Unauthenticated API-only route for Homepage widget
+      - "traefik.http.routers.semaphore-api.rule=Host(`semaphore-api.local.kaneworld.org`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.semaphore-api.entrypoints=https"
+      - "traefik.http.routers.semaphore-api.service=api@internal"
+      - "traefik.http.routers.semaphore-api.tls.certresolver=cloudflare"
+    volumes:
+      - semaphore_data:/var/lib/semaphore
+      - semaphore_config:/etc/semaphore
+      - semaphore_tmp:/tmp/semaphore
+      - /home/semaphore/.ssh:/home/semaphore/.ssh
+      - semaphore_collections:/home/semaphore 
+      - /opt/repos:/opt/repos     # repo copy to local file system 
+      ## ansible-galaxy collection install --upgrade -r /home/semaphore/requirements.yml
+    #entrypoint: ["/bin/sh", "-c", "apk add --no-cache jq", "/sbin/tini", "--"]
+
+volumes:
+    semaphore_data:
+      driver: local
+      driver_opts:
+        type: none
+        device: /home/murry/containers/semaphore-prod-1/data
+        o: bind
+    semaphore_config:
+      driver: local
+      driver_opts:
+        type: none
+        device: /home/murry/containers/semaphore-prod-1/config
+        o: bind
+    semaphore_tmp:
+      driver: local
+      driver_opts:
+        type: none
+        device: /home/murry/containers/semaphore-prod-1/temp
+        o: bind
+    semaphore_collections:
+      driver: local
+      driver_opts:
+        type: none
+        device: /home/murry/containers/semaphore-prod-1/collections
+        o: bind
+
+
+networks:
+  proxy:
+    external: true # or comment this line to auto create the network 

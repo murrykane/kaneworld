@@ -1,0 +1,170 @@
+# make the private network pia first! 
+# docker network create pia
+services:
+  pia-vpn:
+    image: haugene/transmission-openvpn
+    container_name: pia-vpn
+    environment:
+      - OPENVPN_PROVIDER=PIA
+      - OPENVPN_USERNAME=${OPENVPN_USERNAME}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - OPENVPN_CONFIG=us-east.privateinternetaccess.com.ovpn
+      - OPENVPN_ROUTES=0.0.0.0/0
+      - LOCAL_NETWORK=192.168.0.0/24  # Adjust this to match your local network if needed
+      - CREATE_TUN_DEVICE=true
+      - TRANSMISSION_WEB_UI=disabled  # We don't need the transmission UI
+      - WEBPROXY_ENABLED=false
+      - VPN_KILL_SWITCH=true  # This is the kill switch!
+    volumes:
+      - /home/murry/containers/pia-media/pia/config:/config
+      - /home/murry/containers/pia-media/pia:/downloads
+    networks:
+      - pia
+    cap_add:
+      - NET_ADMIN  # Required for VPN connections
+    restart: unless-stopped
+
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - WEBUI_PORT=8080
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/qbitttorrent/config:/config
+      - /Media/torrents/torrents:/downloads
+    networks:
+      - pia
+    ports:
+      - 8080:8080
+    depends_on:
+      - pia-vpn
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/prowlarr/config:/config
+    networks:
+      - pia
+    ports:
+      - 9000:9000
+    depends_on:
+      - pia-vpn
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/sonarr/config:/config
+      - /Media/media/tv:/tv
+      - /Media/torrents/tv:/downloads
+    networks:
+      - pia
+    ports:
+      - 8989:8989
+    depends_on:
+      - pia-vpn
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/radarr/config:/config
+      - /Media/media/movies:/movies
+      - /Media/torrents/movies:/downloads
+    networks:
+      - pia
+    ports:
+      - 7878:7878
+    depends_on:
+      - pia-vpn
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/bazarr/config:/config
+      - /Media/media/tv:/tv
+      - /Media/media/movies:/movies
+    networks:
+      - pia
+    ports:
+      - 6767:6767
+    depends_on:
+      - pia-vpn
+    restart: unless-stopped
+
+  jellyseer:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseer
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - LOG_LEVEL=debug
+      - TZ=America/Los_Angeles
+      - PORT=5055
+    volumes:
+      - /home/murry/containers/pia-media/jellyseer/config:/app/config
+      - /Media/media:/media
+    networks:
+      - pia
+    ports:
+      - 5055:5055
+    depends_on:
+      - pia-vpn
+    restart: unless-stopped
+
+  krusader:
+    image: binhex/arch-krusader
+    container_name: krusader
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/pia-media/krusader/config:/config
+      - /Media:/files
+    networks:
+      - pia
+    ports:
+      - 8088:8088  # You can change the port if needed
+    restart: unless-stopped
+
+networks:
+  pia:
+    external: true   
+
+# volumes:
+#   cifs_final:
+#     driver: local
+#     driver_opts:
+#       type: cifs    
+#       device: //192.168.1.20/data
+#       o: "username=murrykane,password=Skippy10!,vers=3.0,uid=1000,gid=1000"
+  # cifs_download:
+  #   driver: local
+  #   driver_opts:
+  #     type: cifs    
+  #     device: //192.168.1.20/torrents
+  #     o: "username=murrykane,password=Skippy10!,vers=3.0,uid=1000,gid=1000"

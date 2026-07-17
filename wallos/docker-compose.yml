@@ -1,0 +1,31 @@
+services:
+  wallos:
+    image: bellamy/wallos:latest
+    container_name: ${CONTAINER_NAME}
+    #user: ${UID}:${GID}
+    environment:
+      - TZ=America/Los_Angeles
+    ports:
+      - "8282:${TRAEFIK_UI_PORT}"
+    restart: unless-stopped
+    volumes:
+      - './db:/var/www/html/db'
+      - './logos:/var/www/html/images/uploads/logos'
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_NAME}.rule=Host(`${TRAEFIK_DOMAIN_NAME}`)"
+      - "traefik.http.middlewares.${TRAEFIK_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_NAME}.middlewares=${TRAEFIK_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN_NAME}`)"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.service=${TRAEFIK_NAME}"
+      - "traefik.http.services.${TRAEFIK_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+
+networks:
+  proxy:
+    external: true # or comment this line to auto create the network

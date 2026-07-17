@@ -1,0 +1,72 @@
+#version: '3'
+# make sure ${HOME}/containers/traefik/acme.json   is root owned and 600 permissions
+# 
+secrets:
+  cf-token:
+    file: ./cf-token
+services:
+  traefik-prod-8:
+    image: traefik:latest # or traefik:v3.3 to pin a version
+    container_name: ${TRAEFIK_ROUTER_NAME}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true # helps to increase security
+    secrets:
+      - cf-token # the secret at the top of this file
+    env_file:
+      - .env # store other secrets e.g., dashboard password
+    networks:
+       proxy:
+    ports:
+      - 80:80
+      - 443:443
+      - 8899:8899
+     # - 10000:10000 # optional
+     # - 33073:33073 # optional
+    environment:
+      - TRAEFIK_DASHBOARD_CREDENTIALS=${TRAEFIK_DASHBOARD_CREDENTIALS}
+      # - CF_API_EMAIL=your@email.com # Cloudflare email
+      # - CF_DNS_API_TOKEN=YOUR-TOKEN # Cloudflare API Token
+      - CF_DNS_API_TOKEN_FILE=/run/secrets/cf-token # see https://doc.traefik.io/traefik/https/acme/#providers
+      # token file is the proper way to do it
+      - TRAEFIK_NODE_NAME=${TRAEFIK_NODE_NAME}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/traefik.yml:/traefik.yml:ro
+      - ./data/acme.json:/acme.json
+      - ./data/config.yml:/config.yml:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.middlewares=${TRAEFIK_ROUTER_NAME}-auth"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      # Authentik login....
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.middlewares=auth-forwardauth@file"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls.domains[0].main=local.kaneworld.org"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls.domains[0].sans=*.local.kaneworld.org"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=api@internal"
+      # Unauthenticated API-only route for Homepage widget
+      - "traefik.http.routers.traefik-api.rule=Host(`${TRAEFIK_SHORT}-widget.local.kaneworld.org`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.traefik-api.entrypoints=https"
+      - "traefik.http.routers.traefik-api.service=api@internal"
+      - "traefik.http.routers.traefik-api.tls.certresolver=cloudflare"
+      # for metrics
+      - "traefik.http.routers.traefik-metrics.rule=Host(`${TRAEFIK_SHORT}-metrics.local.kaneworld.org`) && Path(`/metrics`)"
+      #- "traefik.http.routers.traefik-metrics.entrypoints=metrics"  #over tls with certificate...... so switched to 443/https
+      - "traefik.http.routers.traefik-metrics.entrypoints=https"
+      - "traefik.http.routers.traefik-metrics.tls=true"
+      - "traefik.http.routers.traefik-metrics.service=prometheus@internal"
+networks:
+  proxy:
+    external: true # or comment this line to auto create the network
+
+

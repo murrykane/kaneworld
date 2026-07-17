@@ -1,0 +1,15 @@
+FROM semaphoreui/semaphore:latest
+USER root
+#RUN apk add --no-cache jq \
+RUN apk add --no-cache jq
+    #&& addgroup -S semaphore \
+    #&& adduser -S semaphore -G semaphore
+USER semaphore
+# Copy your requirements file (if you have one)
+COPY requirements.txt .
+# Install dependencies from the requirements file
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Ansible collections
+COPY requirements.yml .
+RUN ansible-galaxy collection install -r requirements.yml

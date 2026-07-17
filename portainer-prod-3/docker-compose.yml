@@ -1,0 +1,40 @@
+
+services:
+  portainer-prod-3:
+    image: portainer/portainer-ce
+    container_name: portainer-prod-3
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 9001:9000
+      - 8001:8001
+      - 9444:9443
+    networks:
+      - proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - .data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer-prod-3.entrypoints=http"
+      - "traefik.http.routers.portainer-prod-3.rule=Host(`portainer-prod-3.local.kaneworld.org`)"
+      - "traefik.http.middlewares.portainer-prod-3-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.portainer-prod-3.middlewares=portainer-prod-3-https-redirect"
+      - "traefik.http.routers.portainer-prod-3-secure.entrypoints=https"
+      - "traefik.http.routers.portainer-prod-3-secure.rule=Host(`portainer-prod-3.local.kaneworld.org`)"
+      - "traefik.http.routers.portainer-prod-3-secure.tls=true"
+      - "traefik.http.routers.portainer-prod-3-secure.service=portainer-prod-3"
+      - "traefik.http.services.portainer-prod-3.loadbalancer.server.port=9000"
+      # # for authentik
+      - "traefik.http.routers.portainer-prod-3-callback.rule=Host(`portainer-prod-3.local.kaneworld.org`) && PathPrefix(`/oauth2/callback`)"
+      - "traefik.http.routers.portainer-prod-3-callback.entrypoints=https"
+      - "traefik.http.routers.portainer-prod-3-callback.tls=true"
+      #- "traefik.http.routers.portainer-prod-3-callback.tls.certresolver=myresolver"
+      - "traefik.http.services.portainer-prod-3-callback.loadbalancer.server.port=9000" 
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
