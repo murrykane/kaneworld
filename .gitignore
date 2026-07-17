@@ -18,3 +18,9 @@ vault_pass*
 crowdsec-prod-3/.env
 immich/.env
 homepage-prod-1/.env
+apprise-prod-1/config/config2.yml
+apprise-prod-1/config/config.yml
+grafana-monitoring/.env
+grafana-monitoring/prometheus/config/alertmanager.yml
+grafana-monitoring/pve/pve.yml
+grafana-monitoring/telegraf/telegraf.conf

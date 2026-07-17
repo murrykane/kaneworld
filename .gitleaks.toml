@@ -15,6 +15,11 @@ description = "Cloudflare secret / token file"
 regex = '''(?i)cf[_-]?secret'''
 path = '''(?i)cf[_-]?secret'''
 
+[[rules]]
+id = "apprise-discord-webhook-url"
+description = "Apprise-style discord://webhook_id/webhook_token URL (default rules only catch key:value or discord.com/api/webhooks/... shapes, not this)"
+regex = '''discord://\d{15,20}/[A-Za-z0-9_-]{60,90}'''
+
 [allowlist]
 description = "Paths gitleaks should never scan"
 paths = [

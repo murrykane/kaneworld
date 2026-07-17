@@ -1,0 +1,227 @@
+services:
+  grafana-prod-1:
+    container_name: grafana-prod-1
+    image: grafana/grafana-oss:main-ubuntu
+    user: "0"
+    ports:
+      - 3002:3000
+    networks:
+      - grafana-monitoring
+      - proxy
+    volumes:
+      - /home/murry/containers/grafana-monitoring/grafana:/var/lib/grafana
+    restart: unless-stopped
+    environment:
+      TZ: America/Los_Angeles
+      GF_SERVER_DOMAIN: kane.mk
+      GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
+      GF_AUTH_GENERIC_OAUTH_NAME: "authentik"
+      GF_AUTH_GENERIC_OAUTH_CLIENT_ID: ${GF_AUTH_GENERIC_OAUTH_CLIENT_ID}
+      GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ${GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
+      GF_AUTH_GENERIC_OAUTH_SCOPES: ${GF_AUTH_GENERIC_OAUTH_SCOPES}
+      GF_AUTH_GENERIC_OAUTH_AUTH_URL: ${GF_AUTH_GENERIC_OAUTH_AUTH_URL}
+      GF_AUTH_GENERIC_OAUTH_TOKEN_URL: ${GF_AUTH_GENERIC_OAUTH_TOKEN_URL}
+      GF_AUTH_GENERIC_OAUTH_API_URL: ${GF_AUTH_GENERIC_OAUTH_API_URL}
+      GF_AUTH_SIGNOUT_REDIRECT_URL: ${GF_AUTH_SIGNOUT_REDIRECT_URL}
+      # Optionally enable auto-login (bypasses Grafana login screen)
+      GF_AUTH_OAUTH_AUTO_LOGIN: "true"
+      # Optionally map user groups to Grafana roles
+      GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'"
+      # Required if Grafana is running behind a reverse proxy
+      #GF_SERVER_ROOT_URL: "https://monitoring.local.kaneworld.org"
+      GF_SERVER_ROOT_URL: "https://grafana.kaneworld.org"
+      # in authentik provider for redirect strick 'https://monitoring.local.kaneworld.org/login/generic_oauth'
+      GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH: "email"
+      GF_AUTH_GENERIC_OAUTH_LOGIN_ATTRIBUTE_PATH: "preferred_username"
+      GF_AUTH_GENERIC_OAUTH_NAME_ATTRIBUTE_PATH: "name"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana-prod-1.entrypoints=http"
+      - "traefik.http.routers.grafana-prod-1.rule=Host(`monitoring.local.kaneworld.org`)"
+      - "traefik.http.routers.grafana-prod-1.middlewares=default-whitelist@file"
+      - "traefik.http.middlewares.grafana-prod-1-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.grafana-prod-1.middlewares=grafana-prod-1-https-redirect"
+      - "traefik.http.routers.grafana-prod-1-secure.entrypoints=https"
+      - "traefik.http.routers.grafana-prod-1-secure.rule=Host(`monitoring.local.kaneworld.org`)"
+      - "traefik.http.routers.grafana-prod-1-secure.tls=true"
+      - "traefik.http.routers.grafana-prod-1-secure.service=grafana-prod-1"
+      - "traefik.http.services.grafana-prod-1.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+      # # Unauthenticated API-only route for Homepage widget
+      # - "traefik.http.routers.grafana-api.rule=Host(`monitoring-widget.local.kaneworld.org`) && PathPrefix(`/api`)"
+      # - "traefik.http.routers.grafana-api.entrypoints=https"
+      # - "traefik.http.routers.grafana-api.service=api@internal"
+      # - "traefik.http.routers.grafana-api.tls.certresolver=cloudflare"
+  influxdb-prod-1:
+    container_name: influxdb-prod-1
+    image: influxdb:latest
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+      - 8089:8089/udp
+    environment:
+      - TZ=America/Los_Angeles
+    networks:
+      - grafana-monitoring
+    volumes:
+      - /home/murry/containers/grafana-monitoring/influxdb:/var/lib/influxdb2
+
+  telegraf-prod-1:
+    container_name: telegraf-prod-1
+    restart: unless-stopped
+    #user: telegraf:1000 #you need to find the GID of Docker if not added to Sudo group
+    user: 1000:1000  # murry
+    networks:
+      - grafana-monitoring
+    volumes:
+        - '/home/murry/containers/grafana-monitoring/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro'
+        - '/:/hostfs:ro' # to monitor docker-vm
+        - '/var/run/docker.sock:/var/run/docker.sock' # to monitor docker containers
+        - '/home/murry/containers/grafana-monitoring/telegraf/mibs:/usr/share/snmp/mibs' # mibs files [e.g., sophos]
+    environment:
+      - TZ=America/Los_Angeles
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
+      - HOST_MOUNT_PREFIX=/hostfs
+    image: telegraf:latest
+  prometheus-prod-1:
+    image: prom/prometheus
+    container_name: prometheus-prod-1
+    restart: unless-stopped
+    environment:
+      - TZ=America/Los_Angeles
+      - KUMA_USERNAME=${KUMA_USERNAME}
+      - KUMA_PASSWORD=${KUMA_PASSWORD}
+    #### IMPORTANT #########
+    #NOTE: the owner and group needs to be /data 65534:65534  'sudo chown -R 65534:65534 /home/murry/containers/grafana-monitoring/prometheus/data'
+    ########################
+    # entrypoint:
+    #   - /bin/sh
+    #   - -c
+    #   - |
+    #     chown -R 65534:65534 /prometheus
+    # environment:
+    #   - PUID=1000
+    #   - PGID=1000
+    #command: --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --web.console.libraries=/usr/share/prometheus/console_libraries --web.console.templates=/usr/share/prometheus/consoles --storage.tsdb.retention.time=365d
+    command: 
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-remote-write-receiver'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=365d'
+      - "--enable-feature=expand-external-labels"
+    ports:
+      - 9090:9090
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.entrypoints=http"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.local.kaneworld.org`)"
+      - "traefik.http.middlewares.prometheus-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.prometheus.middlewares=prometheus-https-redirect"
+      - "traefik.http.routers.prometheus-secure.entrypoints=https"
+      - "traefik.http.routers.prometheus-secure.rule=Host(`prometheus.local.kaneworld.org`)"
+      - "traefik.http.routers.prometheus-secure.tls=true"
+      - "traefik.http.routers.prometheus-secure.middlewares=auth-forwardauth@file"   #Added for authentik login
+      - "traefik.http.routers.prometheus-secure.service=prometheus"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.docker.network=proxy"
+      # added for redirect after authentik redirect issues
+      - "traefik.http.routers.prometheus-outpost.entrypoints=https"
+      - "traefik.http.routers.prometheus-outpost.rule=Host(`prometheus.local.kaneworld.org`) && PathPrefix(`/outpost.goauthentik.io`)"
+      - "traefik.http.routers.prometheus-outpost.tls=true"
+      - "traefik.http.routers.prometheus-outpost.priority=500"
+      - "traefik.http.routers.prometheus-outpost.service=mkserver-outpost-service@docker"
+    volumes:
+      - /home/murry/containers/grafana-monitoring/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml #contained by the next line
+      - /home/murry/containers/grafana-monitoring/prometheus/config/alerts.yml:/etc/prometheus/alerts.yml
+      #- /home/murry/containers/grafana-monitoring/prometheus/config:/etc/prometheus
+      - /home/murry/containers/grafana-monitoring/prometheus/data:/prometheus
+    networks:
+      - grafana-monitoring
+      - proxy
+
+  alertmanager-prod-1:
+    restart: unless-stopped
+    container_name: alertmanager-prod-1
+    # environment:
+    #   - TZ=America/Los_Angeles
+    depends_on:
+      - prometheus-prod-1
+    image: prom/alertmanager:latest
+    volumes:
+      - /home/murry/containers/grafana-monitoring/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    expose:
+      - "9093"
+    ports:
+      - 9093:9093
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alertmanager-prod-1.entrypoints=http"
+      - "traefik.http.routers.alertmanager-prod-1.rule=Host(`alertmanager.local.kaneworld.org`)"
+      - "traefik.http.middlewares.alertmanager-prod-1-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.alertmanager-prod-1.middlewares=alertmanager-prod-1-https-redirect"
+      - "traefik.http.routers.alertmanager-prod-1-secure.entrypoints=https"
+      - "traefik.http.routers.alertmanager-prod-1-secure.rule=Host(`alertmanager.local.kaneworld.org`)"
+      - "traefik.http.routers.alertmanager-prod-1-secure.tls=true"
+      - "traefik.http.routers.alertmanager-prod-1-secure.service=alertmanager-prod-1"
+      - "traefik.http.services.alertmanager-prod-1.loadbalancer.server.port=9093"
+      - "traefik.http.routers.alertmanager-prod-1-secure.middlewares=auth-forwardauth@file"   #Added for authentik login
+      - "traefik.docker.network=proxy"
+      # added for redirect after authentik redirect issues
+      - "traefik.http.routers.alertmanager-prod-1-outpost.entrypoints=https"
+      - "traefik.http.routers.alertmanager-prod-1-outpost.rule=Host(`alertmanager.local.kaneworld.org`) && PathPrefix(`/outpost.goauthentik.io`)"
+      - "traefik.http.routers.alertmanager-prod-1-outpost.tls=true"
+      - "traefik.http.routers.alertmanager-prod-1-outpost.priority=500"
+      - "traefik.http.routers.alertmanager-prod-1-outpost.service=mkserver-outpost-service@docker"
+    networks:
+      - grafana-monitoring
+      - proxy
+
+  unpoller-prod-1:
+    image: ghcr.io/unpoller/unpoller:latest
+    restart: unless-stopped
+    ports:
+      - '9130:9130'
+    container_name: unpoller-prod-1
+    environment:
+        # disable prometheus binding
+      - UP_PROM_ADDR=disabled
+      - TZ=America/Los_Angeles
+      - UP_INFLUXDB_DB=${INFLUXDB_DB}
+      - UP_INFLUXDB_USER=${INFLUXDB_ADMIN_USER}
+      - UP_INFLUXDB_PASS=${INFLUXDB_ADMIN_PASSWORD}
+      - UP_INFLUXDB_ORG=${INFLUXDB_ORG}
+      - UP_INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - UP_INFLUXDB_AUTH_TOKEN=${INFLUXDB_ADMIN_TOKEN}
+      - UP_INFLUXDB_URL=${UP_INFLUXDB_URL}
+      - UP_UNIFI_DEFAULT_USER=${UNIFI_USER}
+      - UP_UNIFI_DEFAULT_PASS=${UNIFI_PASS}
+      - UP_UNIFI_DEFAULT_URL=${UNIFI_URL}
+      - UP_POLLER_DEBUG=${POLLER_DEBUG}
+      - UP_UNIFI_DEFAULT_SAVE_DPI=${POLLER_SAVE_DPI}
+    networks:
+      - grafana-monitoring
+
+  pve-exporter-prod-1:
+    init: true
+    image: prompve/prometheus-pve-exporter
+    container_name: pve-exporter-prod-1
+    restart: unless-stopped
+    environment:
+      - TZ=America/Los_Angeles
+    ports:
+      - '9221:9221'
+    volumes:
+      - /home/murry/containers/grafana-monitoring/pve/pve.yml:/etc/prometheus/pve.yml
+    networks:
+      - grafana-monitoring
+
+networks:
+  grafana-monitoring:
+  proxy:
+    external: true
