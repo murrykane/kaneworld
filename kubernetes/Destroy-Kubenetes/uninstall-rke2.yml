@@ -1,0 +1,393 @@
+---
+# uninstall-rke2.yml
+#
+# Purpose: Uninstall a full RKE2 cluster, remove Helm apps (traefik, cert-manager,
+#          rancher, longhorn), delete kube-vip, drain/delete nodes, stop services,
+#          and purge files left on all nodes. Safe by default; can be made more
+#          aggressive with extra vars below.
+#
+# Usage examples:
+#   ansible-playbook -i inventory uninstall-rke2.yml -K
+#   ansible-playbook -i inventory uninstall-rke2.yml -K -e flush_iptables=true -e reboot_after=true
+#
+# Expected inventory groups:
+#   [rke2_servers]
+#   rke2-prod-1
+#   rke2-prod-2
+#   rke2-prod-3
+#   rke2-prod-6
+#
+#   [rke2_agents]
+#   <your-agent-nodes>
+#
+# Variables you may override with -e:
+#   kubectl_bin: "/var/lib/rancher/rke2/bin/kubectl"
+#   helm_bin:    "/usr/local/bin/helm"     # falls back automatically if unset/missing
+#   rke2_kubeconfig: "/etc/rancher/rke2/rke2.yaml"
+#   drain_timeout: "600s"
+#   flush_iptables: false
+#   reboot_after: false
+#   remove_network_ifaces: true
+#   extra_dirs_to_nuke: []
+#
+# Notes:
+# - The playbook tries to run cluster-level deletes once from the first server host.
+# - Then it stops/cleans services and files on every server/agent.
+# - kube-vip is removed both as a DaemonSet (if present) and any static manifest
+#   under /etc/rancher/rke2/manifests.
+# - Flushing iptables can disrupt other services on the host; keep it false unless
+#   you truly want a full network cleanup.
+
+#Run it with :     ansible-playbook -i inventory.yml uninstall-rke2.yml -K
+
+- name: "Cluster teardown: helm uninstalls, kube-vip removal, drain & delete nodes"
+  hosts: rke2_servers[0]
+  become: true
+  gather_facts: true
+  vars:
+    kubectl_bin: "/var/lib/rancher/rke2/bin/kubectl"
+    helm_bin_candidates:
+      - "/var/lib/rancher/rke2/bin/helm"
+      - "/usr/local/bin/helm"
+      - "/usr/bin/helm"
+    rke2_kubeconfig: "/etc/rancher/rke2/rke2.yaml"
+    drain_timeout: "600s"
+    helm_releases:
+      - { name: "traefik",        namespace: "kube-system" }
+      - { name: "cert-manager",   namespace: "cert-manager" }
+      - { name: "rancher",       namespace: "cattle-system" }
+      - { name: "longhorn",      namespace: "longhorn-system" }
+  tasks:
+    - name: Ensure kubectl is present
+      ansible.builtin.command: "{{ kubectl_bin }} version --client=true"
+      register: kubectl_check
+      failed_when: kubectl_check.rc != 0
+      changed_when: false
+
+    - name: Check kubectl binary exists
+      ansible.builtin.stat:
+        path: "{{ kubectl_bin }}"
+      register: kubectl_stat
+
+    - name: Fail if kubectl is missing
+      ansible.builtin.fail:
+        msg: "kubectl not found at {{ kubectl_bin }}. Adjust kubectl_bin var."
+      when: not kubectl_stat.stat.exists
+
+    - name: Pick a helm binary if present
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ helm_bin_candidates }}"
+      register: helm_stats
+
+    - name: Set fact helm_bin (if any candidate exists)
+      ansible.builtin.set_fact:
+        helm_bin: "{{ (helm_stats.results | selectattr('stat.exists') | list | first).item | default('') }}"
+
+    - name: Try helm version (optional)
+      ansible.builtin.command: "{{ helm_bin }} version --short"
+      register: helm_version
+      failed_when: false
+      changed_when: false
+      when: helm_bin | length > 0
+
+    - name: Delete kube-vip DaemonSet (if present)
+      ansible.builtin.command: >-
+        {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }}
+        -n kube-system delete ds -l app.kubernetes.io/name=kube-vip --ignore-not-found
+      register: del_kubevip_ds
+      changed_when: del_kubevip_ds.rc == 0
+
+    - name: Delete kube-vip ServiceAccount/ClusterRole/Bindings (best-effort by label)
+      ansible.builtin.shell: >-
+        set -o pipefail &&
+        {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} get all,sa,cm,clusterrole,clusterrolebinding,role,rolebinding -A
+        -l app.kubernetes.io/name=kube-vip -o name 2>/dev/null |
+        xargs -r {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} delete --ignore-not-found
+      args:
+        executable: /bin/bash
+      register: del_kubevip_rbacs
+      changed_when: del_kubevip_rbacs.rc == 0
+
+    - name: Remove kube-vip static manifests from servers
+      ansible.builtin.find:
+        paths:
+          - /etc/rancher/rke2/manifests
+        patterns:
+          - "kube-vip*.yml"
+          - "kube-vip*.yaml"
+        file_type: file
+      register: kubevip_files
+
+    - name: Delete kube-vip manifest files
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ kubevip_files.files }}"
+      when: kubevip_files.matched | default(0) | int > 0
+
+    - name: Helm uninstall (best-effort) — only if helm is available
+      ansible.builtin.command: >-
+        {{ helm_bin }} --kubeconfig {{ rke2_kubeconfig }} -n {{ item.namespace }} uninstall {{ item.name }}
+      loop: "{{ helm_releases }}"
+      register: helm_uninstall
+      failed_when: false
+      changed_when: "'uninstalled' in helm_uninstall.stdout | lower"
+      when: helm_bin | length > 0
+
+    # - name: If helm not available, delete namespaces directly (best-effort)
+    #   ansible.builtin.command: >-
+    #     {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} delete ns {{ item.namespace }} --ignore-not-found
+    #   loop: "{{ helm_releases }}"
+    #   when: helm_bin | length == 0
+    #   register: ns_delete
+    #   changed_when: ns_delete.rc == 0
+    - name: If helm not available, delete resources directly (best-effort)
+      ansible.builtin.command: >
+        {{ kubectl_bin }} --kubeconfig /etc/rancher/rke2/rke2.yaml
+        delete all,cm,sa,clusterrole,clusterrolebinding,validatingwebhookconfiguration,mutatingwebhookconfiguration
+        -l app={{ item.name }} -n {{ item.namespace }} --ignore-not-found
+      loop:
+        - { name: traefik, namespace: kube-system }
+        - { name: cert-manager, namespace: cert-manager }
+        - { name: rancher, namespace: cattle-system }
+        - { name: longhorn, namespace: longhorn-system }
+      ignore_errors: true
+
+
+    - name: Force-remove stuck namespace finalizers (best-effort)
+      ansible.builtin.shell: >-
+        set -o pipefail &&
+        for ns in cert-manager cattle-system longhorn-system; do
+          {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} get ns "$ns" -o json 2>/dev/null |
+          jq 'del(.spec.finalizers)' |
+          {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} replace --raw /api/v1/namespaces/$ns/finalize -f - || true;
+        done
+      args:
+        executable: /bin/bash
+      changed_when: false
+      failed_when: false
+
+    - name: Cordon all nodes
+      ansible.builtin.shell: >-
+        {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} get nodes -o name |
+        xargs -r -n1 {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} cordon
+      args: { executable: /bin/bash }
+      changed_when: false
+      failed_when: false
+
+    - name: Drain nodes (ignore daemonsets, delete emptyDir)
+      ansible.builtin.shell: >-
+        set -o pipefail &&
+        for n in $({{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} get nodes -o name | sed 's|node/||'); do
+          {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} drain "$n" --ignore-daemonsets --delete-emptydir-data --force --timeout={{ drain_timeout }} || true;
+        done
+      args:
+        executable: /bin/bash
+      changed_when: false
+      failed_when: false
+
+    # - name: Delete all nodes from cluster (best-effort)
+    #   ansible.builtin.shell: >-
+    #     {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} get nodes -o name |
+    #     xargs -r {{ kubectl_bin }} --kubeconfig {{ rke2_kubeconfig }} delete --ignore-not-found
+    #   args: { executable: /bin/bash }
+    #   changed_when: false
+    #   failed_when: false
+    - name: Delete all nodes async
+      ansible.builtin.shell: >
+        {{ kubectl_bin }} --kubeconfig /etc/rancher/rke2/rke2.yaml delete node --all --ignore-not-found
+      async: 300
+      poll: 0
+
+
+- name: "Node teardown: stop RKE2, container cleanup, remove files, network + iptables (optional)"
+  hosts: rke2_servers,rke2_agents
+  become: true
+  gather_facts: true
+  vars:
+    kubectl_bin: "/var/lib/rancher/rke2/bin/kubectl"
+    crictl_bin_candidates:
+      - "/var/lib/rancher/rke2/bin/crictl"
+      - "/usr/local/bin/crictl"
+      - "/usr/bin/crictl"
+    rke2_kubeconfig: "/etc/rancher/rke2/rke2.yaml"
+    containerd_sock_candidates:
+      - "/run/k3s/containerd/containerd.sock"   # typical for RKE2
+      - "/run/containerd/containerd.sock"
+    remove_network_ifaces: true
+    flush_iptables: false
+    extra_dirs_to_nuke: []
+    common_dirs_to_nuke:
+      - /etc/rancher
+      - /var/lib/rancher
+      - /var/lib/kubelet
+      - /var/lib/cni
+      - /etc/cni
+      - /opt/cni
+      - /var/log/containers
+      - /var/log/pods
+      - /run/kubelet
+      - /run/flannel
+      - /var/lib/calico
+  tasks:
+    - name: Decide if this is a server node
+      ansible.builtin.stat:
+        path: /etc/systemd/system/rke2-server.service
+      register: is_server
+
+    - name: Decide if this is an agent node
+      ansible.builtin.stat:
+        path: /etc/systemd/system/rke2-agent.service
+      register: is_agent
+
+    - name: Stop and disable rke2-server (if server)
+      ansible.builtin.systemd:
+        name: rke2-server
+        state: stopped
+        enabled: false
+      when: is_server.stat.exists
+
+    - name: Stop and disable rke2-agent (if agent)
+      ansible.builtin.systemd:
+        name: rke2-agent
+        state: stopped
+        enabled: false
+      when: is_agent.stat.exists
+
+    - name: Kill leftover kube-/containerd processes (best-effort)
+      ansible.builtin.shell: >-
+        pgrep -fa "(kubelet|kube-proxy|containerd|kube-vip|rke2)" | awk '{print $1}' | xargs -r kill -9
+      args: { executable: /bin/bash }
+      changed_when: false
+      failed_when: false
+
+    - name: Pick a crictl binary if present
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ crictl_bin_candidates }}"
+      register: crictl_stats
+
+    - name: Set fact crictl_bin
+      ansible.builtin.set_fact:
+        crictl_bin: "{{ (crictl_stats.results | selectattr('stat.exists') | list | first).item | default('') }}"
+
+    - name: Pick a containerd socket if present
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ containerd_sock_candidates }}"
+      register: sock_stats
+
+    - name: Set fact containerd_sock
+      ansible.builtin.set_fact:
+        containerd_sock: "{{ (sock_stats.results | selectattr('stat.exists') | list | first).item | default('') }}"
+
+    - name: Remove all containers (crictl) — best-effort
+      ansible.builtin.shell: >-
+        {{ crictl_bin }} --runtime-endpoint unix://{{ containerd_sock | regex_replace('^unix://','') }} ps -aq | xargs -r {{ crictl_bin }} --runtime-endpoint unix://{{ containerd_sock | regex_replace('^unix://','') }} rm -f
+      args: { executable: /bin/bash }
+      when: crictl_bin | length > 0 and containerd_sock | length > 0
+      changed_when: false
+      failed_when: false
+
+    - name: Remove all images (crictl) — optional best-effort
+      ansible.builtin.shell: >-
+        {{ crictl_bin }} --runtime-endpoint unix://{{ containerd_sock | regex_replace('^unix://','') }} rmi -a || true
+      args: { executable: /bin/bash }
+      when: crictl_bin | length > 0 and containerd_sock | length > 0
+      changed_when: false
+      failed_when: false
+
+    - name: Remove systemd service files for rke2
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/systemd/system/rke2-server.service
+        - /etc/systemd/system/rke2-agent.service
+        - /etc/systemd/system/multi-user.target.wants/rke2-server.service
+        - /etc/systemd/system/multi-user.target.wants/rke2-agent.service
+
+    - name: Systemd daemon-reload
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Remove kube-vip network interfaces (if requested)
+      ansible.builtin.shell: >-
+        for i in kube-vip vip cni0 flannel.1 flannel vxlan.calico tunl0; do
+          ip link show "$i" >/dev/null 2>&1 && ip link delete "$i" || true;
+        done
+      args: { executable: /bin/bash }
+      when: remove_network_ifaces
+      changed_when: false
+      failed_when: false
+
+    - name: Flush iptables (DANGER — host-wide) if requested
+      ansible.builtin.shell: >-
+        iptables -F; iptables -t nat -F; iptables -t mangle -F; iptables -X || true;
+        ip6tables -F; ip6tables -t nat -F || true; ip6tables -t mangle -F; ip6tables -X || true
+      args: { executable: /bin/bash }
+      when: flush_iptables | bool
+      changed_when: false
+      failed_when: false
+
+    - name: Remove common RKE2/K8s directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop: "{{ common_dirs_to_nuke + extra_dirs_to_nuke }}"
+
+    - name: Remove RKE2 binaries and symlinks (best-effort)
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /usr/local/bin/rke2
+        - /usr/local/bin/kubectl
+        - /usr/local/bin/crictl
+        - /usr/local/bin/ctr
+        - /usr/local/bin/helm
+
+    - name: Clean leftover manifests on servers
+      when: is_server.stat.exists
+      ansible.builtin.file:
+        path: "/etc/rancher/rke2/manifests"
+        state: absent
+
+    - name: Remove RKE2 data dirs (server)
+      when: is_server.stat.exists
+      ansible.builtin.file:
+        path: "/var/lib/rancher/rke2"
+        state: absent
+
+    - name: Remove RKE2 data dirs (agent)
+      when: is_agent.stat.exists
+      ansible.builtin.file:
+        path: "/var/lib/rancher/rke2"
+        state: absent
+
+    - name: Remove kubeconfig (best-effort)
+      ansible.builtin.file:
+        path: "{{ rke2_kubeconfig }}"
+        state: absent
+
+    - name: Ensure /var/lib/rancher and related paths truly gone (idempotent)
+      ansible.builtin.shell: >-
+        rm -rf /var/lib/rancher /etc/rancher /var/lib/kubelet /var/lib/cni /etc/cni /opt/cni /var/log/containers /var/log/pods /run/kubelet /run/flannel /var/lib/calico || true
+      args: { executable: /bin/bash }
+      changed_when: false
+      failed_when: false
+
+
+- name: Optional reboot after cleanup
+  hosts: rke2_servers,rke2_agents
+  become: true
+  gather_facts: false
+  vars:
+    reboot_after: false
+  tasks:
+    - name: Reboot hosts when requested
+      ansible.builtin.reboot:
+        msg: "Rebooting after RKE2 uninstall"
+        reboot_timeout: 1800
+      when: reboot_after | bool

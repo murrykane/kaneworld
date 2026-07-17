@@ -1,0 +1,133 @@
+LogLevel = 'DEBUG'
+DataFolder = '/data'
+Scanner.Schedule = '@every 24h'
+TranscodingCacheSize = '150MiB'
+MusicFolder = '/music'
+#PlaylistsPath = '/music/playlists'
+#CacheFolder
+#LogFile 
+#Address 
+#BaseUrl='https://navidrome.local.kaneworld.org'
+#Port 
+#EnableInsightsCollector 
+
+##
+## All below are advanced options....
+##
+
+# Agents
+# #AlbumPlayCountMode
+# #AuthRequestLimit*
+# #AuthWindowLength*
+# #AutoImportPlaylists
+# #AutoTranscodeDownload
+# #DefaultPlaylistPublicVisibility
+# ArtistArtPriority*
+# ArtistImageFolder*
+# Backup.Path
+# Backup.Schedule
+#Backup.Count
+#CoverArtPriority*
+#CoverArtQuality
+#Deezer.Enabled*
+#Deezer.Language
+#DefaultDownsamplingFormat
+#DefaultLanguage
+#DefaultTheme
+#DefaultShareExpiration
+#DefaultDownloadableShare
+#DefaultUIVolume
+#DiscArtPriority*
+#EnforceNonRootUser
+#EnableArtworkPrecache
+#EnableArtworkUpload
+#MaxImageUploadSize
+#EnableCoverAnimation
+#EnableDownloads
+#EnableExternalServices
+#EnableFavourites
+#EnableGravatar
+#EnableLogRedacting
+#EnableM3UExternalAlbumArt
+#EnableMediaFileCoverArt*
+#EnableNowPlaying
+#EnableReplayGain
+#EnableScrobbleHistory
+#EnableSharing
+#EnableStarRating
+#EnableTranscodingConfig*
+#EnableUserEditing
+#ExtAuth.TrustedSources*
+#ExtAuth.UserHeader*
+#ExtAuth.LogoutURL
+#FFmpegPath
+#GATrackingID
+#HTTPHeaders.FrameOptions
+#IgnoredArticles
+#ImageCacheSize
+#Inspect.BacklogLimit
+#Inspect.BacklogTimeout
+#Inspect.Enabled
+#Inspect.MaxRequests
+#Jukebox.Enabled
+#Jukebox.AdminOnly
+#Jukebox.Devices
+#Jukebox.Default
+#LastFM.Enabled
+#LastFM.ApiKey*
+#LastFM.Secret*
+#LastFM.Language
+#LastFM.ScrobbleFirstArtistOnly
+#ListenBrainz.BaseURL
+#ListenBrainz.Enabled
+#LyricsPriority
+#MaxSidebarPlaylists
+#Matcher.FuzzyThreshold
+#Matcher.PreferStarred
+#MPVPath
+#MPVCmdTemplate
+#PasswordEncryptionKey*
+#PID.Album
+#PID.Track
+#PlaylistsPath
+#Plugins.Enabled*
+#Plugins.Folder
+#Plugins.AutoReload
+#Plugins.LogLevel
+#Plugins.CacheSize
+#PreferSortTags
+#Prometheus.Enabled
+#Prometheus.MetricsPath
+#Prometheus.Password
+#RecentlyAddedByModTime
+#Scanner.Enabled
+#Scanner.Schedule
+#Scanner.WatcherWait
+#Scanner.ScanOnStartup
+#Scanner.ArtistJoiner
+#Scanner.FollowSymlinks
+#Scanner.PurgeMissing
+#Search.Backend
+#Search.FullString
+#SessionTimeout
+#ShareURL
+#SmartPlaylistRefreshDelay
+#Subsonic.AppendSubtitle
+#Subsonic.ArtistParticipations
+#Subsonic.AppendAlbumVersion
+#Subsonic.DefaultReportRealPath
+#Subsonic.EnableAverageRating
+#Subsonic.LegacyClients
+#Tags
+#TLSCert
+#TLSKey
+#Transcoding.EnableCancellation
+#Transcoding.MaxConcurrent
+#Transcoding.MaxConcurrentPerUser
+#TranscodingCacheSize
+#UILoginBackgroundUrl
+#UIPlaybackReportInterval
+#UISearchDebounceMs
+#UIWelcomeMessage
+##
+##

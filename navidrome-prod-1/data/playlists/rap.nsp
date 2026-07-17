@@ -1,0 +1,7 @@
+{
+  "name": "RAP",
+  "comment": "Rock that has a twist!",
+  "all": [{ "is": { "genre": "Rap" } }],
+  "order": "desc",
+  //"limit": 500
+}

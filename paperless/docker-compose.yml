@@ -1,0 +1,220 @@
+services:
+  # paperless-ngx main service
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-ngx-prod-1
+    restart: unless-stopped
+    env_file: 
+      - ./paperless/.env
+    depends_on:
+      - redis
+      - gotenberg
+      - tika
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./paperless/data:/usr/src/paperless/data
+      - ${PAPERLESS_MNT_POINT}/media:/usr/src/paperless/media:slave
+      - ${PAPERLESS_MNT_POINT}/export:/usr/src/paperless/export:slave
+      - ${PAPERLESS_MNT_POINT}/consume:/usr/src/paperless/consume:slave
+    networks:
+      - proxy
+      - paperless
+    labels:
+      - "autoheal=true"   # this will recycle the container if its in a unhealthy state by the autoeal container
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_PAP}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_PAP}.rule=Host(`${TRAEFIK_DOMAIN_PAP}`)"
+      - "traefik.http.middlewares.${TRAEFIK_PAP}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_PAP}.middlewares=${TRAEFIK_PAP}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_PAP}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_PAP}-secure.rule=Host(`${TRAEFIK_DOMAIN_PAP}`)"
+      - "traefik.http.routers.${TRAEFIK_PAP}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_PAP}-secure.service=${TRAEFIK_PAP}"
+      - "traefik.http.services.${TRAEFIK_PAP}.loadbalancer.server.port=${TRAEFIK_UI_PORT_PAP}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+    healthcheck:
+      test: ["CMD", "ls", "/usr/src/paperless/media"]
+      interval: 30s
+      timeout: 10s
+      retries: 2
+      start_period: 30s
+
+  redis:
+    image: docker.io/library/redis:8
+    container_name: redis-prod-1
+    restart: unless-stopped
+    env_file: 
+      - ./redis/.env
+    volumes:
+      - ./redis/data:/data
+    networks:
+      - paperless   
+  # gotenberg service that paperless uses for document conversion
+  gotenberg:
+    image: docker.io/gotenberg/gotenberg:8.25
+    container_name: gotenberg-prod-1
+    env_file: 
+      - ./gotenberg/.env
+    restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+    networks:
+      - paperless   
+  # tika service that paperless uses for document text extraction
+  tika:
+    image: docker.io/apache/tika:latest
+    container_name: tika-prod-1
+    restart: unless-stopped
+    env_file: ./tika/.env
+    networks:
+      - paperless   
+
+    # open-webui service for LLM interaction
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:latest
+    container_name: open-webui-prod-1
+    restart: unless-stopped
+    env_file:
+      - ./open-webui/.env
+    depends_on:
+      - ollama
+    ports:
+      - "3001:8080"
+    volumes:
+      - ./open-webui/data:/app/backend/data
+    networks:
+      - proxy
+      - paperless
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_OPENAI}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_OPENAI}.rule=Host(`${TRAEFIK_DOMAIN_OPENAI}`)"
+      - "traefik.http.middlewares.${TRAEFIK_OPENAI}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_OPENAI}.middlewares=${TRAEFIK_OPENAI}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_OPENAI}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_OPENAI}-secure.rule=Host(`${TRAEFIK_DOMAIN_OPENAI}`)"
+      - "traefik.http.routers.${TRAEFIK_OPENAI}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_OPENAI}-secure.service=${TRAEFIK_OPENAI}"
+      - "traefik.http.services.${TRAEFIK_OPENAI}.loadbalancer.server.port=${TRAEFIK_UI_PORT_OPENAI}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+
+  ollama:
+    image: uberchuckie/ollama-intel-gpu
+    container_name: ollama-prod-1
+    restart: unless-stopped
+    env_file:
+      - ./ollama/.env
+    volumes:
+      - ./ollama/data/:/root/.ollama
+      - ./ollama/models:/ollama-models
+    devices:
+      - /dev/dri:/dev/dri   # Intel GPU passthrough
+    group_add:
+      - "116"               # render group for iGPU access
+    command: ["serve"]
+    networks:
+      - paperless
+
+  # ollama-cpu:
+  #   #image: uberchuckie/ollama-intel-gpu
+  #   image: ollama/ollama:latest
+  #   container_name: ollama-cpu-prod-1
+  #   restart: unless-stopped
+  #   env_file:
+  #     - ./ollama-cpu/.env
+  #   volumes:
+  #     - ./ollama-cpu/data/:/root/.ollama
+  #     - ./ollama/models:/ollama-models       # lets share models between gpu and cpu containers to save space, just make sure to only load models in one container at a time
+  #     #- ./ollama-cpu/models:/ollama-models
+  #   command: ["serve"]
+  #   networks:
+  #     - paperless
+      
+  # ollama-cpu:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama-cpu-prod-1
+  #   restart: unless-stopped
+  #   ports:
+  #     - "11435:11434"   # host port : container port
+  #   env_file:
+  #     - ./ollama-cpu/.env
+  #   volumes:
+  #     - ./ollama-cpu/data/:/root/.ollama
+  #     - ./ollama-cpu/models:/ollama-models
+  #   command: ["serve"]
+  #   networks:
+  #     - paperless
+  #   # environment:
+  #   #   # Force CPU usage
+  #   #   OLLAMA_DEVICE: cpu
+  #   #   OLLAMA_MAX_LOADED_MODELS: 1
+  #   #   OLLAMA_NUM_PARALLEL: 1
+
+
+  # paperless-ai service
+  paperless-ai:
+    image: clusterzx/paperless-ai:latest
+    container_name: paperless-ai-prod-1
+    restart: unless-stopped
+    depends_on:
+      - ollama
+      - paperless
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./paperless-ai/.env
+    volumes:
+      - ./paperless-ai/data:/app/data
+    networks:
+      - proxy
+      - paperless
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_PAPAI}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_PAPAI}.rule=Host(`${TRAEFIK_DOMAIN_PAPAI}`)"
+      - "traefik.http.middlewares.${TRAEFIK_PAPAI}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_PAPAI}.middlewares=${TRAEFIK_PAPAI}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_PAPAI}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_PAPAI}-secure.rule=Host(`${TRAEFIK_DOMAIN_PAPAI}`)"
+      - "traefik.http.routers.${TRAEFIK_PAPAI}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_PAPAI}-secure.service=${TRAEFIK_PAPAI}"
+      - "traefik.http.services.${TRAEFIK_PAPAI}.loadbalancer.server.port=${TRAEFIK_UI_PORT_PAPAI}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"  
+
+  # paperless-gpt service
+  paperless-gpt:
+    image: icereed/paperless-gpt:latest
+    container_name: paperless-gpt-prod-1
+    restart: unless-stopped
+    depends_on:
+      - ollama
+      - paperless
+    ports:
+      - "3002:8080"
+    env_file:
+      - ./paperless-gpt/.env
+    volumes:
+      - ./paperless-gpt/prompts:/app/prompts
+    networks:
+      - proxy
+      - paperless
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_PAPGBT}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_PAPGBT}.rule=Host(`${TRAEFIK_DOMAIN_PAPGBT}`)"
+      - "traefik.http.middlewares.${TRAEFIK_PAPGBT}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_PAPGBT}.middlewares=${TRAEFIK_PAPGBT}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_PAPGBT}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_PAPGBT}-secure.rule=Host(`${TRAEFIK_DOMAIN_PAPGBT}`)"
+      - "traefik.http.routers.${TRAEFIK_PAPGBT}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_PAPGBT}-secure.service=${TRAEFIK_PAPGBT}"
+      - "traefik.http.services.${TRAEFIK_PAPGBT}.loadbalancer.server.port=${TRAEFIK_UI_PORT_PAPGBT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+
+networks:
+  paperless:
+  proxy:
+    external: true

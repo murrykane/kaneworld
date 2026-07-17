@@ -1,0 +1,21 @@
+# Start from official Ollama image
+FROM ollama/ollama:latest
+
+# Install Intel GPU compute libraries
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    intel-opencl-icd \
+    libze-intel-gpu1 \
+    libze1 \
+    clinfo \
+ && rm -rf /var/lib/apt/lists/*
+
+# Optional: create 'render' group inside container for GID 116
+RUN groupadd -g 116 render || true
+
+# Set environment variables for Ollama
+ENV OLLAMA_DEVICE=gpu \
+    OLLAMA_NUM_PARALLEL=1 \
+    OLLAMA_MAX_LOADED_MODELS=1
+
+# Default entrypoint
+ENTRYPOINT ["ollama"]

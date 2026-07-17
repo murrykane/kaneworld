@@ -1,0 +1,51 @@
+# inventory.yml
+# RKE2 uninstall inventory (YAML format)
+# Replace ansible_host with the real IP/DNS of each node
+
+all:
+  vars:
+    ansible_become: true
+    ansible_become_method: sudo
+    ansible_become_password: ""   # no password
+  children:
+    rke2_servers:
+      hosts:
+        rke2-prod-1:
+          ansible_host: rke2-prod-1.kane.mk
+          ansible_user: semaphore
+        rke2-prod-2:
+          ansible_host: rke2-prod-2.kane.mk
+          ansible_user: semaphore
+        rke2-prod-3:
+          ansible_host: rke2-prod-3.kane.mk
+          ansible_user: semaphore
+        rke2-prod-6:
+          ansible_host: rke2-prod-6.kane.mk
+          ansible_user: semaphore
+
+    rke2_agents:
+      hosts:
+        rke2-prod-4:
+          ansible_host: rke2-prod-4.kane.mk
+          ansible_user: semaphore
+        rke2-prod-5:
+          ansible_host: rke5-prod-5.kane.mk
+          ansible_user: semaphore
+        rke2-prod-7:
+          ansible_host: rke2-prod-7.kane.mk
+          ansible_user: semaphore
+        longhorn-prod-1:
+          ansible_host: longhorn-prod-1.kane.mk
+          ansible_user: semaphore
+        longhorn-prod-2:
+          ansible_host: longhorn-prod-2.kane.mk
+          ansible_user: semaphore
+        longhorn-prod-3:
+          ansible_host: longhorn-prod-3.kane.mk
+          ansible_user: semaphore
+        longhorn-prod-4:
+          ansible_host: longhorn-prod-4.kane.mk 
+          ansible_user: semaphore
+        longhorn-prod-5:
+          ansible_host: longhorn-prod-5.kane.mk 
+          ansible_user: semaphore

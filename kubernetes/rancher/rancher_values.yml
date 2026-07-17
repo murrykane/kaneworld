@@ -1,0 +1,18 @@
+hostname: rancher.local.kaneworld.org
+ingress:
+  enabled: true
+  tls:
+    source: secret
+#privateCA: true
+replicas: 3
+# extraArgs:
+#   - --https-listen-port=0
+#   - --http-listen-port=80
+
+privateCA: false
+
+extraEnv: []  # Clear out anything unintended
+extraArgs:
+  - --https-listen-port=0
+  - --http-listen-port=80
+

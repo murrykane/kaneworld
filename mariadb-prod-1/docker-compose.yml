@@ -1,0 +1,51 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-prod-1
+    restart: unless-stopped
+    ports:
+      - "192.168.1.162:3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - /opt/mariadb/data:/var/lib/mysql:rw
+      - ./init-scripts:/docker-entrypoint-initdb.d:ro
+      - ./conf.d:/etc/mysql/conf.d:ro
+    command:
+      - "--transaction-isolation=READ-COMMITTED"
+      - "--binlog-format=ROW"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    stop_grace_period: 120s
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+    networks:
+      - project_network
+
+networks:
+  project_network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: mariadb_bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16

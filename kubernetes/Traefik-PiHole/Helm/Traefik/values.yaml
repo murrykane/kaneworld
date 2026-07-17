@@ -1,0 +1,83 @@
+USER-SUPPLIED VALUES:
+additionalArguments:
+- --serversTransport.insecureSkipVerify=true
+- --log.level=INFO
+deployment:
+  additionalContainers: []
+  annotations: {}
+  enabled: true
+  initContainers: []
+  podAnnotations: {}
+  replicas: 3
+globalArguments:
+- --global.sendanonymoususage=false
+- --global.checknewversion=false
+ingressRoute:
+  dashboard:
+    enabled: false
+nodeSelector:
+  worker: "true"
+ports:
+  web:
+    redirections:
+      entryPoint:
+        permanent: true
+        scheme: https
+        to: websecure
+  websecure:
+    tls:
+      enabled: true
+providers:
+  kubernetesCRD:
+    allowExternalNameServices: true
+    enabled: true
+    ingressClass: traefik-external
+  kubernetesIngress:
+    allowExternalNameServices: true
+    enabled: true
+    publishedService:
+      enabled: false
+rbac:
+  enabled: true
+service:
+  annotations: {}
+  enabled: true
+  externalIPs: []
+  labels: {}
+  loadBalancerSourceRanges: []
+  spec:
+    loadBalancerIP: 192.168.1.26
+  type: LoadBalancer
+
+
+# Mount the shared PVC
+persistence:
+  enabled: true
+  existingClaim: traefik-acme
+  path: /data
+  accessMode: ReadWriteMany
+  size: 1Gi
+
+# Your cert resolver
+certificatesResolvers:
+  dnsresolver:
+    acme:
+      email: murrykane@gmail.com
+      storage: /data/acme.json
+      dnsChallenge:
+        provider: cloudflare
+
+initContainers:
+  - name: fix-acme-permissions
+    image: busybox
+    command: ["sh", "-c", "chown 65532:65532 /data/acme.json || true"]
+    volumeMounts:
+      - name: data
+        mountPath: /data
+
+env:
+  - name: CLOUDFLARE_DNS_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token-secret
+        key: CLOUDFLARE_DNS_API_TOKEN

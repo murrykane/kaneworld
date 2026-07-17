@@ -1,0 +1,46 @@
+## Disable multi-tenancy and authentication
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+  
+limits_config:
+  allow_structured_metadata: true
+  ingestion_rate_mb: 15
+  ingestion_burst_size_mb: 25
+  retention_period: 720h              # ADD: 30 days, adjust as you like
+  #per_stream_rate_limit: 24MB
+  
+common:
+  path_prefix: /loki
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+  replication_factor: 1
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2024-10-19
+      store: tsdb                      # Updated to use TSDB
+      object_store: filesystem          # Filesystem remains for object storage
+      schema: v13                       # Updated schema version
+      index:
+        prefix: index_
+        period: 24h
+
+compactor:                            # ADD this whole block
+  working_directory: /loki/compactor
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 2h
+  delete_request_store: filesystem
+
+ruler:
+  alertmanager_url: https://alertmanager.local.kaneworld.org
+

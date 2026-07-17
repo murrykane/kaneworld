@@ -1,0 +1,5 @@
+[mysqld]
+wait_timeout = 300
+interactive_timeout = 300
+connect_timeout = 10
+tcp_keepalive_time = 120

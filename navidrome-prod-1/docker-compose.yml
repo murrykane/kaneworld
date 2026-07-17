@@ -1,0 +1,37 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: ${CONTAINER_NAME}
+    user: ${UID}:${GID}
+    environment:
+      - ND_LASTFM_APIKEY=${ND_LASTFM_APIKEY}
+      - ND_LASTFM_SECRET=${ND_LASTFM_SECRET}
+    ports:
+      - "4533:${TRAEFIK_UI_PORT}"
+    restart: unless-stopped
+    #Using navidrome.toml in data directory, so no need to set env vars for config options.
+    # environment:
+    #   # Optional: put your config options customization here. Examples:
+    #   # ND_LOGLEVEL: debug
+    volumes:
+      - "${DATA_DIR}:/data"
+      - "${MUSIC_DIR}:/music:ro,slave"
+      # - "${DATA_DIR}/playlists:/music/playlists:rw"  #had to put on unraid to avoid INODE differences
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_NAME}.rule=Host(`${TRAEFIK_DOMAIN_NAME}`)"
+      - "traefik.http.middlewares.${TRAEFIK_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_NAME}.middlewares=${TRAEFIK_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN_NAME}`)"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_NAME}-secure.service=${TRAEFIK_NAME}"
+      - "traefik.http.services.${TRAEFIK_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+
+networks:
+  proxy:
+    external: true # or comment this line to auto create the network

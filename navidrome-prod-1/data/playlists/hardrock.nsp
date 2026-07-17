@@ -1,0 +1,7 @@
+{
+  "name": "Hard Rock",
+  "comment": "Rock that blasts off!",
+  "all": [{ "is": { "genre": "Hard Rock" } }],
+  "order": "desc",
+  //"limit": 500
+}

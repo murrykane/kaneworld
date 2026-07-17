@@ -1,0 +1,7 @@
+{
+  "name": "Alternative Rock",
+  "comment": "Rock that has a twist!",
+  "all": [{ "is": { "genre": "Alternative Rock" } }],
+  "order": "desc",
+  //"limit": 500
+}

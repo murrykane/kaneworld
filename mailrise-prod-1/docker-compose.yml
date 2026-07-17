@@ -1,0 +1,11 @@
+services: 
+  mailrise-prod-1:
+    image: yoryan/mailrise
+    container_name: mailrise-prod-1
+    restart: unless-stopped
+    ports:
+      - '8025:8025'
+    environment:
+      - TZ 'America/Los_Angeles'
+    volumes:
+      - /home/murry/containers/mailrise-prod-1/config/mailrise.conf:/etc/mailrise.conf

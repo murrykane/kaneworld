@@ -1,0 +1,68 @@
+
+services:
+  loki-prod-4:
+    container_name: loki-prod-4
+    #image: grafana/loki:2.9.14
+    command: -config.file=/etc/loki/config.yaml
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./config/loki-config.yml:/etc/loki/config.yaml:ro
+      - data_loki:/loki:rw
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.loki-prod-4.entrypoints=http"
+      - "traefik.http.routers.loki-prod-4.rule=Host(`loki-prod-4.local.kaneworld.org`)"
+      # allow api with no redirects etc....
+      - "traefik.http.routers.loki-prod-4-push.rule=Host(`loki-prod-4.local.kaneworld.org`) && Path(`/loki/api/v1/push`)"
+      - "traefik.http.routers.loki-prod-4-push.entrypoints=https"
+      - "traefik.http.routers.loki-prod-4-push.tls=true"
+      - "traefik.http.routers.loki-prod-4-push.service=loki-prod-4"
+      # 🚫 No middleware here — skips forward auth
+      - "traefik.http.routers.loki-prod-4.middlewares=default-whitelist@file,loki-prod-4-https-redirect"
+      - "traefik.http.middlewares.loki-prod-4-https-redirect.redirectscheme.scheme=https"
+      #- "traefik.http.middlewares.loki-prod-4-redirect-to-metrics.redirectregex.regex=^https?://loki-prod-4\\.local\\.kaneworld\\.org/?$"
+      - "traefik.http.middlewares.loki-prod-4-redirect-to-metrics.redirectregex.regex=^https?://loki-prod-4\\.local\\.kaneworld\\.org(/?)$"   #this will only regex match on no additional path like /api etc.
+      - "traefik.http.middlewares.loki-prod-4-redirect-to-metrics.redirectregex.replacement=https://loki-prod-4.local.kaneworld.org/metrics"
+      - "traefik.http.middlewares.loki-prod-4-redirect-to-metrics.redirectregex.permanent=true"
+      - "traefik.http.routers.loki-prod-4-secure.entrypoints=https"
+      - "traefik.http.routers.loki-prod-4-secure.rule=Host(`loki-prod-4.local.kaneworld.org`)"
+      - "traefik.http.routers.loki-prod-4-secure.tls=true"
+      - "traefik.http.routers.loki-prod-4-secure.service=loki-prod-4"
+      #- "traefik.http.routers.loki-prod-4-secure.middlewares=authentik-forwardauth@file,loki-prod-4-redirect-to-metrics"
+      - "traefik.http.routers.loki-prod-4-secure.middlewares=loki-prod-4-redirect-to-metrics"
+      - "traefik.http.services.loki-prod-4.loadbalancer.server.port=3100"
+      - "traefik.docker.network=proxy"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+  # USING ALLOY NOW since promtail is end of life.....
+  # promtail-prod-4:
+  #   image: grafana/promtail:latest
+  #   container_name: promtail-prod-4
+  #   environment:
+  #     - TZ=America/Los_Angeles
+  #   volumes:
+  #     - /var/log/journal:/var/log/journal:ro
+  #     - /etc/machine-id:/etc/machine-id:ro     
+  #     - /var/log:/var/log
+  #     - /var/lib/docker/containers:/var/lib/docker/containers:ro
+  #     - /home/murry/containers:/containers:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./config/promtail-config.yml:/etc/promtail/config.yml
+  #   ports:
+  #     - "1514:1514" # this is only needed if you are going to send syslogs
+  #   command: -config.file=/etc/promtail/config.yml
+  #   networks:
+  #     - proxy
+  #   restart: unless-stopped
+
+volumes:
+  data_loki:
+    driver: local
+
+networks:
+  proxy:
+    external: true

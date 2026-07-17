@@ -1,0 +1,29 @@
+directory: /music
+library: /config/musiclibrary.db
+
+import:
+  move: no        # IMPORTANT: keep 'no' so it copies, doesn't move originals
+  copy: no        # set to 'yes' if you want beets to copy files to directory
+  write: yes      # writes fixed tags back to files
+  log: /config/import.log
+
+ui:
+  color: yes
+
+plugins:
+  - fetchart
+  - embedart
+  - lyrics
+  - chroma    # acoustic fingerprinting - finds correct match even with wrong tags
+
+fetchart:
+  auto: yes
+
+embedart:
+  auto: yes
+
+chroma:
+  auto: yes
+
+acoustid:
+  apikey: etf6awvwiA

@@ -1,0 +1,11 @@
+{
+  "name": "2000's",
+  "comment": "Songs from the 2000's",
+  "all": [
+    //{ "any": [{ "is": { "loved": true } }, { "gt": { "rating": 3 } }] },
+    { "inTheRange": { "year": [2001, 2010] } }
+  ],
+  "sort": "year",
+  "order": "desc",
+  //"limit": 25
+}

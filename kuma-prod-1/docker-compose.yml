@@ -1,0 +1,62 @@
+# version: '3.6'
+#
+
+secrets:
+  cf-token:
+    file: ./cf-token
+services:
+  kuma-prod-1:
+    image: louislam/uptime-kuma:latest
+    container_name: kuma-prod-1
+    security_opt:
+      - no-new-privileges:true # helps to increase security
+    secrets:
+      - cf-token # the secret at the top of this file
+    ports:
+      - 3003:3001
+    volumes:
+      - /home/murry/containers/kuma-prod-1/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/repos/homelab/certs:/app/data/docker-tls    # to get certs from the github repo pushed to local disk  
+      #- /home/murry/containers/traefik/data:/app/data/docker-tls  # get this LetsEncrypt TLS keys for KaneWorld.Org....
+      #- /home/murry/containers/kuma/data/docker-tls:/app/data/docker-tls
+    restart: unless-stopped
+    environment:
+      - CF_DNS_API_TOKEN_FILE=/run/secrets/cf-token # see https://doc.traefik.io/traefik/https/acme/#providers
+      - UPTIME_KUMA_BASE_URL=https://kuma-prod-1.local.kaneworld.org
+      - TZ=America/Los_Angeles
+      #- NODE_EXTRA_CA_CERTS=/path/to/your/cacert.pem
+      # If you choose to use an API Key instead of a Token, specify your email as well
+      # - CF_API_EMAIL=user@example.com
+      # - CF_API_KEY=YOUR_API_KEY
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kuma-prod-1.entrypoints=http"
+      - "traefik.http.routers.kuma-prod-1.rule=Host(`kuma-prod-1.local.kaneworld.org`)"
+      #- "traefik.http.routers.kuma-prod-1.middlewares=default-whitelist@file"
+      - "traefik.http.middlewares.kuma-prod-1-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.kuma-prod-1.middlewares=kuma-prod-1-https-redirect"
+      - "traefik.http.routers.kuma-prod-1-secure.entrypoints=https"
+      - "traefik.http.routers.kuma-prod-1-secure.rule=Host(`kuma-prod-1.local.kaneworld.org`)"
+      - "traefik.http.routers.kuma-prod-1-secure.tls=true"
+      - "traefik.http.routers.kuma-prod-1-secure.middlewares=auth-forwardauth@file"   # to get authentik login to redirect to the login page if not logged in, and then back to the app after login
+      - "traefik.http.routers.kuma-prod-1-secure.service=kuma-prod-1"
+      - "traefik.http.services.kuma-prod-1-outpost-svc.loadbalancer.server.port=9000"
+      - "traefik.http.services.kuma-prod-1-outpost-svc.loadbalancer.server.url=http://mkserver-outpost:9000"
+      - "traefik.http.services.kuma-prod-1.loadbalancer.server.port=3001"
+      - "traefik.docker.network=proxy"
+      # added for redirect after authentik redirect issues
+      - "traefik.http.routers.kuma-prod-1-outpost.entrypoints=https"
+      - "traefik.http.routers.kuma-prod-1-outpost.rule=Host(`kuma-prod-1.local.kaneworld.org`) && PathPrefix(`/outpost.goauthentik.io`)"
+      - "traefik.http.routers.kuma-prod-1-outpost.tls=true"
+      - "traefik.http.routers.kuma-prod-1-outpost.priority=500"
+      - "traefik.http.routers.kuma-prod-1-outpost.service=mkserver-outpost-service@docker"
+
+networks:
+  proxy:
+    external: true
+
+# volumes:
+#   data:

@@ -1,0 +1,8 @@
+{
+  "name": "Loved",
+  "comment": "All that have been loved!",
+  "all": [{ "is": { "loved": true } }],
+  "sort": "dateLoved",
+  "order": "desc",
+  //"limit": 500
+}

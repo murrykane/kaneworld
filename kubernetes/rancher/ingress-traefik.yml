@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: rancher-kane-org
+  namespace: cattle-system
+spec:
+  commonName: rancher.local.kaneworld.org
+  dnsNames:
+    - rancher.local.kaneworld.org
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  secretName: tls-rancher-ingress
