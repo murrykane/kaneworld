@@ -1,0 +1,40 @@
+name: Trigger n8n on push
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Authenticate with Infisical
+        uses: Infisical/secrets-action@v1.0.16
+        with:
+          method: oidc
+          identity-id: "6e07fd5f-42ad-4f7f-ac17-c6754f406dab"
+          domain: "https://infisical.local.kaneworld.org"
+          project-slug: "HomeLab"
+          env-slug: "dev"
+          secret-path: "/authentik"
+
+      - name: Trigger n8n workflow
+        run: |
+          curl -fsS -X POST http://cyborg.tail6d0a3.ts.net:5678/webhook/GitHub-CodeDeploy \
+            -H "Content-Type: application/json" \
+            -H "GitHub: ${{ secrets.N8N_WEBHOOK_SECRET }}" \
+            -d "{\"repo\": \"${{ github.repository }}\", \"sha\": \"${{ github.sha }}\", \"PG_HOST\": \"$PG_HOST\"}"
