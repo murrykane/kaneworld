@@ -1,4 +1,4 @@
-name: Trigger n8n on push
+name: Trigger n8n on push with Infisical secrets
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
         with:
           method: oidc
           identity-id: "6e07fd5f-42ad-4f7f-ac17-c6754f406dab"
-          domain: "https://infisical.local.kaneworld.org"
+          domain: "http://docker-dev.tail6d0a3.ts.net:81"
           project-slug: "HomeLab"
           env-slug: "dev"
           secret-path: "/authentik"
