@@ -151,97 +151,6 @@
         server: unraid-docker
         container: qui-prod-1
 #
-    # - Sonarr Server:
-    #     icon: sonarr.png # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_SONARR_URL}}"
-    #     description: Sonarr
-    #     siteMonitor: "{{HOMEPAGE_VAR_SONARR_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_SONARR_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: utilserver-docker
-    #     container: sonarr-prod-1
-    #     widget:
-    #         type: sonarr
-    #         #fields: ["wanted", "queued", "series"]
-    #         fields: ["wanted", "queued", "series"]
-    #         enableQueue: false    #list gets long.....
-    #         url: "{{HOMEPAGE_VAR_SONARR_URL_WIDGET}}"
-    #         key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
-#
-    # - Radarr Server:
-    #     icon: radarr.png # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_RADARR_URL}}"
-    #     description: Radarr
-    #     siteMonitor: "{{HOMEPAGE_VAR_RADARR_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_RADARR_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: utilserver-docker
-    #     container: radarr-prod-1
-    #     widget:
-    #         type: radarr
-    #         enableQueue: false    #List gets long 
-    #         url: "{{HOMEPAGE_VAR_RADARR_URL_WIDGET}}"
-    #         key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-#
-    # - Prowlarr Server:
-    #     icon: prowlarr.png # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
-    #     description: Prowlarr
-    #     siteMonitor: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_PROWLARR_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: utilserver-docker
-    #     container: prowlarr-prod-1
-    #     widget:
-    #         type: prowlarr
-    #         url: "{{HOMEPAGE_VAR_PROWLARR_URL_WIDGET}}"
-    #         key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
-#
-    # - Huntarr Server:
-    #     icon: huntarr.png # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_HUNTARR_URL}}"
-    #     description: Huntarr
-    #     siteMonitor: "{{HOMEPAGE_VAR_HUNTARR_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_HUNTARR_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: utilserver-docker
-    #     container: huntarr-prod-1
-#
-    # - Krusader Server:
-    #     icon: krusader.png # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_KRUSADER_URL}}"
-    #     description: Krusader
-    #     siteMonitor: "{{HOMEPAGE_VAR_KRUSADER_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_KRUSADER_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: utilserver-docker
-    #     container: krusader-prod-1
-#
-    # - FileFlows:
-    #     icon: fileflows.png
-    #     href: "{{HOMEPAGE_VAR_FILEFLOW_URL}}"
-    #     description: FileFlows
-    #     siteMonitor: "{{HOMEPAGE_VAR_FILEFLOW_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_FILEFLOW_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: utilserver-docker
-    #     container: fileflows-prod-1
-    #     widget:
-    #         type: fileflows
-    #         url: "{{HOMEPAGE_VAR_FILEFLOW_URL_WIDGET}}"
-#
     - FileFlows-Unraid:
         icon: fileflows.png
         href: "{{HOMEPAGE_VAR_FILEFLOW_UNRAID_URL}}"
@@ -256,53 +165,6 @@
         widget:
             type: fileflows
             url: "{{HOMEPAGE_VAR_FILEFLOW_UNRAID_URL_WIDGET}}"
-#
-    # - JellySeerr:
-    #     icon: jellyseerr.svg # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
-    #     description: JellySeerr
-    #     siteMonitor: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_JELLYSEERR_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: utilserver-docker 
-    #     container: jellyseerr-prod-1
-    #     widget:
-    #         type: jellyseerr
-    #         url: "{{HOMEPAGE_VAR_JELLYSEERR_URL_WIDGET}}"
-    #         key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
-    #         #Allowed fields: ["pending", "approved", "available"]
-#
-    - Tiny Media:
-        icon: https://media.sys.truenas.net/apps/tiny-media-manager/icons/icon.png
-        href: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
-        description: Fix Media Files
-        siteMonitor: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
-        ping: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-#
-    - FileBot:
-        icon: https://www.filebot.net/images/filebot.logo.svg
-        href: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
-        description: Fix Media Files
-        siteMonitor: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
-        ping: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-#
-    # - Unraid Huntar:
-    #     icon: huntarr.png
-    #     href: "{{HOMEPAGE_VAR_UNRAID_HUNTARR_URL}}"
-    #     description: Hunting and fixing
-    #     siteMonitor: "{{HOMEPAGE_VAR_UNRAID_HUNTARR_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_UNRAID_HUNTARR_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     showStats: true
-    #     server: unraid-docker
-    #     container: huntarr-prod-2
 #
     - Unraid JellySeerr:
         icon: jellyseerr.svg
@@ -453,36 +315,6 @@
             url: "{{HOMEPAGE_VAR_UNRAID_QBITTORRENT_URL_WIDGET}}"
             username: "{{HOMEPAGE_VAR_UNRAID_QBITTORRENT_USER}}"
             password: "{{HOMEPAGE_VAR_UNRAID_QBITTORRENT_PASS}}"
-#
-    - Unraid Krusader:
-        icon: krusader.svg
-        href: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
-        description: Content Mover
-        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
-        ping: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        showStats: true
-        server: unraid-docker
-        container: krusader-prod-2
-#
-    - Navidrome:
-        icon: navidrome.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
-        description: Navidrome on Unraid to find Music Content
-        siteMonitor: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
-        ping: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        showStats: true
-        server: raptor-docker
-        container: navidrome-prod-1
-        widget:
-            type: navidrome
-            url: "{{HOMEPAGE_VAR_NAVIDROME_URL_WIDGET}}"
-            user: "{{HOMEPAGE_VAR_NAVIDROME_USER}}"
-            token: "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}"
-            salt: "{{HOMEPAGE_VAR_NAVIDROME_SALT}}"
 
 - Home Automation: 
 #
@@ -606,43 +438,7 @@
             url: "{{HOMEPAGE_VAR_TECHNITIUMTER_URL}}"
             key: "{{HOMEPAGE_VAR_TECHNITIUMTER_TOKEN}}"
             range: LastDay # optional, defaults to LastHour
-#
-    - LinkWarden-Prod-1:
-        icon: linkwarden.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
-        description: LinkWarden Cyborg
-        siteMonitor: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
-        ping: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: cyborg-docker
-        container: linkwarden-prod-1
-        widget:
-            type: linkwarden
-            url: "{{HOMEPAGE_VAR_LINKWARDEN_API}}"
-            key: "{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}"
-#
-    - StirlingPDF-Prod-1:
-        icon: https://getumbrel.github.io/umbrel-apps-gallery/stirling-pdf/icon.svg
-        href: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
-        description: StirlingPDF Cyborg
-        siteMonitor: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
-        ping: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: cyborg-docker
-        container: stirlingpdf-prod-1
-#
-    - Atlas-Prod-1:
-        icon: https://cdn.thenewstack.io/media/2025/09/eb03ae55-atlas.jpg
-        href: "{{HOMEPAGE_VAR_ATLAS_URL}}"
-        description: Atlas Network Automation
-        siteMonitor: "{{HOMEPAGE_VAR_ATLAS_URL}}"
-        ping: "{{HOMEPAGE_VAR_ATLAS_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: cyborg-docker
-        container: atlas-prod-1
+
 #
     - Dockhand-Prod-1:
         icon: https://mariushosting.com/wp-content/uploads/2025/12/How-to-Install-Dockhand-on-Your-Synology-NAS-768x384.png
@@ -1034,99 +830,6 @@
             username: "{{HOMEPAGE_VAR_PBS-MINI_USER}}"
             password: "{{HOMEPAGE_VAR_PBS-MINI_API_KEY}}"
 #
-    - Portainer Prod 1:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-        description: MKServer Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: mkserver-docker
-        container: portainer-prod-1
-        showStats: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-            env: 2
-            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_API_KEY}}"
-#
-    # - Portainer Prod 2:
-    #     icon: portainer.svg
-    #     href: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
-    #     description: UtilServer Portainer
-    #     siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     server: utilserver-docker 
-    #     container: portainer-prod-2
-    #     showStats: true
-    #     widget:
-    #         type: portainer
-    #         url: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}" 
-    #         env: 3
-    #         key: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_API_KEY}}"
-#
-    - Portainer Prod 3:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
-        description: Cyborg Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
-        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: cyborg-docker 
-        container: portainer-prod-3
-        showStats: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}" 
-            env: 3
-            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_API_KEY}}"
-#
-    - NAS Portainer:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        description: NAS Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
-            env: 1
-            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
-#
-    - NAS Community Portainer:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        description: NAS Community Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
-            env: 3
-            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
-#
-    - Unraid Portainer:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
-        description: Docker Manager UI
-        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
-        ping: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}" 
-            env: 3
-            key: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_API_KEY}}"
-#
     - MurDogNAS:
         icon: qnap.png # icons found here https://github.com/walkxcode/dashboard-icons
         href: "{{HOMEPAGE_VAR_MURDOGNAS_URL}}"
@@ -1162,152 +865,7 @@
         ping: "{{HOMEPAGE_VAR_SLZB06_PING_ADDR}}"
         statusStyle: "basic"
         hideErrors: true
-#
-    - TraeFik-Prod-1:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
-        description: TraeFik MKServer
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: mkserver-docker
-        container: traefik-prod-1
-        widget:
-            type: traefik
-            url: "{{HOMEPAGE_VAR_TRAEFIK1_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_PASSWORD}}" # optional
-#
-    # - TraeFik-Prod-2:
-    #     icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
-    #     description: TraeFik Prod 2 UtilServer
-    #     siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     server: utilserver-docker
-    #     container: traefik-prod-2 
-    #     widget:
-    #         type: traefik
-    #         url: "{{HOMEPAGE_VAR_TRAEFIK2_URL_API}}"
-    #         username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_USER}}" # optional
-    #         password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_PASSWORD}}" # optional
-#
-    - TraeFik-Prod-3:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
-        description: TraeFik Prod 3 Cyborg
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: cyborg-docker
-        container: traefik-prod-3
-        widget:
-            type: traefik
-            #url: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
-            url: "{{HOMEPAGE_VAR_TRAEFIK3_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_PASSWORD}}" # optional
-#
-    - TraeFik-Prod-4:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
-        description: TraeFik Prod 4 on Raptor
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: raptor-docker
-        container: traefik-prod-4
-        widget:
-            type: traefik
-            url: "{{HOMEPAGE_VAR_TRAEFIK4_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_PASSWORD}}" # optional
-#
-    - TraeFik-Prod-5:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
-        description: TraeFik Prod 5 on Unraid
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: unraid-docker
-        container: traefik-prod-5
-        widget:
-            type: traefik
-            url: "{{HOMEPAGE_VAR_TRAEFIK5_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_PASSWORD}}" # optional
-#
-    - TraeFik-Prod-6:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
-        description: TraeFik Prod 6 on Auth
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: auth-docker
-        container: traefik-prod-6
-        widget:
-            type: traefik
-            url: "{{HOMEPAGE_VAR_TRAEFIK6_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_PASSWORD}}" # optional
-#
-    - TraeFik-Prod-7:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
-        description: TraeFik Prod 7 on MurDogNAS
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: murdognas-docker
-        container: traefik-prod-7
-        widget:
-            type: traefik
-            url: "{{HOMEPAGE_VAR_TRAEFIK7_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_PASSWORD}}" # optional
-#
-    - TraeFik-Prod-8:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
-        description: TraeFik Prod 8 on Docker-Ceph
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: docker-ceph-docker
-        container: traefik-prod-8
-        widget:
-            type: traefik
-            url: "{{HOMEPAGE_VAR_TRAEFIK8_URL_API}}"
-            #url: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_PASSWORD}}" # optional
-#
-    - TraeFik-Dev-1:
-        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
-        description: TraeFik Dev 1 on Docker-Dev
-        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
-        ping: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: docker-docker-dev
-        container: traefik-dev-1
-        widget:
-            type: traefik
-            url: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_URL_API}}"
-            username: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_USER}}" # optional
-            password: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_PASSWORD}}" # optional
+
 #
     - Paperless:
         icon: paperless.png # icons found here https://github.com/walkxcode/dashboard-icons
@@ -1378,7 +936,92 @@
             type: wallos
             url: "{{HOMEPAGE_VAR_WALLOS_URL}}"
             key: "{{HOMEPAGE_VAR_WALLOS_API_KEY}}"
-
+#
+    - Navidrome:
+        icon: navidrome.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
+        description: Navidrome on Unraid to find Music Content
+        siteMonitor: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
+        ping: "{{HOMEPAGE_VAR_NAVIDROME_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: raptor-docker
+        container: navidrome-prod-1
+        widget:
+            type: navidrome
+            url: "{{HOMEPAGE_VAR_NAVIDROME_URL_WIDGET}}"
+            user: "{{HOMEPAGE_VAR_NAVIDROME_USER}}"
+            token: "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}"
+            salt: "{{HOMEPAGE_VAR_NAVIDROME_SALT}}"
+#   
+    - Unraid Krusader:
+        icon: krusader.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
+        description: Content Mover
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_KRUSADER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: true
+        server: unraid-docker
+        container: krusader-prod-2
+#
+    - Tiny Media:
+        icon: https://media.sys.truenas.net/apps/tiny-media-manager/icons/icon.png
+        href: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
+        description: Fix Media Files
+        siteMonitor: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
+        ping: "{{HOMEPAGE_VAR_TINYMEDIA_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - FileBot:
+        icon: https://www.filebot.net/images/filebot.logo.svg
+        href: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
+        description: Fix Media Files
+        siteMonitor: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
+        ping: "{{HOMEPAGE_VAR_FILEBOT_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - StirlingPDF-Prod-1:
+        icon: https://getumbrel.github.io/umbrel-apps-gallery/stirling-pdf/icon.svg
+        href: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
+        description: StirlingPDF Cyborg
+        siteMonitor: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
+        ping: "{{HOMEPAGE_VAR_STIRLINGPDF_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: stirlingpdf-prod-1
+#
+    - Atlas-Prod-1:
+        icon: https://cdn.thenewstack.io/media/2025/09/eb03ae55-atlas.jpg
+        href: "{{HOMEPAGE_VAR_ATLAS_URL}}"
+        description: Atlas Network Automation
+        siteMonitor: "{{HOMEPAGE_VAR_ATLAS_URL}}"
+        ping: "{{HOMEPAGE_VAR_ATLAS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: atlas-prod-1
+#
+    - LinkWarden-Prod-1:
+        icon: linkwarden.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
+        description: LinkWarden Cyborg
+        siteMonitor: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
+        ping: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: linkwarden-prod-1
+        widget:
+            type: linkwarden
+            url: "{{HOMEPAGE_VAR_LINKWARDEN_API}}"
+            key: "{{HOMEPAGE_VAR_LINKWARDEN_TOKEN}}"
+#
 - Reboots:
 
     #initiallyCollapsed: true
@@ -1628,3 +1271,245 @@
         ping: "{{HOMEPAGE_VAR_LOKI20_URL}}"
         statusStyle: "basic"
         hideErrors: true
+
+- Container Management:
+    #initiallyCollapsed: true
+#
+    - TraeFik-Prod-1:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
+        description: TraeFik MKServer
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: traefik-prod-1
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK1_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_PASSWORD}}" # optional
+#
+    # - TraeFik-Prod-2:
+    #     icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+    #     href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
+    #     description: TraeFik Prod 2 UtilServer
+    #     siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     server: utilserver-docker
+    #     container: traefik-prod-2 
+    #     widget:
+    #         type: traefik
+    #         url: "{{HOMEPAGE_VAR_TRAEFIK2_URL_API}}"
+    #         username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_USER}}" # optional
+    #         password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-3:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+        description: TraeFik Prod 3 Cyborg
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: traefik-prod-3
+        widget:
+            type: traefik
+            #url: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
+            url: "{{HOMEPAGE_VAR_TRAEFIK3_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-4:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
+        description: TraeFik Prod 4 on Raptor
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: raptor-docker
+        container: traefik-prod-4
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK4_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-4_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-5:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
+        description: TraeFik Prod 5 on Unraid
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: unraid-docker
+        container: traefik-prod-5
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK5_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-5_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-6:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
+        description: TraeFik Prod 6 on Auth
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: auth-docker
+        container: traefik-prod-6
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK6_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-6_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-7:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
+        description: TraeFik Prod 7 on MurDogNAS
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: murdognas-docker
+        container: traefik-prod-7
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK7_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_PASSWORD}}" # optional
+#
+    - TraeFik-Prod-8:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
+        description: TraeFik Prod 8 on Docker-Ceph
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: docker-ceph-docker
+        container: traefik-prod-8
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK8_URL_API}}"
+            #url: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-8_PASSWORD}}" # optional
+#
+    - TraeFik-Dev-1:
+        icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
+        description: TraeFik Dev 1 on Docker-Dev
+        siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
+        ping: "{{HOMEPAGE_VAR_TRAEFIK-DEV-1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: docker-docker-dev
+        container: traefik-dev-1
+        widget:
+            type: traefik
+            url: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_URL_API}}"
+            username: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_USER}}" # optional
+            password: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_PASSWORD}}" # optional
+#
+    - Portainer Prod 1:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+        description: MKServer Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: portainer-prod-1
+        showStats: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
+            env: 2
+            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_API_KEY}}"
+#
+    # - Portainer Prod 2:
+    #     icon: portainer.svg
+    #     href: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
+    #     description: UtilServer Portainer
+    #     siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
+    #     ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
+    #     statusStyle: "basic"
+    #     hideErrors: true
+    #     server: utilserver-docker 
+    #     container: portainer-prod-2
+    #     showStats: true
+    #     widget:
+    #         type: portainer
+    #         url: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}" 
+    #         env: 3
+    #         key: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_API_KEY}}"
+#
+    - Portainer Prod 3:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
+        description: Cyborg Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
+        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker 
+        container: portainer-prod-3
+        showStats: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}" 
+            env: 3
+            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_API_KEY}}"
+#
+    - NAS Portainer:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        description: NAS Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
+            env: 1
+            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
+#
+    - NAS Community Portainer:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        description: NAS Community Portainer
+        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
+            env: 3
+            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
+#
+    - Unraid Portainer:
+        icon: portainer.svg
+        href: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
+        description: Docker Manager UI
+        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: portainer
+            url: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}" 
+            env: 3
+            key: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_API_KEY}}"
