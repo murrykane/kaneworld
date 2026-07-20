@@ -34,7 +34,7 @@ jobs:
           method: oidc
           identity-id: "6e07fd5f-42ad-4f7f-ac17-c6754f406dab"
           domain: "http://docker-dev.tail6d0a3.ts.net:81"
-          project-slug: "HomeLab"
+          project-slug: "homelab"
           env-slug: "dev"
           secret-path: "/authentik"
 
