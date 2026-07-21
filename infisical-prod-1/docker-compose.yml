@@ -7,11 +7,11 @@ services:
     depends_on:
       redis:
         condition: service_started
-    image: infisical/infisical:latest # PIN THIS TO A SPECIFIC TAG
+    image: infisical/infisical:${INFISICAL_VERSION}
     pull_policy: always
     env_file: .env
-    ports:
-      - 81:${TRAEFIK_PORT}
+    # ports:
+    #   - 81:${TRAEFIK_PORT}
     environment:
       - NODE_ENV=production
     networks:
@@ -35,7 +35,9 @@ services:
     env_file: .env
     restart: always
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      #- ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - proxy
     volumes:
