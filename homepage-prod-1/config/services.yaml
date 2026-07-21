@@ -857,14 +857,25 @@
 #
     - Infisical-Dev-1:
         icon: infisical.png # icons found here https://github.com/walkxcode/dashboard-icons
-        href: "{{HOMEPAGE_VAR_INFISICAL_URL}}"
+        href: "{{HOMEPAGE_VAR_INFISICAL_DEV_URL}}"
         description: Infisical Dev 1
-        siteMonitor: "{{HOMEPAGE_VAR_INFISICAL_URL}}"
-        ping: "{{HOMEPAGE_VAR_INFISICAL_URL}}"
+        siteMonitor: "{{HOMEPAGE_VAR_INFISICAL_DEV_URL}}"
+        ping: "{{HOMEPAGE_VAR_INFISICAL_DEV_URL}}"
         statusStyle: "basic"
         hideErrors: true
         server: docker-docker-dev
         container: infisical-dev-01
+#
+    - Infisical-Prod-1:
+        icon: infisical.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_INFISICAL_PRD_URL}}"
+        description: Infisical Prod 1
+        siteMonitor: "{{HOMEPAGE_VAR_INFISICAL_PRD_URL}}"
+        ping: "{{HOMEPAGE_VAR_INFISICAL_PRD_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: infisical-prod-1
 #
 - Utilities:
 #
