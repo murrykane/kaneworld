@@ -1,6 +1,6 @@
 services:
-  cloudflared-prod-1:
-    container_name: cloudflared-prod-1
+  cloudflare-prod-1:
+    container_name: cloudflare-prod-1
     image: cloudflare/cloudflared:latest
     restart: unless-stopped
     hostname: cloudflared

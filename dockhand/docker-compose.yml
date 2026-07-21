@@ -1,5 +1,5 @@
 services:
-  dockhand:
+  dockhand-prod-1:
     image: fnsys/dockhand:latest
     container_name: dockhand-prod-1
     ports:

@@ -855,6 +855,17 @@
         statusStyle: "basic"
         hideErrors: true
 #
+    - Infisical-Dev-1:
+        icon: infisical.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_INFISICAL_URL}}"
+        description: Infisical Dev 1
+        siteMonitor: "{{HOMEPAGE_VAR_INFISICAL_URL}}"
+        ping: "{{HOMEPAGE_VAR_INFISICAL_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: docker-docker-dev
+        container: infisical-dev-01
+#
 - Utilities:
 #
     - SLZB-06:
