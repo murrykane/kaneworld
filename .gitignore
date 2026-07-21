@@ -104,3 +104,6 @@ acme.json
 wg*.conf
 torrenting/qbittorrent/config/wireguard/wg0.conf_backup
 traefik-prod-1/data/acme.json.save
+infisical-dev-1/.env
+infisical-prod-1/.env
+**/01-special-init.sql
