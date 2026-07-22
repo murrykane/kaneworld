@@ -1,7 +1,7 @@
 services:
   atlas:
     image: keinstien/atlas:latest
-    container_name: atlas-prod-1
+    container_name: atlas-prod-2
     #network_mode: host
     networks:
       - proxy
