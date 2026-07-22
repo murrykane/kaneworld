@@ -8,7 +8,7 @@ My Current Lab extracted from Scanopy and added with Mermaid flowchart TD below:
 
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph sub_e36270d3["192.168.1.0/24 - 192.168.1.0/24"]
         n_302cf940["scanopy-daemon<br/>192.168.1.191"]
         n_91459e79["HP8715<br/>192.168.1.102"]
