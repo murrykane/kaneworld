@@ -9,7 +9,7 @@ services:
       - grafana-monitoring
       - proxy
     volumes:
-      - /home/murry/containers/grafana-monitoring/grafana:/var/lib/grafana
+      - ./grafana:/var/lib/grafana
     restart: unless-stopped
     environment:
       TZ: America/Los_Angeles
@@ -64,7 +64,7 @@ services:
     networks:
       - grafana-monitoring
     volumes:
-      - /home/murry/containers/grafana-monitoring/influxdb:/var/lib/influxdb2
+      - ./influxdb:/var/lib/influxdb2
 
   telegraf-prod-1:
     container_name: telegraf-prod-1
@@ -74,10 +74,10 @@ services:
     networks:
       - grafana-monitoring
     volumes:
-        - '/home/murry/containers/grafana-monitoring/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro'
+        - './telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro'
         - '/:/hostfs:ro' # to monitor docker-vm
         - '/var/run/docker.sock:/var/run/docker.sock' # to monitor docker containers
-        - '/home/murry/containers/grafana-monitoring/telegraf/mibs:/usr/share/snmp/mibs' # mibs files [e.g., sophos]
+        - './telegraf/mibs:/usr/share/snmp/mibs' # mibs files [e.g., sophos]
     environment:
       - TZ=America/Los_Angeles
       - HOST_ETC=/hostfs/etc
@@ -137,10 +137,10 @@ services:
       - "traefik.http.routers.prometheus-outpost.priority=500"
       - "traefik.http.routers.prometheus-outpost.service=mkserver-outpost-service@docker"
     volumes:
-      - /home/murry/containers/grafana-monitoring/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml #contained by the next line
-      - /home/murry/containers/grafana-monitoring/prometheus/config/alerts.yml:/etc/prometheus/alerts.yml
-      #- /home/murry/containers/grafana-monitoring/prometheus/config:/etc/prometheus
-      - /home/murry/containers/grafana-monitoring/prometheus/data:/prometheus
+      - ./prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml #contained by the next line
+      - ./prometheus/config/alerts.yml:/etc/prometheus/alerts.yml
+      #- ./prometheus/config:/etc/prometheus
+      - ./prometheus/data:/prometheus
     networks:
       - grafana-monitoring
       - proxy
@@ -154,7 +154,7 @@ services:
       - prometheus-prod-1
     image: prom/alertmanager:latest
     volumes:
-      - /home/murry/containers/grafana-monitoring/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     expose:
       - "9093"
     ports:
@@ -217,7 +217,7 @@ services:
     ports:
       - '9221:9221'
     volumes:
-      - /home/murry/containers/grafana-monitoring/pve/pve.yml:/etc/prometheus/pve.yml
+      - ./pve/pve.yml:/etc/prometheus/pve.yml
     networks:
       - grafana-monitoring
 
