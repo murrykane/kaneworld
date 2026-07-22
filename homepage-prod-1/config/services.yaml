@@ -875,7 +875,7 @@
         statusStyle: "basic"
         hideErrors: true
         server: cyborg-docker
-        container: infisical-prod-1
+        container: infisical-prod-01
 #
 - Utilities:
 #
