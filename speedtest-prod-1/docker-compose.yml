@@ -27,7 +27,7 @@ services:
       # - DB_USERNAME= #optional
       # - DB_PASSWORD= #optional
     volumes:
-      - /home/murry/containers/speedtest-tracker/data:/config
+      - ./data:/config
     ports:
       - 86:80
     restart: unless-stopped
