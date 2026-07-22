@@ -11,8 +11,8 @@ services:
     volumes:
       - /opt/postgres/data:/var/lib/postgresql/data:rw          # Ceph RBD volume mounted at OS level by Proxmox
       # - ../postgres/postgres.conf:/etc/postgresql/postgresql.conf:ro   addded as command options.....
-      - ../postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro # Per-app/per-subnet auth rules
-      - ../postgres/init-scripts:/docker-entrypoint-initdb.d:ro
+      - ./postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro # Per-app/per-subnet auth rules
+      - ./postgres/init-scripts:/docker-entrypoint-initdb.d:ro
     command:
       - "postgres"
       - "-c"
