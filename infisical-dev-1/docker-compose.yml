@@ -2,7 +2,7 @@
 
 services:
   backend:
-    container_name: infisical-dev-01
+    container_name: infisical-dev-1
     restart: unless-stopped
     depends_on:
       infisical-db:

@@ -2,7 +2,7 @@
 
 services:
   backend:
-    container_name: infisical-prod-01
+    container_name: infisical-prod-1
     restart: unless-stopped
     depends_on:
       redis:
