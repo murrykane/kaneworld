@@ -864,7 +864,7 @@
         statusStyle: "basic"
         hideErrors: true
         server: docker-docker-dev
-        container: infisical-dev-01
+        container: infisical-dev-1
 #
     - Infisical-Prod-1:
         icon: infisical.png # icons found here https://github.com/walkxcode/dashboard-icons
@@ -875,7 +875,7 @@
         statusStyle: "basic"
         hideErrors: true
         server: cyborg-docker
-        container: infisical-prod-01
+        container: infisical-prod-1
 #
 - Utilities:
 #
