@@ -183,6 +183,7 @@ services:
       - PAPERLESS_URL=${PAPERLESS_BASE_URL}
       - PAPERLESS_TOKEN=${PAPERLESS_API_TOKEN}
       - OLLAMA_MODLEL_NAME=${LLM_MODEL}
+      - LOG_LEVEL=${PAPERLESS_GPT_LOG_LEVEL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_PAPGBT}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
