@@ -36,7 +36,7 @@ services:
       SSO_SIGNUPS_MATCH_EMAIL: ${SSO_SIGNUPS_MATCH_EMAIL}
     volumes:
       #- $DOCKERDIR/appdata/vaultwarden/data:/data
-      - /home/murry/containers/vaultwarden-prod-1/data:/data
+      - ./data:/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.vaultwarden-prod-1.entrypoints=http"

@@ -15,7 +15,7 @@ services:
     ports:
       - 3003:3001
     volumes:
-      - /home/murry/containers/kuma-prod-1/data:/app/data
+      - ./data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/repos/homelab/certs:/app/data/docker-tls    # to get certs from the github repo pushed to local disk  
       #- /home/murry/containers/traefik/data:/app/data/docker-tls  # get this LetsEncrypt TLS keys for KaneWorld.Org....
@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.kuma-prod-1-secure.tls=true"
       - "traefik.http.routers.kuma-prod-1-secure.middlewares=auth-forwardauth@file"   # to get authentik login to redirect to the login page if not logged in, and then back to the app after login
       - "traefik.http.routers.kuma-prod-1-secure.service=kuma-prod-1"
-      - "traefik.http.services.kuma-prod-1-outpost-svc.loadbalancer.server.port=9000"
+      #- "traefik.http.services.kuma-prod-1-outpost-svc.loadbalancer.server.port=9000"  #duplicate for below
       - "traefik.http.services.kuma-prod-1-outpost-svc.loadbalancer.server.url=http://mkserver-outpost:9000"
       - "traefik.http.services.kuma-prod-1.loadbalancer.server.port=3001"
       - "traefik.docker.network=proxy"
