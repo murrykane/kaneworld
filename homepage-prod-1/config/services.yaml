@@ -467,7 +467,7 @@
         statusStyle: "basic"
         hideErrors: true
         server: raptor-docker
-        container: immich_server
+        container: immich_server-prod-1
         widget:
             type: immich
             url: "{{HOMEPAGE_VAR_IMMICH_URL}}"
@@ -478,15 +478,15 @@
         icon: pangolin.png
         href: "{{HOMEPAGE_VAR_PANGOLIN_URL}}"
         description: Pangolin
-        siteMonitor: "{{HOMEPAGE_VAR_PANGOLIN_URL}}"
+        #siteMonitor: "{{HOMEPAGE_VAR_PANGOLIN_URL}}"
         #ping: "{{HOMEPAGE_VAR_PANGOLIN_URL}}"   # oracle cloud blocks pings....
         statusStyle: "basic"
         hideErrors: true
-        widget:
-            type: pangolin
-            url: "{{HOMEPAGE_VAR_PANGOLIN_API_URL}}"
-            key: "{{HOMEPAGE_VAR_PANGOLIN_KEY}}"
-            org: "{{HOMEPAGE_VAR_PANGOLIN_ORG}}"
+        # widget:
+        #     type: pangolin
+        #     url: "{{HOMEPAGE_VAR_PANGOLIN_API_URL}}"
+        #     key: "{{HOMEPAGE_VAR_PANGOLIN_KEY}}"
+        #     org: "{{HOMEPAGE_VAR_PANGOLIN_ORG}}"
 #
     - VaultWarden:
         icon: vaultwarden.png

@@ -5,7 +5,8 @@ services:
     container_name: paperless-ngx-prod-1
     restart: unless-stopped
     env_file: 
-      - ./paperless/.env
+      #- ./paperless/.env
+      - .env
     depends_on:
       - redis
       - gotenberg
@@ -45,7 +46,8 @@ services:
     container_name: redis-prod-1
     restart: unless-stopped
     env_file: 
-      - ./redis/.env
+      #- ./redis/.env
+      - .env
     volumes:
       - ./redis/data:/data
     networks:
@@ -55,7 +57,8 @@ services:
     image: docker.io/gotenberg/gotenberg:8.25
     container_name: gotenberg-prod-1
     env_file: 
-      - ./gotenberg/.env
+      #- ./gotenberg/.env
+      - .env
     restart: unless-stopped
     command:
       - "gotenberg"
@@ -68,7 +71,9 @@ services:
     image: docker.io/apache/tika:latest
     container_name: tika-prod-1
     restart: unless-stopped
-    env_file: ./tika/.env
+    env_file: 
+      #-./tika/.env
+      - .env
     networks:
       - paperless   
 
@@ -78,7 +83,8 @@ services:
     container_name: open-webui-prod-1
     restart: unless-stopped
     env_file:
-      - ./open-webui/.env
+      #- ./open-webui/.env
+      - .env
     depends_on:
       - ollama
     ports:
@@ -106,7 +112,8 @@ services:
     container_name: ollama-prod-1
     restart: unless-stopped
     env_file:
-      - ./ollama/.env
+      #- ./ollama/.env
+      - .env
     volumes:
       - ./ollama/data/:/root/.ollama
       - ./ollama/models:/ollama-models
@@ -117,42 +124,6 @@ services:
     command: ["serve"]
     networks:
       - paperless
-
-  # ollama-cpu:
-  #   #image: uberchuckie/ollama-intel-gpu
-  #   image: ollama/ollama:latest
-  #   container_name: ollama-cpu-prod-1
-  #   restart: unless-stopped
-  #   env_file:
-  #     - ./ollama-cpu/.env
-  #   volumes:
-  #     - ./ollama-cpu/data/:/root/.ollama
-  #     - ./ollama/models:/ollama-models       # lets share models between gpu and cpu containers to save space, just make sure to only load models in one container at a time
-  #     #- ./ollama-cpu/models:/ollama-models
-  #   command: ["serve"]
-  #   networks:
-  #     - paperless
-      
-  # ollama-cpu:
-  #   image: ollama/ollama:latest
-  #   container_name: ollama-cpu-prod-1
-  #   restart: unless-stopped
-  #   ports:
-  #     - "11435:11434"   # host port : container port
-  #   env_file:
-  #     - ./ollama-cpu/.env
-  #   volumes:
-  #     - ./ollama-cpu/data/:/root/.ollama
-  #     - ./ollama-cpu/models:/ollama-models
-  #   command: ["serve"]
-  #   networks:
-  #     - paperless
-  #   # environment:
-  #   #   # Force CPU usage
-  #   #   OLLAMA_DEVICE: cpu
-  #   #   OLLAMA_MAX_LOADED_MODELS: 1
-  #   #   OLLAMA_NUM_PARALLEL: 1
-
 
   # paperless-ai service
   paperless-ai:
@@ -165,12 +136,16 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ./paperless-ai/.env
+      #- ./paperless-ai/.env
+      - .env
     volumes:
       - ./paperless-ai/data:/app/data
     networks:
       - proxy
       - paperless
+    environment:
+      - OLLAMA_HOST=${OLLAMA_HOST_CLIENT}
+      - PAPERLESS_URL=${PAPERLESS_BASE_URL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_PAPAI}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
@@ -195,12 +170,19 @@ services:
     ports:
       - "3002:8080"
     env_file:
-      - ./paperless-gpt/.env
+      #- ./paperless-gpt/.env
+      - .env
     volumes:
       - ./paperless-gpt/prompts:/app/prompts
     networks:
       - proxy
       - paperless
+    environment:
+      - OLLAMA_HOST=${OLLAMA_HOST_CLIENT}
+      - OLLAMA_CONTEXT_LENGTH=${PAPERLESS_GPT_OLLAMA_CONTEXT_LENGTH}
+      - PAPERLESS_URL=${PAPERLESS_BASE_URL}
+      - PAPERLESS_TOKEN=${PAPERLESS_API_TOKEN}
+      - OLLAMA_MODLEL_NAME=${LLM_MODEL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_PAPGBT}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
