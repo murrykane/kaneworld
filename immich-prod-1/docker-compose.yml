@@ -2,7 +2,7 @@
 
 services:
   immich-server:
-    container_name: immich_server
+    container_name: immich_server-prod-1
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     # extends:
     #   file: hwaccel.yml
@@ -76,7 +76,7 @@ services:
   #     timeout: 5s
   #     retries: 5
   immich-machine-learning:
-    container_name: immich_machine_learning
+    container_name: immich_machine_learning-prod-1
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
     extends:
       file: hwaccel.yml
@@ -101,7 +101,7 @@ services:
       retries: 5
 
   redis:
-    container_name: immich_redis
+    container_name: immich_redis-prod-1
     image: docker.io/valkey/valkey:8-bookworm
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -112,7 +112,7 @@ services:
     networks:
       - immich
   immich-cli:
-    container_name: immich_cli
+    container_name: immich_cli-prod-1
     depends_on:
       - immich-server
     stdin_open: true
