@@ -1,0 +1,11 @@
+services:
+  checkmk-agent:
+    image: eeacms/check-mk-agent:latest
+    container_name: checkmk-agent-prod-1
+    restart: unless-stopped
+    network_mode: "host"   # agent needs to be reachable by CheckMK server
+    volumes:
+     - "/:/host:ro"
+     - "/var/run/docker.sock:/var/run/docker.sock:ro"
+     - "./plugins:/usr/lib/check_mk_agent/plugins"
+     - "./conf:/etc/check_mk"

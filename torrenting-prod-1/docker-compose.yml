@@ -8,7 +8,7 @@ services:
     sysctls:
       net.ipv4.conf.all.src_valid_mark: 1
     volumes:
-      - /mnt/user/AppData/torrenting/qbittorrent/config:/config
+      - ./qbittorrent/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy  # LAN / Traefik access
@@ -130,7 +130,7 @@ services:
       - "traefik.http.services.prowlarr-prod-2.loadbalancer.server.port=9696"
       - "traefik.docker.network=proxy"
     volumes:
-      - /mnt/user/AppData/torrenting/prowlarr/config:/config
+      - ./prowlarr/config:/config
     networks:
       - proxy
     ports:
@@ -175,7 +175,7 @@ services:
       - "traefik.http.services.sonarr-prod-2.loadbalancer.server.port=8989"
       - "traefik.docker.network=proxy"
     volumes:
-      - /mnt/user/AppData/torrenting/sonarr/config:/config
+      - ./sonarr/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -220,7 +220,7 @@ services:
       - "traefik.http.services.radarr-prod-2.loadbalancer.server.port=7878"
       - "traefik.docker.network=proxy"
     volumes:
-      - /mnt/user/AppData/torrenting/radarr/config:/config
+      - ./radarr/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -243,7 +243,7 @@ services:
     networks:
       - proxy
     volumes:
-      - /mnt/user/AppData/torrenting/lidarr/config:/config
+      - ./lidarr/config:/config
       - /mnt/user/data:/data
     environment:
       - TZ=America/Los_Angeles
@@ -314,7 +314,7 @@ services:
       - "traefik.http.services.seerr-prod-2.loadbalancer.server.port=5055"
       - "traefik.docker.network=proxy"
     volumes:
-      - /mnt/user/AppData/torrenting/jellyseerr/config:/app/config
+      - ./jellyseerr/config:/app/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -370,7 +370,7 @@ services:
       - "traefik.http.services.cleanuparr-prod-1.loadbalancer.server.port=11011"
       - "traefik.docker.network=proxy"
     volumes:
-      - /mnt/user/AppData/torrenting/cleanuparr/config:/config
+      - ./cleanuparr/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -432,7 +432,7 @@ services:
       - "traefik.http.services.qui-prod-1.loadbalancer.server.port=7476"
       - "traefik.docker.network=proxy"
     volumes:
-      - /mnt/user/AppData/torrenting/qui/config:/config
+      - ./qui/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -491,7 +491,7 @@ services:
       - "traefik.http.services.krusader-prod-2.loadbalancer.server.port=6080"
       - "traefik.docker.network=proxy"
     volumes:
-      - /mnt/user/AppData/torrenting/krusader/config:/config
+      - ./krusader/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -514,7 +514,7 @@ services:
     networks:
       - proxy
     volumes:
-      - /mnt/user/AppData/torrenting/recyclarr/config:/config
+      - ./recyclarr/config:/config
     environment:
       - TZ=America/Los_Angeles
       - PUID=${PUID}
