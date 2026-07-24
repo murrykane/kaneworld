@@ -194,11 +194,11 @@ scrape_configs:
         location: 'Folsom, CA'
         machine: 'murdognas.kane.mk'
 
-  - job_name: 'CrowdSec Pangolin'
-    scrape_interval: 30s
-    static_configs:
-      - targets: ['100.77.15.11:6060']
-        labels:
-          instance: 'CrowdSec'
-          location: 'Oracle VPS'
-          machine: 'kane-pangolin.kane.mk'
+  # - job_name: 'CrowdSec Pangolin'
+  #   scrape_interval: 30s
+  #   static_configs:
+  #     - targets: ['100.77.15.11:6060']
+  #       labels:
+  #         instance: 'CrowdSec'
+  #         location: 'Oracle VPS'
+  #         machine: 'kane-pangolin.kane.mk'
