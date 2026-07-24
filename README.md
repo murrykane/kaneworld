@@ -3,6 +3,7 @@ My Homelab for Docker and containers
 
 Murry Kane
 murrykane@gmail.com
+github: https://github.com/murrykane/kaneworld
 
 My Current Lab extracted from Scanopy and added with Mermaid flowchart TD below:
 
