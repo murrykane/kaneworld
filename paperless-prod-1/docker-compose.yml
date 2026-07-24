@@ -22,7 +22,7 @@ services:
       - proxy
       - paperless
     labels:
-      - "autoheal=true"   # this will recycle the container if its in a unhealthy state by the autoeal container
+      - "autoheal=false"   # this will recycle the container if its in a unhealthy state by the autoeal container
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_PAP}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
       - "traefik.http.routers.${TRAEFIK_PAP}.rule=Host(`${TRAEFIK_DOMAIN_PAP}`)"
