@@ -2,6 +2,11 @@ services:
   checkmk-agent:
     image: eeacms/check-mk-agent:latest
     container_name: checkmk-agent-prod-1
+    dns:
+      - 192.168.1.215
+      - 192.168.1.219
+      - 192.168.1.4
+      - 1.1.1.1
     restart: unless-stopped
     network_mode: "host"   # agent needs to be reachable by CheckMK server
     volumes:
