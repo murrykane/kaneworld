@@ -20,6 +20,7 @@ services:
     networks:
       - proxy
     labels:
+      - "autoheal=true" 
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
       - "traefik.http.routers.${TRAEFIK_NAME}.rule=Host(`${TRAEFIK_DOMAIN_NAME}`)"

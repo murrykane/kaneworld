@@ -19,6 +19,8 @@ services:
       - 6060:6060 # expose prometheus metrics
     networks:
       - proxy
+    labels:
+      - "autoheal=true" 
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "cscli", "version"]
@@ -37,6 +39,8 @@ services:
       TRAEFIK_SKIP_TLS_VERIFY: true
     networks:
       - proxy # same network as traefik + crowdsec
+    labels:
+      - "autoheal=true" 
     depends_on:
       - crowdsec
     restart: unless-stopped
