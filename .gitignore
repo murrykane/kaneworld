@@ -106,3 +106,4 @@ traefik-prod-1/data/acme.json.save
 infisical-dev-1/.env
 infisical-prod-1/.env
 **/01-special-init.sql
+paperless-prod-1/.env
