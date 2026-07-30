@@ -42,6 +42,16 @@ http:
       tls: {}
       service: fileflows
 
+    vscode-dev:
+      entryPoints:
+        - "https"
+      rule: "Host(`vscode-dev.local.kaneworld.org`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: vscode-dev
+      
     apprise:
       entryPoints:
         - "https"
@@ -323,6 +333,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://kaneserver.kane.mk:8585"
+        passHostHeader: true
+
+    vscode-dev:
+      loadBalancer:
+        servers:
+          - url: "http://cluade-code.kane.mk:8443"
         passHostHeader: true
 
     filebot:
