@@ -1048,12 +1048,12 @@
         icon: vscode.png 
         href: "{{HOMEPAGE_VAR_VSCODE_URL}}"
         description: VSCode Development
-        siteMonitor: "{{HOMEPAGE_VAR_VSCODE_URL}}"
+        #siteMonitor: "{{HOMEPAGE_VAR_VSCODE_URL}}"
         ping: "{{HOMEPAGE_VAR_VSCODE_URL}}"
         statusStyle: "basic"
         hideErrors: true
-        server: cyborg-docker
-        container: vscode-dev-1
+        # server: cyborg-docker
+        # container: vscode-dev-1
 #
 - Reboots:
 
