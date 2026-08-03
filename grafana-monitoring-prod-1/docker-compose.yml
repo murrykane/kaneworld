@@ -66,27 +66,27 @@ services:
     volumes:
       - ./influxdb:/var/lib/influxdb2
 
-  telegraf-prod-1:
-    container_name: telegraf-prod-1
-    restart: unless-stopped
-    #user: telegraf:1000 #you need to find the GID of Docker if not added to Sudo group
-    user: 1000:1000  # murry
-    networks:
-      - grafana-monitoring
-    volumes:
-        - './telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro'
-        - '/:/hostfs:ro' # to monitor docker-vm
-        - '/var/run/docker.sock:/var/run/docker.sock' # to monitor docker containers
-        - './telegraf/mibs:/usr/share/snmp/mibs' # mibs files [e.g., sophos]
-    environment:
-      - TZ=America/Los_Angeles
-      - HOST_ETC=/hostfs/etc
-      - HOST_PROC=/hostfs/proc
-      - HOST_SYS=/hostfs/sys
-      - HOST_VAR=/hostfs/var
-      - HOST_RUN=/hostfs/run
-      - HOST_MOUNT_PREFIX=/hostfs
-    image: telegraf:latest
+  # telegraf-prod-1:
+  #   container_name: telegraf-prod-1
+  #   restart: unless-stopped
+  #   #user: telegraf:1000 #you need to find the GID of Docker if not added to Sudo group
+  #   #user: 1000:1000  # murry
+  #   networks:
+  #     - grafana-monitoring
+  #   volumes:
+  #       - './telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro'
+  #       - '/:/hostfs:ro' # to monitor docker-vm
+  #       - '/var/run/docker.sock:/var/run/docker.sock' # to monitor docker containers
+  #       - './telegraf/mibs:/usr/share/snmp/mibs' # mibs files [e.g., sophos]
+  #   environment:
+  #     - TZ=America/Los_Angeles
+  #     - HOST_ETC=/hostfs/etc
+  #     - HOST_PROC=/hostfs/proc
+  #     - HOST_SYS=/hostfs/sys
+  #     - HOST_VAR=/hostfs/var
+  #     - HOST_RUN=/hostfs/run
+  #     - HOST_MOUNT_PREFIX=/hostfs
+  #   image: telegraf:latest
   prometheus-prod-1:
     image: prom/prometheus
     container_name: prometheus-prod-1
