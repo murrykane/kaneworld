@@ -4,6 +4,9 @@ services:
     image: lscr.io/linuxserver/speedtest-tracker:latest
     container_name: speedtest-prod-1
     dns: 
+      - 192.168.1.215
+      - 192.168.1.219
+      - 192.168.1.4
       - 8.8.8.8
       - 1.1.1.1
     environment:
