@@ -1,0 +1,55 @@
+# Deployed by Ansible (secure-git-repo.yml, provision_ci=true) - edit that
+# playbook's files/gitleaks-github-workflow.yml, not this file directly,
+# or your next Ansible run will just overwrite your edits.
+#
+# Reuses the repo's .gitleaks.toml (same config the local pre-commit hook
+# uses) so local and CI scans agree.
+#
+# Requires a personal-account repo (murrykane/*) - no GITLEAKS_LICENSE
+# needed. If this ever moves under a GitHub organization, add
+# GITLEAKS_LICENSE as a secret and pass it through gitleaks-action's env.
+#
+# Requires a repo secret DISCORD_WEBHOOK_URL (Settings -> Secrets and
+# variables -> Actions -> New repository secret). Not provisioned by
+# Ansible - see the playbook's optional gh-secret-set task, or set by hand.
+
+name: gitleaks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history - gitleaks needs it to diff the PR/push range
+
+      - name: Run gitleaks
+        id: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+        continue-on-error: true
+
+      - name: Notify Discord on detected secret
+        if: steps.gitleaks.outcome == 'failure'
+        run: |
+          curl -sf -H "Content-Type: application/json" \
+            -d "{\"content\": \"🚨 **gitleaks** flagged a likely secret in \`${{ github.repository }}\` on \`${{ github.ref_name }}\`.\\nTriggered by: ${{ github.actor }}\\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Fail the job so the check blocks merging
+        if: steps.gitleaks.outcome == 'failure'
+        run: |
+          echo "gitleaks found a likely secret - see the summary above and the Discord alert." >&2
+          exit 1
