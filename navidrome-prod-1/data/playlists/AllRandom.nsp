@@ -3,5 +3,4 @@
   "comment": "All Songs in Random Order",
   "all": [{ "gt": { "playCount": -1 } }],
   "sort": "random"
-  // limit: 1000 // Uncomment this line to limit the number of songs
 }
