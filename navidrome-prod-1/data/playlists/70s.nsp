@@ -5,5 +5,5 @@
     { "inTheRange": { "year": [1971, 1980] } }
   ],
   "sort": "year",
-  "order": "desc",
+  "order": "desc"
 }

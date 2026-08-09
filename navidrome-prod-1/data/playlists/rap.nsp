@@ -2,5 +2,5 @@
   "name": "RAP",
   "comment": "Old School that is.....!",
   "all": [{ "is": { "genre": "Rap" } }],
-  "order": "desc",
+  "order": "desc"
 }

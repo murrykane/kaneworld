@@ -3,5 +3,5 @@
   "comment": "All that have been loved!",
   "all": [{ "is": { "loved": true } }],
   "sort": "dateLoved",
-  "order": "desc",
+  "order": "desc"
 }
