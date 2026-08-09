@@ -1,7 +1,6 @@
 {
   "name": "RAP",
-  "comment": "Rock that has a twist!",
+  "comment": "Old School that is.....!",
   "all": [{ "is": { "genre": "Rap" } }],
   "order": "desc",
-  //"limit": 500
 }
