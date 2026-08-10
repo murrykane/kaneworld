@@ -43,6 +43,7 @@ services:
 
   redis:
     image: docker.io/library/redis:8
+    user: ${USERMAP_UID}:${USERMAP_GID}
     container_name: redis-prod-1
     restart: unless-stopped
     env_file: 
