@@ -1058,20 +1058,65 @@
 - Reboots:
 
     #initiallyCollapsed: true
-    - Reboot Mini Server:
+    - Reboot Auth Server:
         icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
-        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=193&project_id=4"
-        description: Reboot Server Mini
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=227&project_id=4"
+        description: Reboot Auth Server
 #
-    - Reboot Coco Server:
+    - Reboot Cyborg Server:
         icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
-        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=191&project_id=4"
-        description: Reboot Server Coco
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=228&project_id=4"
+        description: Reboot Server Cyborg
 #
-    - Reboot Athena Server:
+    - Reboot MKServer Server:
         icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
-        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=190&project_id=4"
-        description: Reboot Server Athena
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=225&project_id=4"
+        description: Reboot Server MKServer
+#
+    - Reboot Raptor Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=226&project_id=4"
+        description: Reboot Server Raptor
+#
+    - Reboot Stargate Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=222&project_id=4"
+        description: Reboot Server Stargate
+#
+    - Reboot Unifi Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=231&project_id=4"
+        description: Reboot Server Unifi
+#
+    - Reboot DNS-Primary Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=236&project_id=4"
+        description: Reboot Server DNS-Primary
+#
+    - Reboot DNS-Secondary Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=237&project_id=4"
+        description: Reboot Server DNS-Secondary
+#
+    - Reboot PBS Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=229&project_id=4"
+        description: Reboot Server PBS
+#
+    - Reboot PBS-Mini Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=230&project_id=4"
+        description: Reboot Server PBS-Mini
+#
+    - Reboot Docker-Dev Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=224&project_id=4"
+        description: Reboot Server Docker-Dev
+#
+    - Reboot Docker-Ceph Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=223&project_id=4"
+        description: Reboot Server Docker-Ceph
 #
     - Reboot Apex Server:
         icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
@@ -1082,6 +1127,36 @@
         icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
         href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=188&project_id=4"
         description: Reboot ALL PROXMOX Servers
+#
+    - Reboot ALL Ubuntu Servers:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=239&project_id=4"
+        description: Reboot ALL Ubuntu Servers
+#
+    - Reboot ALL Proxmox Cluster:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=238&project_id=4"
+        description: Reboot ALL PROXMOX Cluster Servers
+#
+    - Reboot ALL Mini Proxmox Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=232&project_id=4"
+        description: Reboot MINI PROXMOX Server
+#
+    - Reboot Apex Proxmox Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=233&project_id=4"
+        description: Reboot APEX PROXMOX Server
+#
+    - Reboot Athena Proxmox Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=190&project_id=4"
+        description: Reboot ATHENA PROXMOX Server
+#
+    - Reboot Coco Proxmox Server:
+        icon: https://e7.pngegg.com/pngimages/388/176/png-clipart-computer-icons-shutdown-reboot-others-trademark-computer.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=191&project_id=4"
+        description: Reboot COCO PROXMOX Server
 
     - CrowdSec and Security:
         - Docker-Dev:
