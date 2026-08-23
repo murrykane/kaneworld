@@ -6,7 +6,8 @@ services:
     container_name: autoheal-prod-2
     restart: unless-stopped
     environment:
-      - AUTOHEAL_CONTAINER_LABEL=autoheal
+      - AUTOHEAL_CONTAINER_LABEL=all
+      #- AUTOHEAL_CONTAINER_LABEL=autoheal
       # - DOCKER_SOCK=tcp://raptor.kane.mk:2376
       # - DOCKER_TLS_VERIFY=1
       # - DOCKER_CERT_PATH=/certs
