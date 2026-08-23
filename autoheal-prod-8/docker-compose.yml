@@ -3,7 +3,7 @@ services:
     deploy:
       replicas: 1
     image: willfarrell/autoheal
-    container_name: autoheal-prod-1
+    container_name: autoheal-prod-8
     restart: unless-stopped
     environment:
       - AUTOHEAL_CONTAINER_LABEL=all
