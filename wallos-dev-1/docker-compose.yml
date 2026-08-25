@@ -2,15 +2,17 @@ services:
   wallos:
     image: bellamy/wallos:latest
     container_name: ${CONTAINER_NAME}
-    #user: ${UID}:${GID}
+    user: ${UID}:${GID}
     environment:
       - TZ=America/Los_Angeles
     ports:
       - "8282:${TRAEFIK_UI_PORT}"
     restart: unless-stopped
     volumes:
-      - './db:/var/www/html/db'
-      - './logos:/var/www/html/images/uploads/logos'
+      # - './db:/var/www/html/db'
+      # - './logos:/var/www/html/images/uploads/logos'
+      - '/home/murry/containers/wallos-prod-1/db:/var/www/html/db'
+      - '/home/murry/containers/wallos-prod-1/logos:/var/www/html/images/uploads/logos'
     networks:
       - proxy
     labels:
