@@ -2,8 +2,8 @@ services:
   homepage-prod-1:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage-prod-1
-    # env_file:
-    #   - ./.env
+    env_file:
+       - /home/murry/containers/homepage-prod-1/.env
     user: ${UID:-1000}:${GID:-1000}
     # uncomment if you are not using a reverse proxy
     ports:
