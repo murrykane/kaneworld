@@ -2,13 +2,13 @@ services:
   homepage-prod-1:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage-prod-1
-    env_file:
-      - ./.env
+    # env_file:
+    #   - ./.env
     # uncomment if you do not want to run as root
-    user: 1000:1000
+    user: ${UID:-1000}:${GID:-1000}
     # uncomment if you are not using a reverse proxy
     ports:
-     - 3001:3000
+     - 3001:${TRAEFIK_UI_PORT:-3000}
     environment:
       TZ: 'America/Los_Angeles'
       HOMEPAGE_ALLOWED_HOSTS: ${ALLOWED_HOSTS}
@@ -20,17 +20,29 @@ services:
     networks:
       proxy:
     labels:
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.homepage-prod-1.entrypoints=http"
+      # - "traefik.http.routers.homepage-prod-1.rule=Host(`homepage-prod-1.local.kaneworld.org`)"
+      # - "traefik.http.routers.homepage-prod-1.middlewares=default-whitelist@file"
+      # - "traefik.http.middlewares.homepage-prod-1-https-redirect.redirectscheme.scheme=https"
+      # - "traefik.http.routers.homepage-prod-1.middlewares=homepage-prod-1-https-redirect"
+      # - "traefik.http.routers.homepage-prod-1-secure.entrypoints=https"
+      # - "traefik.http.routers.homepage-prod-1-secure.rule=Host(`homepage-prod-1.local.kaneworld.org`)"
+      # - "traefik.http.routers.homepage-prod-1-secure.tls=true"
+      # - "traefik.http.routers.homepage-prod-1-secure.service=homepage-prod-1"
+      # - "traefik.http.services.homepage-prod-1.loadbalancer.server.port=3000"
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage-prod-1.entrypoints=http"
-      - "traefik.http.routers.homepage-prod-1.rule=Host(`homepage-prod-1.local.kaneworld.org`)"
-      - "traefik.http.routers.homepage-prod-1.middlewares=default-whitelist@file"
-      - "traefik.http.middlewares.homepage-prod-1-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.homepage-prod-1.middlewares=homepage-prod-1-https-redirect"
-      - "traefik.http.routers.homepage-prod-1-secure.entrypoints=https"
-      - "traefik.http.routers.homepage-prod-1-secure.rule=Host(`homepage-prod-1.local.kaneworld.org`)"
-      - "traefik.http.routers.homepage-prod-1-secure.tls=true"
-      - "traefik.http.routers.homepage-prod-1-secure.service=homepage-prod-1"
-      - "traefik.http.services.homepage-prod-1.loadbalancer.server.port=3000"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      #- "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.middlewares=auth-forwardauth@file"   #authentik login required
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
     security_opt:
       - no-new-privileges:true
 
