@@ -1018,17 +1018,6 @@
         server: cyborg-docker
         container: stirlingpdf-prod-1
 #
-    - Atlas-Prod-1:
-        icon: https://cdn.thenewstack.io/media/2025/09/eb03ae55-atlas.jpg
-        href: "{{HOMEPAGE_VAR_ATLAS_URL}}"
-        description: Atlas Network Automation
-        siteMonitor: "{{HOMEPAGE_VAR_ATLAS_URL}}"
-        ping: "{{HOMEPAGE_VAR_ATLAS_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: cyborg-docker
-        container: atlas-prod-1
-#
     - LinkWarden-Prod-1:
         icon: linkwarden.png # icons found here https://github.com/walkxcode/dashboard-icons
         href: "{{HOMEPAGE_VAR_LINKWARDEN_URL}}"
@@ -1158,71 +1147,71 @@
         href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=191&project_id=4&environment=coco.kane.mk"
         description: Reboot COCO PROXMOX Server
 
-    - CrowdSec and Security:
-        - Docker-Dev:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_DEV_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_DEV_PASS}}"
-        - MKServer:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD1_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD1_PASS}}"
-        - Cyborg:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD3_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD3_PASS}}"
-        - Raptor:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD4_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD4_PASS}}"
-        - Unraid:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD5_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD5_PASS}}"
-        - Auth:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD6_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD6_PASS}}"
-        - NAS:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD7_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD7_PASS}}"
-        - Docker-Ceph:
-            icon: https://www.crowdsec.net/favicon.ico
-            widget:
-                type: crowdsec
-                url: "{{HOMEPAGE_VAR_CROWDSEC_PROD8_URL}}"
-                limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
-                username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
-                password: "{{HOMEPAGE_VAR_CROWDSEC_PROD8_PASS}}"   
+- CrowdSec and Security:
+    - Docker-Dev:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_DEV_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_DEV_PASS}}"
+    - MKServer:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_PROD1_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_PROD1_PASS}}"
+    - Cyborg:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_PROD3_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_PROD3_PASS}}"
+    - Raptor:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_PROD4_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_PROD4_PASS}}"
+    - Unraid:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_PROD5_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_PROD5_PASS}}"
+    - Auth:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_PROD6_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_PROD6_PASS}}"
+    - NAS:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_PROD7_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_PROD7_PASS}}"
+    - Docker-Ceph:
+        icon: https://www.crowdsec.net/favicon.ico
+        widget:
+            type: crowdsec
+            url: "{{HOMEPAGE_VAR_CROWDSEC_PROD8_URL}}"
+            limit24h: "{{HOMEPAGE_VAR_CROWDSEC_TIMEFLAG}}"
+            username: "{{HOMEPAGE_VAR_CROWDSEC_USER}}"
+            password: "{{HOMEPAGE_VAR_CROWDSEC_PROD8_PASS}}"   
 
 - HTTP Only Services:
     #initiallyCollapsed: true
@@ -1399,22 +1388,6 @@
             username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_USER}}" # optional
             password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-1_PASSWORD}}" # optional
 #
-    # - TraeFik-Prod-2:
-    #     icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
-    #     href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
-    #     description: TraeFik Prod 2 UtilServer
-    #     siteMonitor: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     server: utilserver-docker
-    #     container: traefik-prod-2 
-    #     widget:
-    #         type: traefik
-    #         url: "{{HOMEPAGE_VAR_TRAEFIK2_URL_API}}"
-    #         username: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_USER}}" # optional
-    #         password: "{{HOMEPAGE_VAR_TRAEFIK-PROD-2_PASSWORD}}" # optional
-#
     - TraeFik-Prod-3:
         icon: traefik.png # icons found here https://github.com/walkxcode/dashboard-icons
         href: "{{HOMEPAGE_VAR_TRAEFIK-PROD-3_URL}}"
@@ -1528,96 +1501,3 @@
             url: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_URL_API}}"
             username: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_USER}}" # optional
             password: "{{HOMEPAGE_VAR_TRAEFIK-DEV_1_PASSWORD}}" # optional
-#
-    - Portainer Prod 1:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-        description: MKServer Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: mkserver-docker
-        container: portainer-prod-1
-        showStats: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_URL}}"
-            env: 2
-            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-1_API_KEY}}"
-#
-    # - Portainer Prod 2:
-    #     icon: portainer.svg
-    #     href: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
-    #     description: UtilServer Portainer
-    #     siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
-    #     ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}"
-    #     statusStyle: "basic"
-    #     hideErrors: true
-    #     server: utilserver-docker 
-    #     container: portainer-prod-2
-    #     showStats: true
-    #     widget:
-    #         type: portainer
-    #         url: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_URL}}" 
-    #         env: 3
-    #         key: "{{HOMEPAGE_VAR_PORTAINER-PROD-2_API_KEY}}"
-#
-    - Portainer Prod 3:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
-        description: Cyborg Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
-        ping: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        server: cyborg-docker 
-        container: portainer-prod-3
-        showStats: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_URL}}" 
-            env: 3
-            key: "{{HOMEPAGE_VAR_PORTAINER-PROD-3_API_KEY}}"
-#
-    - NAS Portainer:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        description: NAS Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
-            env: 1
-            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
-#
-    - NAS Community Portainer:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        description: NAS Community Portainer
-        siteMonitor: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        ping: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_NAS_PORTAINER_URL}}" 
-            env: 3
-            key: "{{HOMEPAGE_VAR_NAS_PORTAINER_API_KEY}}"
-#
-    - Unraid Portainer:
-        icon: portainer.svg
-        href: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
-        description: Docker Manager UI
-        siteMonitor: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
-        ping: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}"
-        statusStyle: "basic"
-        hideErrors: true
-        widget:
-            type: portainer
-            url: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_URL}}" 
-            env: 3
-            key: "{{HOMEPAGE_VAR_UNRAID_PORTAINER_API_KEY}}"
