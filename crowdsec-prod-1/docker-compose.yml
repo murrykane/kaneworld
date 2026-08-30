@@ -9,11 +9,13 @@ services:
       GID: "${GID-1000}"
       COLLECTIONS: "crowdsecurity/linux crowdsecurity/traefik"
     volumes:
-      - ./acquis/loki.yml:/etc/crowdsec/acquis.yaml
+      #- ./acquis/loki.yml:/etc/crowdsec/acquis.yaml
       - crowdsec-db:/var/lib/crowdsec/data/
       - crowdsec-config:/etc/crowdsec/
-      - ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
+      #- ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/repos/kaneworld/crowdsec-prod-1/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro
+      - /opt/repos/kaneworld/crowdsec-prod-1/acquis/loki.yml:/etc/crowdsec/acquis.yaml:ro
     ports:
       - 8081:8080 # expose Local API
       - 6060:6060 # expose prometheus metrics
