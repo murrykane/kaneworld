@@ -4,13 +4,13 @@ services:
     restart: unless-stopped
     container_name: dozzle-prod-1
     env_file: 
-      - .env
+      - /opt/repos/kaneworld/dozzle-prod-1/.env
     environment:
       #DOZZLE_REMOTE_HOST: tcp://kaneserver.kane.mk:2376,tcp://cyborg.kane.mk:2376,tcp://raptor.kane.mk:2376,tcp://mkserver.kane.mk:2376,tcp://murdognas.kane.mk:2376,tcp://auth.kane.mk:2376,tcp://docker-ceph.kane.mk:2376
       DOZZLE_REMOTE_HOST: ${DOCKER_SERVERS}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./dozzle/data:/data
+      - /opt/repos/kaneworld/dozzle-prod-1/data:/data
       - /opt/repos/homelab/certs:/certs
     ports:
       - "8082:8080"

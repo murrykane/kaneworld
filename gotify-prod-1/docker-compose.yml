@@ -3,7 +3,7 @@ services:
     image: gotify/server
     container_name: gotify-prod-1
     volumes:
-      - ./data:/app/data
+      - /opt/repos/kaneworld/gotify-prod-1/data:/app/data
     restart: unless-stopped
     ports:
      - 2023:80
