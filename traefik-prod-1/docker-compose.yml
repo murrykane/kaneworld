@@ -31,11 +31,11 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /opt/repos/kaneworld/traefik-prod-1/data/traefik.yml:/traefik.yml:ro
-      - /opt/repos/kaneworld/traefik-prod-1/data/acme.json:/acme.json
-      - /opt/repos/kaneworld/traefik-prod-1/data/config.yml:/config.yml:ro
-      #- /opt/repos/kaneworld/traefik-prod-1/logs:/var/log/traefik
-      - /opt/repos/kaneworld/traefik-prod-1/config:/etc/traefik
+      - /home/murry/containers/traefik-prod-1/data/traefik.yml:/traefik.yml:ro
+      - /home/murry/containers/traefik-prod-1/data/acme.json:/acme.json
+      - /home/murry/containers/traefik-prod-1/data/config.yml:/config.yml:ro
+      #- /home/murry/containers/traefik-prod-1/logs:/var/log/traefik
+      - /home/murry/containers/traefik-prod-1/config:/etc/traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik-prod-1.entrypoints=http"
