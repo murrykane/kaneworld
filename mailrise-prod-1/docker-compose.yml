@@ -8,4 +8,4 @@ services:
     environment:
       - TZ 'America/Los_Angeles'
     volumes:
-      - /home/murry/containers/mailrise-prod-1/config/mailrise.conf:/etc/mailrise.conf
+      - /opt/repos/kaneworld/mailrise-prod-1/config/mailrise.conf:/etc/mailrise.conf
