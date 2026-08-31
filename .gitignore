@@ -68,7 +68,6 @@ navidrome-prod-1/.env
 newt-prod-1/.env
 newt-prod-2/.env
 pangolin-prod-1/.env
-nextcloud-prod-1/docker-compose.yml
 pangolin-prod-1/config/crowdsec/online_api_credentials.yaml
 pangolin-prod-1/config/crowdsec/local_api_credentials.yaml
 pangolin-prod-1/config/traefik/dynamic_config.yml

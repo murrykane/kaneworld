@@ -1,0 +1,59 @@
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud-prod-1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /home/murry/containers/nextcloud-prod-1/appdata:/config
+      - /home/murry/containers/nextcloud-prod-1/data:/data
+    ports:
+      - 7843:80
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=http"
+      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.local.kaneworld.org`)"
+      - "traefik.http.middlewares.nextcloud-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud-https-redirect"
+      - "traefik.http.routers.nextcloud-secure.entrypoints=https"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.local.kaneworld.org`)"
+      - "traefik.http.routers.nextcloud-secure.tls=true"
+      - "traefik.http.routers.nextcloud-secure.service=nextcloud"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+      # redirect needed for security reasons
+      - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud_redirectregex"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.permanent=true"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.regex=https://(.*)/.well-known/(?:card|cal)dav"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.replacement=https://$${1}/remote.php/dav"
+      # Middleware to modify request headers
+      - "traefik.http.middlewares.nextcloud-https-headers.headers.customrequestheaders.X-Forwarded-For="
+      - "traefik.http.middlewares.nextcloud-https-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.nextcloud-https-headers.headers.customresponseheaders.Strict-Transport-Security=max-age=15552000; includeSubDomains"
+      - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud-https-headers"
+    networks:
+      proxy:
+
+  # nextcloud-db:
+  #   image: mariadb
+  #   container_name: nextcloud-nextcloud-db-1
+  #   restart: always
+  #   command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+  #   volumes:
+  #     - /home/murry/containers/nextcloud-prod-1/nextcloud-db:/var/lib/mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  #     - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  #     - MYSQL_DATABASE=${MYSQL_DATABASE}
+  #     - MYSQL_USER=${MYSQL_USER}
+  #   networks:
+  #     - proxy
+      
+networks:
+  proxy:
+    external: true
+
+
