@@ -3,7 +3,7 @@
 
 secrets:
   cf-token:
-    file: ./cf-token
+    file: /opt/repos/kaneworld/kuma-prod-1/cf-token
 services:
   kuma-prod-1:
     image: louislam/uptime-kuma:latest
@@ -15,7 +15,7 @@ services:
     ports:
       - 3003:3001
     volumes:
-      - ./data:/app/data
+      - /home/murry/containers/kuma-prod-1/data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/repos/homelab/certs:/app/data/docker-tls    # to get certs from the github repo pushed to local disk  
       #- /home/murry/containers/traefik/data:/app/data/docker-tls  # get this LetsEncrypt TLS keys for KaneWorld.Org....

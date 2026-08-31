@@ -9,7 +9,7 @@ services:
       - grafana-monitoring
       - proxy
     volumes:
-      - ./grafana:/var/lib/grafana
+      - /home/murry/containers/grafana-monitoring-prod-1/grafana:/var/lib/grafana
     restart: unless-stopped
     environment:
       TZ: America/Los_Angeles
@@ -64,7 +64,7 @@ services:
     networks:
       - grafana-monitoring
     volumes:
-      - ./influxdb:/var/lib/influxdb2
+      - /home/murry/containers/grafana-monitoring-prod-1/influxdb:/var/lib/influxdb2
 
   # telegraf-prod-1:
   #   container_name: telegraf-prod-1
@@ -137,10 +137,10 @@ services:
       - "traefik.http.routers.prometheus-outpost.priority=500"
       - "traefik.http.routers.prometheus-outpost.service=mkserver-outpost-service@docker"
     volumes:
-      - ./prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml #contained by the next line
-      - ./prometheus/config/alerts.yml:/etc/prometheus/alerts.yml
-      #- ./prometheus/config:/etc/prometheus
-      - ./prometheus/data:/prometheus
+      - /home/murry/containers/grafana-monitoring-prod-1/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml #contained by the next line
+      - /home/murry/containers/grafana-monitoring-prod-1/prometheus/config/alerts.yml:/etc/prometheus/alerts.yml
+      #- /home/murry/containers/grafana-monitoring-prod-1/prometheus/config:/etc/prometheus
+      - /home/murry/containers/grafana-monitoring-prod-1/prometheus/data:/prometheus
     networks:
       - grafana-monitoring
       - proxy
@@ -154,7 +154,7 @@ services:
       - prometheus-prod-1
     image: prom/alertmanager:latest
     volumes:
-      - ./prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - /home/murry/containers/grafana-monitoring-prod-1/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     expose:
       - "9093"
     ports:
@@ -217,7 +217,7 @@ services:
     ports:
       - '9221:9221'
     volumes:
-      - ./pve/pve.yml:/etc/prometheus/pve.yml
+      - /home/murry/containers/grafana-monitoring-prod-1/pve/pve.yml:/etc/prometheus/pve.yml
     networks:
       - grafana-monitoring
 
