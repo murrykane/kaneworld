@@ -30,7 +30,7 @@ services:
       # - DB_USERNAME= #optional
       # - DB_PASSWORD= #optional
     volumes:
-      - /opt/repos/kaneworld/speedtest-prod-1/data:/config
+      - /home/murry/containers/speedtest-prod-1/data:/config
     ports:
       - 86:80
     restart: unless-stopped
