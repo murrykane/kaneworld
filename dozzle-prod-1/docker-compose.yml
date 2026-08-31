@@ -10,7 +10,7 @@ services:
       DOZZLE_REMOTE_HOST: ${DOCKER_SERVERS}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/repos/kaneworld/dozzle-prod-1/data:/data
+      - /home/murry/containers/dozzle-prod-1/data:/data
       - /opt/repos/homelab/certs:/certs
     ports:
       - "8082:8080"
