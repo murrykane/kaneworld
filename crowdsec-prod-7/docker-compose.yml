@@ -14,8 +14,8 @@ services:
       - crowdsec-config:/etc/crowdsec/
       #- ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /opt/repos/kaneworld/crowdsec-prod-7/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro
-      - /opt/repos/kaneworld/crowdsec-prod-7/acquis/loki.yml:/etc/crowdsec/acquis.yaml:ro
+      - /share/homes/MurryKane/containers/crowdsec-prod-7/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro
+      - /share/homes/MurryKane/containers/crowdsec-prod-7/acquis/loki.yml:/etc/crowdsec/acquis.yaml:ro
     ports:
       - 8081:8080 # expose Local API
       - 6060:6060 # expose prometheus metrics
