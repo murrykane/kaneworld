@@ -3,7 +3,7 @@
 # 
 secrets:
   cf-token:
-    file: /opt/repos/kaneworld/traefik-prod-7/cf-token
+    file: /share/homes/MurryKane/containers/traefik-prod-7/cf-token
 services:
   traefik-prod-7:
     image: traefik:latest # or traefik:v3.3 to pin a version
@@ -14,7 +14,7 @@ services:
     secrets:
       - cf-token # the secret at the top of this file
     env_file:
-      - /opt/repos/kaneworld/traefik-prod-7/.env # store other secrets e.g., dashboard password
+      - /share/homes/MurryKane/containers/traefik-prod-7/.env # store other secrets e.g., dashboard password
     networks:
        proxy:
     ports:
@@ -33,10 +33,10 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/murry/containers/traefik-prod-7/data/traefik.yml:/traefik.yml:ro
-      - /home/murry/containers/traefik-prod-7/data/acme.json:/acme.json
-      - /home/murry/containers/traefik-prod-7/data/config.yml:/config.yml:ro
-      - /home/murry/containers/traefik-prod-7/config:/etc/traefik
+      - /share/homes/MurryKane/containers/traefik-prod-7/data/traefik.yml:/traefik.yml:ro
+      - /share/homes/MurryKane/containers/traefik-prod-7/data/acme.json:/acme.json
+      - /share/homes/MurryKane/containers/traefik-prod-7/data/config.yml:/config.yml:ro
+      - /share/homes/MurryKane/containers/traefik-prod-7/config:/etc/traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
