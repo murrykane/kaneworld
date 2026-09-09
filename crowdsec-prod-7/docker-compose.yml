@@ -9,10 +9,8 @@ services:
       GID: "${GID-1000}"
       COLLECTIONS: "crowdsecurity/linux crowdsecurity/traefik"
     volumes:
-      #- ./acquis/loki.yml:/etc/crowdsec/acquis.yaml
       - crowdsec-db:/var/lib/crowdsec/data/
       - crowdsec-config:/etc/crowdsec/
-      #- ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /share/homes/MurryKane/containers/crowdsec-prod-7/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro
       - /share/homes/MurryKane/containers/crowdsec-prod-7/acquis/loki.yml:/etc/crowdsec/acquis.yaml:ro

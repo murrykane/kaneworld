@@ -3,7 +3,7 @@
 # 
 secrets:
   cf-token:
-    file: ./cf-token
+    file: /opt/repos/kaneworld/traefik-prod-6/cf-token
 services:
   traefik-prod-6:
     image: traefik:latest # or traefik:v3.3 to pin a version
@@ -14,7 +14,7 @@ services:
     secrets:
       - cf-token # the secret at the top of this file
     env_file:
-      - .env # store other secrets e.g., dashboard password
+      - /opt/repos/kaneworld/traefik-prod-6/.env # store other secrets e.g., dashboard password
     networks:
        proxy:
     ports:
@@ -33,9 +33,9 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/traefik.yml:/traefik.yml:ro
-      - ./data/acme.json:/acme.json
-      - ./data/config.yml:/config.yml:ro
+      - /home/murry/containers/traefik-prod-6/data/traefik.yml:/traefik.yml:ro
+      - /home/murry/containers/traefik-prod-6/data/acme.json:/acme.json
+      - /home/murry/containers/traefik-prod-6/data/config.yml:/config.yml:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
