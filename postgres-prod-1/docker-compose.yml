@@ -7,12 +7,14 @@ services:
     ports:
       - "192.168.1.162:5432:5432"   # TODO: replace with your actual LAN IP, or remove if apps connect via Docker network only
     env_file:
-      - .env
+      - /opt/repos/kaneworld/postgres-prod-1/.env
       #- ../../.env.production.local
     volumes:
       - /opt/postgres/data:/var/lib/postgresql/data:rw 
-      - /home/murry/containers/postgres-prod-1/postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro # Per-app/per-subnet auth rules
-      - /home/murry/containers/postgres-prod-1/postgres/init-scripts:/docker-entrypoint-initdb.d:ro
+      - /opt/repos/kaneworld/postgres-prod-1/postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro # Per-app/per-subnet auth rules
+      - /opt/repos/kaneworld/postgres-prod-1/postgres/init-scripts:/docker-entrypoint-initdb.d:ro
+      #- /home/murry/containers/postgres-prod-1/postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro # Per-app/per-subnet auth rules
+      #- /home/murry/containers/postgres-prod-1/postgres/init-scripts:/docker-entrypoint-initdb.d:ro
       # - ../postgres/postgres.conf:/etc/postgresql/postgresql.conf:ro   addded as command options.....
       # - ./postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro # Per-app/per-subnet auth rules
       # - ./postgres/init-scripts:/docker-entrypoint-initdb.d:ro
