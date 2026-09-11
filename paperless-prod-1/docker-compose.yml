@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     env_file: 
       #- ./paperless/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     depends_on:
       - redis
       - gotenberg
@@ -14,7 +14,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./paperless/data:/usr/src/paperless/data
+      - /home/murry/containers/paperless-prod-1/paperless/data:/usr/src/paperless/data
       - ${PAPERLESS_MNT_POINT}/media:/usr/src/paperless/media:slave
       - ${PAPERLESS_MNT_POINT}/export:/usr/src/paperless/export:slave
       - ${PAPERLESS_MNT_POINT}/consume:/usr/src/paperless/consume:slave
@@ -48,9 +48,9 @@ services:
     restart: unless-stopped
     env_file: 
       #- ./redis/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     volumes:
-      - ./redis/data:/data
+      - /home/murry/containers/paperless-prod-1/redis/data:/data
     networks:
       - paperless   
   # gotenberg service that paperless uses for document conversion
@@ -59,7 +59,7 @@ services:
     container_name: gotenberg-prod-1
     env_file: 
       #- ./gotenberg/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     restart: unless-stopped
     command:
       - "gotenberg"
@@ -74,7 +74,7 @@ services:
     restart: unless-stopped
     env_file: 
       #-./tika/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     networks:
       - paperless   
 
@@ -85,13 +85,13 @@ services:
     restart: unless-stopped
     env_file:
       #- ./open-webui/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     depends_on:
       - ollama
     ports:
       - "3001:8080"
     volumes:
-      - ./open-webui/data:/app/backend/data
+      - /home/murry/containers/paperless-prod-1/open-webui/data:/app/backend/data
     networks:
       - proxy
       - paperless
@@ -114,10 +114,10 @@ services:
     restart: unless-stopped
     env_file:
       #- ./ollama/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     volumes:
-      - ./ollama/data/:/root/.ollama
-      - ./ollama/models:/ollama-models
+      - /home/murry/containers/paperless-prod-1/ollama/data/:/root/.ollama
+      - /home/murry/containers/paperless-prod-1/ollama/models:/ollama-models
     devices:
       - /dev/dri:/dev/dri   # Intel GPU passthrough
     group_add:
@@ -138,9 +138,9 @@ services:
       - "3000:3000"
     env_file:
       #- ./paperless-ai/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     volumes:
-      - ./paperless-ai/data:/app/data
+      - /home/murry/containers/paperless-prod-1/paperless-ai/data:/app/data
     networks:
       - proxy
       - paperless
@@ -172,9 +172,9 @@ services:
       - "3002:8080"
     env_file:
       #- ./paperless-gpt/.env
-      - .env
+      - /opt/repos/kaneworld/paperless-prod-1/.env
     volumes:
-      - ./paperless-gpt/prompts:/app/prompts
+      - /home/murry/containers/paperless-prod-1/paperless-gpt/prompts:/app/prompts
     networks:
       - proxy
       - paperless
