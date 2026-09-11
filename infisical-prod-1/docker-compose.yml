@@ -9,7 +9,7 @@ services:
         condition: service_started
     image: infisical/infisical:${INFISICAL_VERSION}
     pull_policy: always
-    env_file: .env
+    env_file: /opt/repos/kaneworld/infisical-prod-1/.env
     # ports:
     #   - 81:${TRAEFIK_PORT}
     environment:
@@ -32,7 +32,7 @@ services:
   redis:
     image: redis
     container_name: infisical-prod-redis
-    env_file: .env
+    env_file: /opt/repos/kaneworld/infisical-prod-1/.env
     restart: always
     environment:
       #- ALLOW_EMPTY_PASSWORD=yes

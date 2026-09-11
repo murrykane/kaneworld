@@ -5,10 +5,10 @@ services:
     ports:
       - "5678:5678"
     env_file:
-      - .env
+      - /opt/repos/kaneworld/n8n-prod-1/.env
     volumes:
-      - ./data:/home/node/.n8n
-      - ./files:/files
+      - /home/murry/containers/n8n-prod-1/data:/home/node/.n8n
+      - /home/murry/containers/n8n-prod-1/files:/files
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
