@@ -11,7 +11,7 @@ services:
         condition: service_started
     image: infisical/infisical:latest # PIN THIS TO A SPECIFIC TAG
     pull_policy: always
-    env_file: .env
+    env_file: /opt/repos/kaneworld/infisical-dev-1/.env
     ports:
       - 81:${TRAEFIK_PORT}
     environment:
@@ -35,7 +35,7 @@ services:
   redis:
     image: redis
     container_name: infisical-dev-redis
-    env_file: .env
+    env_file: /opt/repos/kaneworld/infisical-dev-1/.env
     restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
@@ -49,7 +49,7 @@ services:
     container_name: infisical-db
     image: postgres:14-alpine
     restart: always
-    env_file: .env
+    env_file: /opt/repos/kaneworld/infisical-dev-1/.env
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
