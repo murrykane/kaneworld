@@ -506,7 +506,7 @@ services:
     restart: unless-stopped
 
   recyclarr-prod-2:
-    image: ghcr.io/recyclarr/recyclarr:latest
+    image: ghcr.io/recyclarr/recyclarr:${RECYCLARR_VERSION_TAG:-8}
     # tty: true
     # stdin_open: true
     container_name: recyclarr-prod-2
