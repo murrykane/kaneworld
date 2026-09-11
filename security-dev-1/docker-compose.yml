@@ -84,7 +84,7 @@ services:
       - proxy
     restart: unless-stopped
     env_file:
-      - /home/murry/containers/security-dev-1/.env # store other secrets e.g., dashboard password
+      - /opt/repos/kaneworld/security-dev-1/.env # store other secrets e.g., dashboard password
     # labels:
     #   - "diun.enable=true"
     #   - "homepage.group=Security"
