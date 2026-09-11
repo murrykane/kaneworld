@@ -21,7 +21,7 @@ services:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     env_file:
-      - .env
+      - /opt/repos/kaneworld/immich-prod-1/.env
     ports:
       - 2283:2283
     depends_on:
@@ -82,9 +82,9 @@ services:
       file: hwaccel.yml
       service: openvino
     volumes:
-      - ./model-cache:/cache
+      - /home/murry/containers/immich-prod-1/model-cache:/cache
     env_file:
-      - .env
+      - /opt/repos/kaneworld/immich-prod-1/.env
     environment:
       - MACHINE_LEARNING_ACCELERATION=openvino
       - OPENVINO_DEVICE=GPU
@@ -117,8 +117,9 @@ services:
       - immich-server
     stdin_open: true
     tty: true
+    restart: unless-stopped
     volumes:
-      - /mnt/${NAS_IMPORT_DIRECTORY}:/import:ro
+      - ${NAS_IMPORT_DIRECTORY}:/import:ro
     environment:
       - IMMICH_INSTANCE_URL=${IMMICH_NAME}
       - IMMICH_API_KEY=${IMMICH_API_KEY}
@@ -131,7 +132,7 @@ services:
     #command: upload /import --recursive 
     networks:
       - immich
-    restart: no
+
 
 networks:
   immich:
