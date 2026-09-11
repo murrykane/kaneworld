@@ -7,11 +7,11 @@ services:
     ports:
       - '8080:8080'
     volumes:
-      - ./StirlingPDF/trainingData:/usr/share/tessdata # Required for extra OCR languages
-      - ./StirlingPDF/extraConfigs:/configs
-      - ./StirlingPDF/customFiles:/customFiles/
-      - ./StirlingPDF/logs:/logs/
-      - ./StirlingPDF/pipeline:/pipeline/
+      - /home/murry/containers/stirlingpdf-prod-1/StirlingPDF/trainingData:/usr/share/tessdata # Required for extra OCR languages
+      - /home/murry/containers/stirlingpdf-prod-1/StirlingPDF/extraConfigs:/configs
+      - /home/murry/containers/stirlingpdf-prod-1/StirlingPDF/customFiles:/customFiles/
+      - /home/murry/containers/stirlingpdf-prod-1/StirlingPDF/logs:/logs/
+      - /home/murry/containers/stirlingpdf-prod-1/StirlingPDF/pipeline:/pipeline/
       # Add the following line to mount the rar binary
       - /usr/bin/rar:/usr/local/bin/rar:ro
     environment:

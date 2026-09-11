@@ -58,8 +58,8 @@ services:
       #- "traefik.http.routers.${TRAEFIK_APP}-secure.middlewares=auth-forwardauth@file"   #Added for authentik login
       - "traefik.docker.network=${TRAEFIK_NETWORK}"
     volumes:
-      - ./data:/data
-      - ./oidc.toml:/oidc.toml:ro
+      - /home/murry/containers/scanopy-prod-1/data:/data
+      - /home/murry/containers/scanopy-prod-1/oidc.toml:/oidc.toml:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
