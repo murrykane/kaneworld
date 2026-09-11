@@ -12,5 +12,5 @@ services:
     volumes:
      - "/:/host:ro"
      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-     - "./plugins:/usr/lib/check_mk_agent/plugins"
-     - "./conf:/etc/check_mk"
+     - "/mnt/user/AppData/checkmk-agent-prod-1/data/plugins:/usr/lib/check_mk_agent/plugins"
+     - "/mnt/user/AppData/checkmk-agent-prod-1/data/conf:/etc/check_mk"

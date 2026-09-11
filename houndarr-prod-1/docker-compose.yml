@@ -12,7 +12,7 @@ services:
       - TZ=America/Los_Angeles
     restart: unless-stopped
     volumes:
-      - ./data:/data
+      - /mnt/user/AppData/houndarr-prod-1/data:/data
     labels:
       - "net.unraid.docker.icon=https://raw.githubusercontent.com/av1155/houndarr/refs/heads/main/src/houndarr/static/img/houndarr-logo-dark.png"
       - "net.unraid.docker.webui=http://[IP]:[PORT:8877]"
