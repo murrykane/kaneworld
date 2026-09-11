@@ -37,10 +37,10 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /mnt/user/AppData/traefik-prod-5/traefik-prod-5/data/traefik.yml:/traefik.yml:ro
-      - /mnt/user/AppData/traefik-prod-5/traefik-prod-5/data/acme.json:/acme.json
-      - /mnt/user/AppData/traefik-prod-5/traefik-prod-5/data/config.yml:/config.yml:ro
-      - /mnt/user/AppData/traefik-prod-5/traefik-prod-5/data/cf-token:/run/secrets/cf-token:ro
+      - /mnt/user/AppData/traefik-prod-5/data/traefik.yml:/traefik.yml:ro
+      - /mnt/user/AppData/traefik-prod-5/data/acme.json:/acme.json
+      - /mnt/user/AppData/traefik-prod-5/data/config.yml:/config.yml:ro
+      - /mnt/user/AppData/traefik-prod-5/data/cf-token:/run/secrets/cf-token:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik-prod-5.entrypoints=http"
