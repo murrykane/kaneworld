@@ -8,7 +8,7 @@ services:
     sysctls:
       net.ipv4.conf.all.src_valid_mark: 1
     volumes:
-      - ./qbittorrent/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/qbittorrent/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy  # LAN / Traefik access
@@ -130,7 +130,7 @@ services:
       - "traefik.http.services.prowlarr-prod-2.loadbalancer.server.port=9696"
       - "traefik.docker.network=proxy"
     volumes:
-      - ./prowlarr/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/prowlarr/config:/config
     networks:
       - proxy
     ports:
@@ -175,7 +175,7 @@ services:
       - "traefik.http.services.sonarr-prod-2.loadbalancer.server.port=8989"
       - "traefik.docker.network=proxy"
     volumes:
-      - ./sonarr/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/sonarr/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -220,7 +220,7 @@ services:
       - "traefik.http.services.radarr-prod-2.loadbalancer.server.port=7878"
       - "traefik.docker.network=proxy"
     volumes:
-      - ./radarr/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/radarr/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -243,7 +243,7 @@ services:
     networks:
       - proxy
     volumes:
-      - ./lidarr/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/lidarr/config:/config
       - /mnt/user/data:/data
     environment:
       - TZ=America/Los_Angeles
@@ -314,7 +314,7 @@ services:
       - "traefik.http.services.seerr-prod-2.loadbalancer.server.port=5055"
       - "traefik.docker.network=proxy"
     volumes:
-      - ./jellyseerr/config:/app/config
+      - /mnt/user/AppData/torrenting-prod-1/jellyseerr/config:/app/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -370,7 +370,7 @@ services:
       - "traefik.http.services.cleanuparr-prod-1.loadbalancer.server.port=11011"
       - "traefik.docker.network=proxy"
     volumes:
-      - ./cleanuparr/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/cleanuparr/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -432,7 +432,7 @@ services:
       - "traefik.http.services.qui-prod-1.loadbalancer.server.port=7476"
       - "traefik.docker.network=proxy"
     volumes:
-      - ./qui/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/qui/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -491,7 +491,7 @@ services:
       - "traefik.http.services.krusader-prod-2.loadbalancer.server.port=6080"
       - "traefik.docker.network=proxy"
     volumes:
-      - ./krusader/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/krusader/config:/config
       - /mnt/user/data:/data
     networks:
       - proxy
@@ -514,7 +514,7 @@ services:
     networks:
       - proxy
     volumes:
-      - ./recyclarr/config:/config
+      - /mnt/user/AppData/torrenting-prod-1/recyclarr/config:/config
     environment:
       - TZ=America/Los_Angeles
       - PUID=${PUID}
