@@ -3,7 +3,7 @@
 # 
 secrets:
   cf-token:
-    file: ./cf-token
+    file: /opt/repos/kaneworld/security-dev-1/cf-token
 services:
   traefik:
     image: traefik:latest # or traefik:v3.3 to pin a version
@@ -14,7 +14,7 @@ services:
     secrets:
       - cf-token # the secret at the top of this file
     env_file:
-      - .env # store other secrets e.g., dashboard password
+      - /opt/repos/kaneworld/security-dev-1/.env # store other secrets e.g., dashboard password
     networks:
        proxy:
     ports:
@@ -33,9 +33,9 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/traefik.yml:/traefik.yml:ro
-      - ./data/acme.json:/acme.json
-      - ./data/config.yml:/config.yml:ro
+      - /home/murry/containers/security-dev-1/data/traefik.yml:/traefik.yml:ro
+      - /home/murry/containers/security-dev-1/data/acme.json:/acme.json
+      - /home/murry/containers/security-dev-1/data/config.yml:/config.yml:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
@@ -72,10 +72,10 @@ services:
       GID: "${GID-1000}"
       COLLECTIONS: "crowdsecurity/linux crowdsecurity/traefik"
     volumes:
-      - ./acquis/loki.yml:/etc/crowdsec/acquis.yaml
+      - /home/murry/containers/security-dev-1/acquis/loki.yml:/etc/crowdsec/acquis.yaml
       - crowdsec-db:/var/lib/crowdsec/data/
       - crowdsec-config:/etc/crowdsec/
-      - ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
+      - /home/murry/containers/security-dev-1/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - 8081:8080 # expose Local API
@@ -84,7 +84,7 @@ services:
       - proxy
     restart: unless-stopped
     env_file:
-      - .env # store other secrets e.g., dashboard password
+      - /home/murry/containers/security-dev-1/.env # store other secrets e.g., dashboard password
     # labels:
     #   - "diun.enable=true"
     #   - "homepage.group=Security"
@@ -118,7 +118,7 @@ services:
       - crowdsec
     restart: unless-stopped
     env_file:
-      - .env # store other secrets e.g., dashboard password
+      - /opt/repos/kaneworld/security-dev-1/.env
     # labels:
     #   - "diun.enable=true"
     security_opt:
