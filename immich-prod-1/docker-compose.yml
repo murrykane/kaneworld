@@ -117,7 +117,7 @@ services:
       - immich-server
     stdin_open: true
     tty: true
-    restart: unless-stopped
+    restart: no
     volumes:
       - ${NAS_IMPORT_DIRECTORY}:/import:ro
     environment:
