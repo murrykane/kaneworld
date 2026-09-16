@@ -55,7 +55,7 @@ services:
       - paperless   
   # gotenberg service that paperless uses for document conversion
   gotenberg:
-    image: docker.io/gotenberg/gotenberg:8.25
+    image: docker.io/gotenberg/gotenberg:8.37
     container_name: gotenberg-prod-1
     env_file: 
       #- ./gotenberg/.env
