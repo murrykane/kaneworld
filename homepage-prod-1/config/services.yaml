@@ -1461,7 +1461,7 @@
         ping: "{{HOMEPAGE_VAR_TRAEFIK-PROD-7_URL}}"
         statusStyle: "basic"
         hideErrors: true
-        server: murdognas-docker
+        server: nas-docker
         container: traefik-prod-7
         widget:
             type: traefik
