@@ -200,15 +200,19 @@
             headers:
                 X-Api-Key: "{{HOMEPAGE_VAR_UNRAID_CLEANARR_API_KEY}}"
             mappings:
-                - field: events.totalCount
-                  label: Events (24h)
+                - field: events.total
+                  label: Events
                   format: number
-                - field: strikes.totalCount
-                  label: Strikes (24h)
+                - field: strikes.total
+                  label: Strikes
                   format: number
-                - field: strikes.itemsRemoved
+                - field: removals.total
                   label: Removed
                   format: number
+                - field: searches.total
+                  label: searches
+                  format: number
+
 #
     - Unraid Prowlarr:
         icon: prowlarr.svg
@@ -353,6 +357,7 @@
         hideErrors: true
         widget:
             type: jellyfin
+            version: 2
             url: "{{HOMEPAGE_VAR_JELLYFIN2_URL}}"
             key: "{{HOMEPAGE_VAR_JELLYFIN2_API_KEY}}"
             enableBlocks: "{{HOMEPAGE_VAR_JELLYFIN2_ENABLE_BLOCKS}}" # true # optional, defaults to false
