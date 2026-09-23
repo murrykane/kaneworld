@@ -1,9 +1,4 @@
-#version: '3'
-# make sure ${HOME}/containers/traefik/acme.json   is root owned and 600 permissions
-# 
-# secrets:
-#   cf-token:
-#     file: /mnt/cache/traefik-prod-5/cf-token
+
 services:
   traefik-prod-5:
     image: traefik:latest # or traefik:v3.3 to pin a version
@@ -12,13 +7,8 @@ services:
     user: "${UID-0}:${GID-0}"
     security_opt:
       - no-new-privileges:true # helps to increase security
-    # secrets:
-    #   - cf-token # the secret at the top of this file
-    # env_file:
-    #   - .env # store other secrets e.g., dashboard password
     networks:
        proxy:
-       #bridge:
     ports:
       - 80:80
       - 443:443
@@ -82,6 +72,7 @@ services:
       - /mnt/user/AppData/traefik-prod-5/acquis:/etc/crowdsec/acquis.d
       - crowdsec-db:/var/lib/crowdsec/data/
       - /mnt/user/AppData/traefik-prod-5/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
+      - /mnt/user/AppData/traefik-prod-5/config/local_api_credentials.yaml:/etc/crowdsec/local_api_credentials.yaml
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - 8081:8080 # expose Local API
@@ -119,4 +110,3 @@ networks:
 
 volumes:
    crowdsec-db:
-   #crowdsec-config:
