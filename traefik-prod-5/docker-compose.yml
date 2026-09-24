@@ -69,9 +69,10 @@ services:
       UID: "${UID-0}"
       COLLECTIONS: "crowdsecurity/linux crowdsecurity/traefik"
     volumes:
-      - /mnt/user/AppData/traefik-prod-5/acquis:/etc/crowdsec/acquis.d
+      - /mnt/user/AppData/traefik-prod-5/etc-crowdsec:/etc/crowdsec
+      #- /mnt/user/AppData/traefik-prod-5/acquis:/etc/crowdsec/acquis.d
       - crowdsec-db:/var/lib/crowdsec/data/
-      - /mnt/user/AppData/traefik-prod-5/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
+      #- /mnt/user/AppData/traefik-prod-5/config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro  # replaces old mount
       #- /mnt/user/AppData/traefik-prod-5/config/local_api_credentials.yaml:/etc/crowdsec/local_api_credentials.yaml
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
