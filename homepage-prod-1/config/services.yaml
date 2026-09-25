@@ -446,7 +446,7 @@
 
 #
     - Dockhand-Prod-1:
-        icon: https://mariushosting.com/wp-content/uploads/2025/12/How-to-Install-Dockhand-on-Your-Synology-NAS-768x384.png
+        icon: dockhand.png
         href: "{{HOMEPAGE_VAR_DOCKHAND_URL}}"
         description: DockHand Docker Management
         siteMonitor: "{{HOMEPAGE_VAR_DOCKHAND_URL}}"
