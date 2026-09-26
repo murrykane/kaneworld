@@ -31,7 +31,7 @@ services:
       - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_PORT}"
       - "traefik.docker.network=proxy"
   meilisearch:
-    image: getmeili/meilisearch:v1.12.8
+    image: getmeili/meilisearch:${MILI_IMAGE_VERSION}
     container_name: lw_meilisearch
     restart: always
     env_file:
