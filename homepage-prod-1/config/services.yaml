@@ -5,7 +5,7 @@
 - Run Ansible Jobs:
 #
     - Install Unix Updates:
-        icon: https://cdn.imgbin.com/21/11/2/imgbin-installation-computer-software-package-manager-software-development-linux-1xwAL5vGMjTNX7tKu7dh5DG6M.jpg
+        icon: https://cdn3d.iconscout.com/3d/premium/thumb/computer-restart-3d-icon-png-download-9723705.png
         href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=175&project_id=4"
         description: Installs apt updates to all linux hosts
 #
