@@ -1041,17 +1041,17 @@
         # server: cyborg-docker
         # container: vscode-dev-1
 #
-        - InFluxDB:
-            icon: influxdb.png # icons found here https://github.com/walkxcode/dashboard-icons
-            href: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
-            description: InFluxDB
-            siteMonitor: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
-            ping: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            server: mkserver-docker
-            container: influxdb-prod-1
-            showStats: true
+    - InFluxDB:
+        icon: influxdb.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+        description: InFluxDB
+        siteMonitor: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+        ping: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: influxdb-prod-1
+        showStats: true
 #
 - Reboots:
 
