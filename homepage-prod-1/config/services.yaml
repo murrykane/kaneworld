@@ -9,6 +9,11 @@
         href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=175&project_id=4"
         description: Installs apt updates to all linux hosts
 #
+    - Infisical Updates:
+        icon: infisical.png
+        href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=213&project_id=4"
+        description: Update any environment variables for Docker Containers from Infisical
+#
     - Patch All Hosts:
         icon: https://www.canada.ca/content/dam/tbs-sct/images/digital-government/20200703-02-eng.png
         href: "https://n8n.local.kaneworld.org/webhook/SemaphoreTemplateRun?job_id=181&project_id=4"
@@ -521,188 +526,175 @@
 #
 - Networking and Monitoring:
 #
-    - Traefik Managed:
-        - Unifi OS:
-            icon: unifi.svg # icons found here https://github.com/walkxcode/dashboard-icons
-            href: "{{HOMEPAGE_VAR_UNIFI_URL}}"
-            description: Network
-            siteMonitor: "{{HOMEPAGE_VAR_UNIFI_URL}}"
-            ping: "{{HOMEPAGE_VAR_UNIFI_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            # server: mkserver-docker
-            # container: unifi-prod-1
-            widget:
-                type: unifi
-                url: "{{HOMEPAGE_VAR_UNIFI_URL}}"
-                username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
-                password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
-                site: "{{HOMEPAGE_VAR_UNIFI_SITE}}"
-                #Allowed fields: ["uptime", "wan", "lan_users", "wlan_users"]
+#    - Traefik Managed:
+    - Unifi OS:
+        icon: unifi.svg # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+        description: Network
+        siteMonitor: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+        ping: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        # server: mkserver-docker
+        # container: unifi-prod-1
+        widget:
+            type: unifi
+            url: "{{HOMEPAGE_VAR_UNIFI_URL}}"
+            username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
+            site: "{{HOMEPAGE_VAR_UNIFI_SITE}}"
+            #Allowed fields: ["uptime", "wan", "lan_users", "wlan_users"]
 #
-        - CheckMK:
-            icon: https://checkmk.com/application/files/9215/9834/3872/checkmk_icon_neg_v1.png
-            href: "{{HOMEPAGE_VAR_CHECKMK_URL}}"
-            description: Monitoring KaneCo
-            siteMonitor: "{{HOMEPAGE_VAR_CHECKMK_URL_API}}"
-            ping: "{{HOMEPAGE_VAR_CHECKMK_URL}}"
-            statusStyle: "basic"
-            showStats: true
-            hideErrors: true
-            server: cyborg-docker
-            container: checkmk-prod-1
-            widget:
-                type: checkmk
-                url: "{{HOMEPAGE_VAR_CHECKMK_URL_API}}"
-                site: "{{HOMEPAGE_VAR_CHECKMK_SITE}}"
-                username: "{{HOMEPAGE_VAR_CHECKMK_USER}}"
-                password: "{{HOMEPAGE_VAR_CHECKMK_PASSWORD}}"
+    - CheckMK:
+        icon: https://checkmk.com/application/files/9215/9834/3872/checkmk_icon_neg_v1.png
+        href: "{{HOMEPAGE_VAR_CHECKMK_URL}}"
+        description: Monitoring KaneCo
+        siteMonitor: "{{HOMEPAGE_VAR_CHECKMK_URL_API}}"
+        ping: "{{HOMEPAGE_VAR_CHECKMK_URL}}"
+        statusStyle: "basic"
+        showStats: true
+        hideErrors: true
+        server: cyborg-docker
+        container: checkmk-prod-1
+        widget:
+            type: checkmk
+            url: "{{HOMEPAGE_VAR_CHECKMK_URL_API}}"
+            site: "{{HOMEPAGE_VAR_CHECKMK_SITE}}"
+            username: "{{HOMEPAGE_VAR_CHECKMK_USER}}"
+            password: "{{HOMEPAGE_VAR_CHECKMK_PASSWORD}}"
 #
-        - Uptime Kuma:
-            icon: uptime-kuma.svg
-            href: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
-            description: Monitoring KaneWorld
-            siteMonitor: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
-            ping: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            server: mkserver-docker
-            container: kuma-prod-1
-            showStats: true
-            widget:
-                type: uptimekuma
-                url: "{{HOMEPAGE_VAR_UPTIME_KUMA_API}}"
-                slug: kane
+    - Uptime Kuma:
+        icon: uptime-kuma.svg
+        href: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
+        description: Monitoring KaneWorld
+        siteMonitor: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
+        ping: "{{HOMEPAGE_VAR_UPTIME_KUMA_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: kuma-prod-1
+        showStats: true
+        widget:
+            type: uptimekuma
+            url: "{{HOMEPAGE_VAR_UPTIME_KUMA_API}}"
+            slug: kane
 #
-        - Scanopy:
-            icon: scanopy.png
-            href: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
-            description: Scanopy
-            siteMonitor: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
-            ping: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            server: cyborg-docker
-            container: scanopy-prod-1-server-1
+    - Scanopy:
+        icon: scanopy.png
+        href: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
+        description: Scanopy
+        siteMonitor: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
+        ping: "{{HOMEPAGE_VAR_SCANOPY_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: cyborg-docker
+        container: scanopy-prod-1-server-1
 #
-        - Gotify Notifications:
-            icon: gotify.png # icons found here https://github.com/walkxcode/dashboard-icons
-            href: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
-            description: Gotify Escalation
-            siteMonitor: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
-            ping: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            widget:
-                type: gotify
-                url: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
-                key: "{{HOMEPAGE_VAR_GOTIFY_TOKEN}}"
+    - Gotify Notifications:
+        icon: gotify.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+        description: Gotify Escalation
+        siteMonitor: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+        ping: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: gotify
+            url: "{{HOMEPAGE_VAR_GOTIFY_URL}}"
+            key: "{{HOMEPAGE_VAR_GOTIFY_TOKEN}}"
 #
-        - Grafana:
-            icon: grafana.svg
-            href: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
-            description: internal
-            siteMonitor: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
-            ping: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
-            statusStyle: "basic"
-            hideErrors: false
-            server: mkserver-docker
-            container: grafana-prod-1
-            showStats: true
-            widget:
-                type: grafana
-                #alerts: "${{HOMEPAGE_VAR_GRAFANA_GRAF}}"
-                version: "{{HOMEPAGE_VAR_GRAFANA_VERSION}}"
-                #fields: ["dashboards", "datasources", "totalalerts", "alertstriggered"]
-                url: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
-                username: "{{HOMEPAGE_VAR_GRAFANA_USERNAME}}"
-                password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
-                #alerts: "${{HOMEPAGE_VAR_GRAFANA_ALERTS}}" 
-                #url: "{{HOMEPAGE_VAR_GRAFANA_API_URL}}"
+    - Grafana:
+        icon: grafana.svg
+        href: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+        description: internal
+        siteMonitor: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+        ping: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+        statusStyle: "basic"
+        hideErrors: false
+        server: mkserver-docker
+        container: grafana-prod-1
+        showStats: true
+        widget:
+            type: grafana
+            #alerts: "${{HOMEPAGE_VAR_GRAFANA_GRAF}}"
+            version: "{{HOMEPAGE_VAR_GRAFANA_VERSION}}"
+            #fields: ["dashboards", "datasources", "totalalerts", "alertstriggered"]
+            url: "{{HOMEPAGE_VAR_GRAFANA_URL}}"
+            username: "{{HOMEPAGE_VAR_GRAFANA_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
+            #alerts: "${{HOMEPAGE_VAR_GRAFANA_ALERTS}}" 
+            #url: "{{HOMEPAGE_VAR_GRAFANA_API_URL}}"
 #
+    - Prometheus:
+        icon: prometheus.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
+        description: Prometheus 
+        siteMonitor: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
+        ping: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: prometheus-prod-1
+        widget:
+            type: prometheus
+            url: "{{HOMEPAGE_VAR_PROMETHEUS_URL_WIDGET}}"
 #
-        - InFluxDB:
-            icon: influxdb.png # icons found here https://github.com/walkxcode/dashboard-icons
-            href: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
-            description: InFluxDB
-            siteMonitor: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
-            ping: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            server: mkserver-docker
-            container: influxdb-prod-1
-            showStats: true
+    - Arris:
+        icon: arris.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_ARRIS_URL}}"
+        description: Arris Cable Modem
+        #siteMonitor: "{{HOMEPAGE_VAR_ARRIS_URL}}"
+        #ping: "{{HOMEPAGE_VAR_ARRIS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        showStats: false
 #
-        - Prometheus:
-            icon: prometheus.png # icons found here https://github.com/walkxcode/dashboard-icons
-            href: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
-            description: Prometheus 
-            siteMonitor: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
-            ping: "{{HOMEPAGE_VAR_PROMETHEUS_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            server: mkserver-docker
-            container: prometheus-prod-1
-            widget:
-                type: prometheus
-                url: "{{HOMEPAGE_VAR_PROMETHEUS_URL_WIDGET}}"
+    - EdgeRouter:
+        icon: unifi-controller.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
+        description: Router
+        siteMonitor: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
+        ping: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
 #
-        - Arris:
-            icon: arris.png # icons found here https://github.com/walkxcode/dashboard-icons
-            href: "{{HOMEPAGE_VAR_ARRIS_URL}}"
-            description: Arris Cable Modem
-            #siteMonitor: "{{HOMEPAGE_VAR_ARRIS_URL}}"
-            #ping: "{{HOMEPAGE_VAR_ARRIS_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            showStats: false
+    - UPS:
+        icon: https://images.seeklogo.com/logo-png/3/1/cyberpower-logo-png_seeklogo-37681.png
+        href: "{{HOMEPAGE_VAR_UPS_URL}}"
+        description: CyberPower UPS
+        siteMonitor: "{{HOMEPAGE_VAR_UPS_URL}}"
+        ping: "{{HOMEPAGE_VAR_UPS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
 #
-        - EdgeRouter:
-            icon: unifi-controller.png # icons found here https://github.com/walkxcode/dashboard-icons
-            href: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
-            description: Router
-            siteMonitor: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
-            ping: "{{HOMEPAGE_VAR_EDGEROUTER_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
+    - AlertManager:
+        icon: https://velog.velcdn.com/images/hyunshoon/post/ece05978-be00-466b-a8b5-db542cacc251/image.png
+        href: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
+        description: Alert Manager
+        siteMonitor: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
+        ping: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
 #
-        - UPS:
-            icon: https://images.seeklogo.com/logo-png/3/1/cyberpower-logo-png_seeklogo-37681.png
-            href: "{{HOMEPAGE_VAR_UPS_URL}}"
-            description: CyberPower UPS
-            siteMonitor: "{{HOMEPAGE_VAR_UPS_URL}}"
-            ping: "{{HOMEPAGE_VAR_UPS_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
+    - Apprise Manager:
+        icon: https://repository-images.githubusercontent.com/217802180/da559137-afe4-4900-8050-78d48930c44b
+        href: "{{HOMEPAGE_VAR_APPRISE_URL}}"
+        description: Alert Notification System
+        siteMonitor: "{{HOMEPAGE_VAR_APPRISE_URL}}"
+        ping: "{{HOMEPAGE_VAR_APPRISE_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
 #
-        - AlertManager:
-            icon: https://velog.velcdn.com/images/hyunshoon/post/ece05978-be00-466b-a8b5-db542cacc251/image.png
-            href: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
-            description: Alert Manager
-            siteMonitor: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
-            ping: "{{HOMEPAGE_VAR_ALERTMANGER_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-#
-        - Apprise Manager:
-            icon: https://repository-images.githubusercontent.com/217802180/da559137-afe4-4900-8050-78d48930c44b
-            href: "{{HOMEPAGE_VAR_APPRISE_URL}}"
-            description: Alert Notification System
-            siteMonitor: "{{HOMEPAGE_VAR_APPRISE_URL}}"
-            ping: "{{HOMEPAGE_VAR_APPRISE_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-#
-        - Dozzle:
-            icon: dozzle.png
-            href: "{{HOMEPAGE_VAR_DOZ1_URL}}"
-            description: Dozzle for MKServer
-            siteMonitor: "{{HOMEPAGE_VAR_DOZ1_URL}}"
-            ping: "{{HOMEPAGE_VAR_DOZ1_URL}}"
-            statusStyle: "basic"
-            hideErrors: true
-            server: mkserver-docker
-            container: dozzle-prod-1
+    - Dozzle:
+        icon: dozzle.png
+        href: "{{HOMEPAGE_VAR_DOZ1_URL}}"
+        description: Dozzle for MKServer
+        siteMonitor: "{{HOMEPAGE_VAR_DOZ1_URL}}"
+        ping: "{{HOMEPAGE_VAR_DOZ1_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: dozzle-prod-1
 #
     - Ookala SpeedTest:
         icon: virtualradarserver.png # icons found here https://github.com/walkxcode/dashboard-icons
@@ -1048,6 +1040,18 @@
         hideErrors: true
         # server: cyborg-docker
         # container: vscode-dev-1
+#
+        - InFluxDB:
+            icon: influxdb.png # icons found here https://github.com/walkxcode/dashboard-icons
+            href: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+            description: InFluxDB
+            siteMonitor: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+            ping: "{{HOMEPAGE_VAR_INFLUXDB_URL}}"
+            statusStyle: "basic"
+            hideErrors: true
+            server: mkserver-docker
+            container: influxdb-prod-1
+            showStats: true
 #
 - Reboots:
 
