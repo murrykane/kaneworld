@@ -875,14 +875,14 @@
         container: infisical-prod-1
 #
     - Actual-dev-1:
-        icon: actual.png # icons found here https://github.com/walkxcode/dashboard-icons
+        icon: actual-budget.svg
         href: "{{HOMEPAGE_VAR_ACTUAL_DEV_URL}}"
         description: Actual Dev 1
         siteMonitor: "{{HOMEPAGE_VAR_ACTUAL_DEV_URL}}"
         ping: "{{HOMEPAGE_VAR_ACTUAL_DEV_URL}}"
         statusStyle: "basic"
         hideErrors: true
-        server: docker-dockcer-dev
+        server: docker-docker-dev
         container: actual-dev-1
 #
 - Utilities:
