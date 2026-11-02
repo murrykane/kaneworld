@@ -1388,6 +1388,24 @@
         ping: "{{HOMEPAGE_VAR_LOKI20_URL}}"
         statusStyle: "basic"
         hideErrors: true
+#
+    - Docker-Ceph Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI21_URL}}"
+        description: Grafana forwarder Docker-Ceph
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI21_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI21_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+#
+    - NAS Alloy:
+        icon: https://grafana.com/media/docs/loki/logo-grafana-loki.png
+        href: "{{HOMEPAGE_VAR_LOKI22_URL}}"
+        description: Grafana forwarder NAS
+        siteMonitor: "{{HOMEPAGE_VAR_LOKI22_URL}}"
+        ping: "{{HOMEPAGE_VAR_LOKI22_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
 
 - Container Management:
     #initiallyCollapsed: true
