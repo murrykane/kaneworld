@@ -1,0 +1,18 @@
+//// BASE CONFIGURATION FOR ALLOY ////
+////                              ////
+
+loki.write "default" {
+  endpoint {
+    url = "https://loki-prod-4.local.kaneworld.org/loki/api/v1/push"
+  }
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "http://mkserver.kane.mk:9090/api/v1/write"
+  }
+}
+
+livedebugging {
+  enabled = true
+}

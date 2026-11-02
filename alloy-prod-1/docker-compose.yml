@@ -1,0 +1,27 @@
+services:
+  alloy:
+    image: grafana/alloy:latest
+    container_name: alloy-prod-1
+    hostname: MurDogNAS            # set to the real host name, see note below
+    restart: unless-stopped
+    user: root
+    privileged: true
+    pid: host
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./config:/etc/alloy:ro
+      - alloy-data:/var/lib/alloy/data
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+      - /share/homes/MurryKane/containers/alloy-prod-1/config:/etc/alloy:ro
+volumes:
+  alloy-data:
