@@ -1,0 +1,17 @@
+
+//// LOGS CONFIGURATION FOR ALLOY ////
+////                              ////
+
+local.file_match "local_files" {
+    path_targets = [{"__path__" = "/var/log/{syslog,messages,dmesg,**/*.log}", "job" = "logs", "hostname" = constants.hostname, "env" = "prod", "source" = "varlogs", "instance" = constants.hostname}]
+    sync_period  = "5s"
+}
+
+loki.source.file "log_scrape" {
+    targets    = local.file_match.local_files.targets
+    forward_to = [loki.write.default.receiver]
+    tail_from_end = true
+
+
+}
+

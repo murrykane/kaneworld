@@ -1,0 +1,20 @@
+local.file_match "local" {
+  path_targets = [{"__path__" = "/var/log/**/*.log"}]
+  sync_period = "10s"
+}
+
+loki.source.file "local" {
+  targets        = local.file_match.local.targets
+  tail_from_end  = true
+
+  forward_to = [loki.write.local.receiver]
+}
+loki.write "local" {
+  external_labels = {
+    server = sys.env("HOSTNAME"),
+    service_name = "varlogs",
+  }
+  endpoint {
+    url = "https://loki-prod-4.local.kaneworld.org/loki/api/v1/push"
+  }
+}
