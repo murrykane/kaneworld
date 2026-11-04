@@ -42,3 +42,6 @@ wget ${CHECK_MK_SERVER_URL}check_mk/agents/plugins/mk_docker.py
 chmod 755  mk_docker.py
 wget ${CHECK_MK_SERVER_URL}/check_mk/agents/plugins/smart
 chmod 755 smart
+cd ${CONF_DIR}
+cp /share/homes/MurryKane/checkmk/config/docker.cfg ${CONF_DIR}/docker.cfg
+chmod 644 ${CONF_DIR}/docker.cfg
