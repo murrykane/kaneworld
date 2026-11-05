@@ -1,0 +1,52 @@
+services:
+  beszel:
+    image: henrygd/beszel
+    container_name: beszel-dev-1
+    restart: unless-stopped
+    environment:
+      - APP_URL=http://localhost:8090
+      - TZ=America/Los_Angeles
+    ports:
+      - 8090:8090
+    volumes:
+      - /home/murry/containers/beszel-dev-1/data:/beszel_data
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_PORT}"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
+
+
+# APP_URL	unset	URL of the hub, used for links in emails and notifications. Must set if serving at a subpath.
+# AUTO_LOGIN	unset	Email address of a user to automatically authenticate.
+# CHECK_UPDATES	false	Allow the hub to check for updates and show a notification.
+# CONTAINER_DETAILS	true	Allow viewing container details (inspect, logs) in the web UI.
+# CSP	unset	Adds a Content-Security-Policy header with this value.
+# DISABLE_PASSWORD_AUTH	false	Disables password authentication.
+# DISABLE_SSH	false	Disables SSH connections from the hub to agents. Agents must connect via WebSocket.
+# HEARTBEAT_INTERVAL	60	Seconds between heartbeat pings. Has no effect if HEARTBEAT_URL is unset.
+# HEARTBEAT_METHOD	POST	HTTP method for heartbeat pings. Valid values: GET, POST, HEAD.
+# HEARTBEAT_URL	unset	External URL to ping periodically. Enables heartbeat monitoring. Feature is disabled if empty.
+# MFA_OTP	false	Enables OTP authentication for users and/or superusers.
+# OAUTH_DEFAULT_USER_ROLE	user	Role assigned to new users created through OAuth2 / OIDC. Valid values: user, readonly.
+# OAUTH_DISABLE_POPUP	false	Disables the OAuth2 popup window. Useful when OAuth is used behind a reverse proxy or in embedded browser environments.
+# SHARE_ALL_SYSTEMS	false	Allows access to all systems by all users. Users can also edit or delete any system unless they are assigned the readonly role.
+# SYNC_SYSTEM_NAMES	false	Set to true to update system display names from agent hostnames when agents connect.
+# TRUSTED_AUTH_HEADER	unset	Trusted header for forwarded authentication.
+# TRUSTED_PROXY_IPS	unset	Comma-separated IPs or CIDR ranges. When set, TRUSTED_AUTH_HEADER is only honored on requests from these addresses.
+# USER_CREATION	false	Enables automatic user creation for OAuth2 / OIDC.
+# USER_EMAIL	unset	Create first user with this email. The user is given the admin role (new installs only).
+# USER_PASSWORD	unset	Create first user with this password.
