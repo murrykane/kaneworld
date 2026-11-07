@@ -118,6 +118,8 @@ services:
     stdin_open: true
     tty: true
     restart: no
+    labels:
+      - "selfheal.skip=true"
     volumes:
       - ${NAS_IMPORT_DIRECTORY}:/import:ro
     environment:
