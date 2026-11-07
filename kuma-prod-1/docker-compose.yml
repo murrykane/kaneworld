@@ -6,7 +6,7 @@ secrets:
     file: /opt/repos/kaneworld/kuma-prod-1/cf-token
 services:
   kuma-prod-1:
-    image: louislam/uptime-kuma:latest
+    image: louislam/uptime-kuma:2
     container_name: kuma-prod-1
     security_opt:
       - no-new-privileges:true # helps to increase security
