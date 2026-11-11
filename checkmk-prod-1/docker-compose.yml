@@ -1,7 +1,7 @@
 ---
 services:
   checkmk-prod-1:
-    image: checkmk/check-mk-raw:${version:?2.4.0}-latest
+    image: checkmk/check-mk-community:${version:?2.5.0}-latest
     container_name: checkmk-prod-1
     ports:
       - "8005:8000"
@@ -12,7 +12,7 @@ services:
       - CMK_PASSWORD=${CMK_PASSWORD:?no password set}
       - CMK_SITE_ID=${CMK_SITE_ID:-cmk}
       - CMK_SKIP_START_SITE=${CMK_SKIP_START_SITE:-yes}
-      - CMK_SITE=${CMD_SITE_ID:-cmk}
+      - CMK_SITE=${CMK_SITE_ID:-cmk}
     tmpfs:
       - /opt/omd/sites/cmk/tmp:uid=${uid:?1000},gid=${gid:?1000}
     volumes:
@@ -24,16 +24,17 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.checkmk.entrypoints=http"
-      - "traefik.http.routers.checkmk.rule=Host(`checkmk.local.kaneworld.org`)"
-      - "traefik.http.middlewares.checkmk-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.checkmk.middlewares=checkmk-https-redirect"
-      - "traefik.http.routers.checkmk-secure.entrypoints=https"
-      - "traefik.http.routers.checkmk-secure.rule=Host(`checkmk.local.kaneworld.org`)"
-      - "traefik.http.routers.checkmk-secure.tls=true"
-      - "traefik.http.routers.checkmk-secure.service=checkmk"
-      - "traefik.http.services.checkmk.loadbalancer.server.port=5000"
-      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.entrypoints=${TRAEFIK_PROTOCOL_HTTP}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.middlewares.${TRAEFIK_ROUTER_NAME}-https-redirect.redirectscheme.scheme=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}.middlewares=${TRAEFIK_ROUTER_NAME}-https-redirect"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.entrypoints=${TRAEFIK_PROTOCOL_HTTPS}"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
+      #- "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.middlewares=auth-forwardauth@file"   #authentik login required
+      - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "omd status || exit 1"]
