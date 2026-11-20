@@ -885,6 +885,31 @@
         server: docker-docker-dev
         container: actual-dev-1
 #
+    - FreshRSS-prod-1:
+        icon: freshrss.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_FRESHRSS_URL}}"
+        description: FreshRSS
+        siteMonitor: "{{HOMEPAGE_VAR_FRESHRSS_URL}}"
+        ping: "{{HOMEPAGE_VAR_FRESHRSS_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        widget:
+            type: freshrss
+            url: "{{HOMEPAGE_VAR_FRESHRSS_API_URL}}"
+            username: "{{HOMEPAGE_VAR_FRESHRSS_USER}}"
+            password: "{{HOMEPAGE_VAR_FRESHRSS_PASS}}"
+#
+    - RSSHub-Prod-1:
+        icon: rsshub.png # icons found here https://github.com/walkxcode/dashboard-icons
+        href: "{{HOMEPAGE_VAR_RSSHUB_URL}}"
+        description: RSSHub Prod 1
+        siteMonitor: "{{HOMEPAGE_VAR_RSSHUB_URL}}"
+        ping: "{{HOMEPAGE_VAR_RSSHUB_URL}}"
+        statusStyle: "basic"
+        hideErrors: true
+        server: mkserver-docker
+        container: rsshub-prod-1
+#
 - Utilities:
 #
     - SLZB-06:
