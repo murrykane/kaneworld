@@ -895,7 +895,7 @@
         hideErrors: true
         widget:
             type: freshrss
-            url: "{{HOMEPAGE_VAR_FRESHRSS_API_URL}}"
+            url: "{{HOMEPAGE_VAR_FRESHRSS_URL}}"
             username: "{{HOMEPAGE_VAR_FRESHRSS_USER}}"
             password: "{{HOMEPAGE_VAR_FRESHRSS_PASS}}"
 #
