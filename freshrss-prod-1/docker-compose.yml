@@ -14,8 +14,8 @@ services:
     container_name: freshrss-prod-1
     restart: unless-stopped
     env_file: 
-      #- /opt/repos/kaneworld/paperless-prod-1/.env
-      - /home/murry/containers/freshrss-prod-1/.env
+      - /opt/repos/kaneworld/freshrss-prod-1/.env
+      #- /home/murry/containers/freshrss-prod-1/.env
     logging:
       options:
         max-size: 10m
