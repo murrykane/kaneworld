@@ -23,8 +23,8 @@ services:
       - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.rule=Host(`${TRAEFIK_DOMAIN}`)"
       - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.tls=true"
       - "traefik.http.routers.${TRAEFIK_ROUTER_NAME}-secure.service=${TRAEFIK_ROUTER_NAME}"
-      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=80"
-      - "traefik.docker.network=proxy"
+      - "traefik.http.services.${TRAEFIK_ROUTER_NAME}.loadbalancer.server.port=${TRAEFIK_UI_PORT}"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
 networks:
   proxy:
     external: true
