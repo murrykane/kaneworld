@@ -1,7 +1,3 @@
-# volumes:
-#   data:
-#   extensions:
-
 services:
   freshrss:
     #image: freshrss/freshrss:edge
