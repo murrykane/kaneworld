@@ -1,0 +1,72 @@
+name: Deploy changed stacks via n8n
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      stacks:
+        description: "Space-separated stack folders to deploy"
+        required: false
+
+concurrency:
+  group: homelab-deploy
+  cancel-in-progress: false   # queue deploys, never cancel one midway
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Work out changed stacks
+        id: stacks
+        env:
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+          INPUT_STACKS: ${{ inputs.stacks }}
+        run: |
+          set -euo pipefail
+          if [ -n "${INPUT_STACKS:-}" ]; then
+            candidates=$(echo "$INPUT_STACKS" | tr ' ' '\n')
+          elif [ -z "${BEFORE:-}" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ] \
+               || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            candidates=$(git diff-tree --no-commit-id --name-only -r "$SHA" | cut -d/ -f1 | sort -u)
+          else
+            candidates=$(git diff --name-only "$BEFORE" "$SHA" | cut -d/ -f1 | sort -u)
+          fi
+          stacks=()
+          for d in $candidates; do
+            [[ "$d" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || continue
+            for f in docker-compose.yml docker-compose.yaml compose.yml compose.yaml; do
+              if [ -f "$d/$f" ]; then stacks+=("$d"); break; fi
+            done
+          done
+          json=$(printf '%s\n' "${stacks[@]}" | jq -R . | jq -sc 'map(select(length>0))')
+          echo "json=$json" >> "$GITHUB_OUTPUT"
+          echo "Stacks: $json"
+
+      - name: Connect to Tailscale
+        if: steps.stacks.outputs.json != '[]'
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Trigger n8n
+        if: steps.stacks.outputs.json != '[]'
+        env:
+          STACKS: ${{ steps.stacks.outputs.json }}
+          N8N_SECRET: ${{ secrets.N8N_WEBHOOK_SECRET }}
+        run: |
+          payload=$(jq -nc --arg repo "$GITHUB_REPOSITORY" --arg sha "$GITHUB_SHA" \
+            --argjson stacks "$STACKS" '{repo:$repo, sha:$sha, stacks:$stacks}')
+          resp=$(curl -fsS --max-time 900 -X POST \
+            http://cyborg.tail6d0a3.ts.net:5678/webhook/GitHub-CodeDeploy \
+            -H "Content-Type: application/json" -H "GitHub: $N8N_SECRET" -d "$payload")
+          echo "$resp" | jq .
+          echo "$resp" | jq -e '(.failed // []) | length == 0' >/dev/null
+          
