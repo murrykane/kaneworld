@@ -8,6 +8,7 @@ github: https://github.com/murrykane/kaneworld
 My Current Lab extracted from Scanopy and added with Mermaid flowchart TD below:
 
 08/05/2026 - Added gitleaks to all checkins to code base
+11/21/2026 - Added new N8N call for CI/CD deployments
 
 ```mermaid
 flowchart LR
