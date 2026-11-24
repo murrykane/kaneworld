@@ -2,6 +2,7 @@ services:
   homepage-prod-1:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage-prod-1
+    restart: unless-stopped
     env_file:
        - /opt/repos/kaneworld/homepage-prod-1/.env
     user: ${UID:-1000}:${GID:-1000}
